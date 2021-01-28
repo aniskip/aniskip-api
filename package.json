@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --legacy-watch src/app.ts",
     "build": "tsc --project ./"
   },
   "dependencies": {
