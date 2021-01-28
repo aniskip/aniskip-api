@@ -8,15 +8,21 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "start": "NODE_ENV=production node dist/app.js",
+    "dev": "NODE_ENV=development nodemon src/app.ts",
     "build": "tsc --project ./"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.9",
     "@types/express": "^4.17.11",
+    "@types/helmet": "^4.0.0",
+    "@types/morgan": "^1.9.2",
     "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.14.1",
     "@typescript-eslint/parser": "^4.14.1",
