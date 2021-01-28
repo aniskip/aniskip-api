@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  api:
+    build: .
+    ports:
+      - '5000:5000'
+    networks:
+      - backend
+    depends_on:
+      - db
+  db:
+    image: postgres:13.1-alpine
+    restart: always
+    environment:
+      POSTGRESS_PASSWORD: ${POSTGRESS_PASSWORD}
+    networks:
+      - backend
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  database_data:
