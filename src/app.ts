@@ -18,7 +18,7 @@ app.use(express.json());
 app.get('/', (req: Request, res: Response) => {
   res.status(200);
   res.json({
-    message: 'hello world',
+    message: 'hello world time is flying',
   });
 });
 
