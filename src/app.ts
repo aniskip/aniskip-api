@@ -2,7 +2,6 @@ import express, { Response, Request } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
-// import database from './routes/database';
 import { errorHandler, notFoundError } from './middlewares';
 
 const app = express();
@@ -22,8 +21,6 @@ app.get('/', (req: Request, res: Response) => {
     message: 'hello world',
   });
 });
-
-// app.use('/api/v1', database);
 
 app.use(notFoundError);
 app.use(errorHandler);
