@@ -1,6 +1,6 @@
 {
   "name": "typescript-opening-skipper-backend",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Backend for opening / ending skipper",
   "main": "src/app.ts",
   "repository": "https://github.com/lexesjan/typescript-opening-skipper-backend",
