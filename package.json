@@ -4,7 +4,7 @@
   "description": "Backend for opening / ending skipper",
   "main": "src/app.ts",
   "repository": "https://github.com/lexesjan/typescript-opening-skipper-backend",
-  "author": "Lexes Jan Mantiquilla <mantiquillal@gmail.com>",
+  "author": "Lexes Jan Mantiquilla <mantiquillal@gmail.com>, Dabreadman <tany3@tcd.ie>",
   "license": "MIT",
   "private": true,
   "scripts": {
@@ -16,7 +16,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.5.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.9",
