@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import pool from '../queries';
+
 const router = express.Router();
 
 /**
