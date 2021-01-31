@@ -7,10 +7,59 @@ import SkipTimesDatabaseType from '../types/db/db_types';
 const router = express.Router();
 
 /**
- * GET segment for a specific anime episode
- * Parameter:
- *  anime_id : MAL anime id
- *  episode_number: Episode number of anime to GET
+ * /{anime_id}/{episode_number}
+ *   get:
+ *     description: Retrieves the opening or ending for a specific anime episode
+ *     parameters:
+ *       - name: anime_id
+ *         in: path
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         required: true
+ *         description: MAL id of the anime to get
+ *       - name: episode_number
+ *         in: path
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *         required: true
+ *         description: Episode number to get
+ *       - name: type
+ *         in: query
+ *         schema:
+ *           type: string
+ *           enum: [op, ed]
+ *         required: true
+ *         description: Type of skip time to get
+ *     responses:
+ *       '200':
+ *         description: Skip times object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type:object
+ *               properties:
+ *                 found:
+ *                   type: boolean
+ *                 result:
+ *                   type: object
+ *                   properties:
+ *                     skip_times:
+ *                       type: object
+ *                       properties:
+ *                         start_time:
+ *                           type: number
+ *                           format: float
+ *                         end_time:
+ *                           type: number
+ *                           format: float
+ *                     skip_id:
+ *                       type: string
+ *                       format: uuid
+ *                     episode_length:
+ *                       type: number
+ *                       format: float
  */
 router.get(
   '/:anime_id/:episode_number',
