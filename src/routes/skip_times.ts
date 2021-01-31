@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
-import pool from '../queries';
+import { query, param, validationResult } from 'express-validator';
+import db from '../db/db';
+import skipTimesQuery from '../db/db_queries';
+import SkipTimesDatabaseType from '../types/db/db_types';
 
 const router = express.Router();
 
@@ -9,59 +12,46 @@ const router = express.Router();
  *  anime_id : MAL anime id
  *  episode_number: Episode number of anime to GET
  */
-router.get('/skipTimes', async (req: Request, res: Response) => {
-  const { anime_id, episode_number } = req.params;
-  const values = [anime_id, episode_number];
-  const client = await pool.connect();
-  try {
-    // Gets segment with most votes matching anime_id and episode_number specified
-    const query = `select table1.*
-      from skip_times table1
-      left outer join skip_times table2
-      on (table1.anime_id = table2.anime_id and table1.episode_number = table2.episode_number and table1.skip_type = table2.skip_type and table1.votes < table2.votes)
-      where table2.anime_id is null and table1.anime_id = $1 and table1.episode_number = $2 
-      order by anime_id`;
-    const qresponse = await pool.query(query, values);
-    res.status(200);
-    res.json(qresponse);
-  } catch {}
-  client.release();
-});
+router.get(
+  '/:anime_id/:episode_number',
+  param('anime_id').isInt(),
+  param('episode_number').isInt(),
+  query('type').isIn(['op', 'ed']),
+  async (req: Request, res: Response, next: CallableFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400);
+      res.json({ error: errors.array() });
+    }
 
-// POST new skip segment
-router.post('/skipTimes', async (req: Request, res: Response) => {
-  let {
-    anime_id,
-    episode_number,
-    provider_name,
-    skip_type,
-    votes,
-    start_time,
-    end_time,
-    episode_length,
-    submitter_id,
-  } = req.params;
-  const values = [
-    anime_id,
-    episode_number,
-    provider_name,
-    skip_type,
-    votes,
-    start_time,
-    end_time,
-    episode_length,
-    submitter_id,
-  ];
-  const client = await pool.connect();
-  try {
-    // Gets segment with most votes
-    const query =
-      'INSERT INTO skip_times VALUES ($1,$2,$3,$4,$5,$6,$7,"extract(epoch from now())",$8)';
-    const qresponse = await pool.query(query, values);
-    res.status(200);
-    res.json(qresponse);
-  } catch {}
-  client.release();
-});
+    const { anime_id, episode_number } = req.params;
+    const type = req.query.type as string;
+    try {
+      const { rows } = await db.query<SkipTimesDatabaseType>(skipTimesQuery, [
+        anime_id,
+        episode_number,
+        type,
+      ]);
+      res.status(200);
+      if (rows.length > 0) {
+        const { skip_id, start_time, end_time, episode_length } = rows[0];
+        res.json({
+          found: true,
+          result: {
+            skip_times: {
+              start_time,
+              end_time,
+            },
+            skip_id,
+            episode_length,
+          },
+        });
+      }
+      res.json({ found: false });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 export default router;

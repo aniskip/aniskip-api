@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import { errorHandler, notFoundError } from './middlewares';
+import routes from './routes/index';
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.get('/', (req: Request, res: Response) => {
     message: 'hello world time is flying',
   });
 });
+
+app.use('/api/v1', routes);
 
 app.use(notFoundError);
 app.use(errorHandler);

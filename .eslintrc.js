@@ -4,7 +4,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
-    ignoreDestructuring: true,
+    '@typescript-eslint/naming-convention': 'off',
   },
   extends: [
     'airbnb-typescript/base',

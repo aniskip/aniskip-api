@@ -6,6 +6,8 @@ services:
       - '5000:5000'
     networks:
       - backend
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     depends_on:
       - db
   db:
@@ -17,7 +19,8 @@ services:
       - backend
     volumes:
       - database_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql_scripts/test_input.sql:/docker-entrypoint-initdb.d/test_input.sql
 
 networks:
   backend:
