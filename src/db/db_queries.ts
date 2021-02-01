@@ -19,3 +19,21 @@ export const skipTimesInsertQuery = `
 INSERT INTO skip_times
   VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5, $6, $7, DEFAULT, $8);
 `;
+
+export const skipTimesUpvoteQuery = `
+UPDATE
+  skip_times
+SET
+  votes = votes + 1
+WHERE
+  skip_id = $1
+`;
+
+export const skipTimesDownvoteQuery = `
+UPDATE
+  skip_times
+SET
+  votes = votes - 1
+WHERE
+  skip_id = $1
+`;

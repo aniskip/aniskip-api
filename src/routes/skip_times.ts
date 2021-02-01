@@ -1,10 +1,83 @@
 import express, { Request, Response } from 'express';
 import { query, param, validationResult, body } from 'express-validator';
 import db from '../db/db';
-import { skipTimesInsertQuery, skipTimesSelectQuery } from '../db/db_queries';
+import {
+  skipTimesInsertQuery,
+  skipTimesSelectQuery,
+  skipTimesUpvoteQuery,
+  skipTimesDownvoteQuery,
+} from '../db/db_queries';
 import SkipTimesDatabaseType from '../types/db/db_types';
 
 const router = express.Router();
+
+/**
+ * @openapi
+ *
+ * /skip-times/vote/{skip_id}:
+ *   post:
+ *     description: Upvotes or downvotes the skip time
+ *     parameters:
+ *       - name: skip_id
+ *         in: path
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         required: true
+ *         description: Skip time UUID
+ *     requestBody:
+ *       description: An object containing the skip time parameters
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               vote_type:
+ *                 type: string
+ *                 enum: [upvote, downvote]
+ *     responses:
+ *       '200':
+ *         description: Success message
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   enum: [success]
+ */
+router.post(
+  '/vote/:skip_id',
+  param('skip_id').isUUID(),
+  body('vote_type').isIn(['upvote', 'downvote']),
+  async (req: Request, res: Response, next: CallableFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400);
+      res.json({ error: errors.array() });
+    }
+
+    try {
+      const { skip_id } = req.params;
+      const { vote_type } = req.body;
+
+      if (vote_type === 'upvote') {
+        await db.query(skipTimesUpvoteQuery, [skip_id]);
+      } else {
+        await db.query(skipTimesDownvoteQuery, [skip_id]);
+      }
+
+      res.status(200);
+      res.json({
+        message: 'success',
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 /**
  * @openapi
@@ -152,26 +225,15 @@ router.get(
  *                 format: uuid
  *     responses:
  *       '200':
- *         description: Skip times objected inserted
+ *         description: Success message
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 skip_type:
+ *                 message:
  *                   type: string
- *                   enum: [op, ed]
- *                 provider_name:
- *                   type: string
- *                 start_time:
- *                   type: number
- *                   format: float
- *                 end_time:
- *                   type: number
- *                   format: float
- *                 episode_length:
- *                   type: number
- *                   format: float
+ *                   enum: [success]
  */
 router.post(
   '/:anime_id/:episode_number',
@@ -200,6 +262,7 @@ router.post(
         episode_length,
         submitter_id,
       } = req.body;
+
       await db.query(skipTimesInsertQuery, [
         anime_id,
         episode_number,
@@ -210,12 +273,10 @@ router.post(
         episode_length,
         submitter_id,
       ]);
+
+      res.status(200);
       res.json({
-        anime_id,
-        episode_number,
-        start_time,
-        end_time,
-        episode_length,
+        message: 'success',
       });
     } catch (err) {
       next(err);

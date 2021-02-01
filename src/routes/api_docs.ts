@@ -9,8 +9,13 @@ const swaggerSpec = swaggerJSDoc({
       title: 'Opening and Ending Skipper API',
       description:
         'Provides the opening and ending skip times for the Opening and Ending Skipper extension',
-      version: '0.1.1',
+      version: '0.2.0',
     },
+    servers: [
+      {
+        url: 'http://localhost:5000/api/v1',
+      },
+    ],
   },
   apis: ['./src/routes/*.ts'],
 });
