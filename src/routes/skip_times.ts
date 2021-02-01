@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { query, param, validationResult } from 'express-validator';
+import { query, param, validationResult, body } from 'express-validator';
 import db from '../db/db';
 import { skipTimesInsertQuery, skipTimesSelectQuery } from '../db/db_queries';
 import SkipTimesDatabaseType from '../types/db/db_types';
@@ -7,7 +7,9 @@ import SkipTimesDatabaseType from '../types/db/db_types';
 const router = express.Router();
 
 /**
- * /{anime_id}/{episode_number}
+ * @openapi
+ *
+ * /skip-times/{anime_id}/{episode_number}:
  *   get:
  *     description: Retrieves the opening or ending skip times for a specific anime episode
  *     parameters:
@@ -38,7 +40,7 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               type:object
+ *               type: object
  *               properties:
  *                 found:
  *                   type: boolean
@@ -103,9 +105,11 @@ router.get(
 );
 
 /**
- * /{anime_id}/{episode_number}
+ * @openapi
+ *
+ * /skip-times/{anime_id}/{episode_number}:
  *   post:
- *     description: Creates a new skip time entry for the opening or ending for a specific anime episode
+ *     description: Retrieves the opening or ending skip times for a specific anime episode
  *     parameters:
  *       - name: anime_id
  *         in: path
@@ -113,60 +117,72 @@ router.get(
  *           type: integer
  *           format: int64
  *         required: true
- *         description: MAL id of the anime to get
+ *         description: MAL id of the anime to create a new skip time for
  *       - name: episode_number
  *         in: path
  *         schema:
  *           type: integer
  *           format: int64
  *         required: true
- *         description: Episode number to get
- *       - name: episode_type
- *         in: query
- *         schema:
- *           type: string
- *           enum: [op, ed]
- *         required: true
- *         description: Type of skip time to get
+ *         description: Episode number of the anime to to create a new skip time for
+ *     requestBody:
+ *       description: An object containing the skip time parameters
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               skip_type:
+ *                 type: string
+ *                 enum: [op, ed]
+ *               provider_name:
+ *                 type: string
+ *               start_time:
+ *                 type: number
+ *                 format: float
+ *               end_time:
+ *                 type: number
+ *                 format: float
+ *               episode_length:
+ *                 type: number
+ *                 format: float
+ *               submitter_id:
+ *                 type: string
+ *                 format: uuid
  *     responses:
  *       '200':
- *         description: Skip times object
+ *         description: Skip times objected inserted
  *         content:
  *           application/json:
  *             schema:
- *               type:object
+ *               type: object
  *               properties:
- *                 found:
- *                   type: boolean
- *                 result:
- *                   type: object
- *                   properties:
- *                     skip_times:
- *                       type: object
- *                       properties:
- *                         start_time:
- *                           type: number
- *                           format: float
- *                         end_time:
- *                           type: number
- *                           format: float
- *                     skip_id:
- *                       type: string
- *                       format: uuid
- *                     episode_length:
- *                       type: number
- *                       format: float
+ *                 skip_type:
+ *                   type: string
+ *                   enum: [op, ed]
+ *                 provider_name:
+ *                   type: string
+ *                 start_time:
+ *                   type: number
+ *                   format: float
+ *                 end_time:
+ *                   type: number
+ *                   format: float
+ *                 episode_length:
+ *                   type: number
+ *                   format: float
  */
 router.post(
   '/:anime_id/:episode_number',
   param('anime_id').isInt(),
   param('episode_number').isInt(),
-  query('skip_type').isIn(['op', 'ed']),
-  query('provider_name').isString(),
-  query('start_time').isFloat(),
-  query('end_time').isFloat(),
-  query('episode_length').isFloat(),
-  query('submitter_id').isString(),
+  body('skip_type').isIn(['op', 'ed']),
+  body('provider_name').isString(),
+  body('start_time').isFloat(),
+  body('end_time').isFloat(),
+  body('episode_length').isFloat(),
+  body('submitter_id').isString(),
   async (req: Request, res: Response, next: CallableFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -176,28 +192,30 @@ router.post(
 
     try {
       const { anime_id, episode_number } = req.params;
-      const providerName = req.query.provider_name as string;
-      const skipType = req.query.skip_type as 'op' | 'ed';
-      const startTime = req.query.start_time as string;
-      const endTime = req.query.end_time as string;
-      const episodeLength = req.query.episode_length as string;
-      const submitterId = req.query.submitter_id as string;
+      const {
+        provider_name,
+        skip_type,
+        start_time,
+        end_time,
+        episode_length,
+        submitter_id,
+      } = req.body;
       await db.query(skipTimesInsertQuery, [
         anime_id,
         episode_number,
-        providerName,
-        skipType,
-        startTime,
-        endTime,
-        episodeLength,
-        submitterId,
+        provider_name,
+        skip_type,
+        start_time,
+        end_time,
+        episode_length,
+        submitter_id,
       ]);
       res.json({
         anime_id,
         episode_number,
-        start_time: startTime,
-        end_time: endTime,
-        episode_length: episodeLength,
+        start_time,
+        end_time,
+        episode_length,
       });
     } catch (err) {
       next(err);
