@@ -1,4 +1,4 @@
-const skipTimesQuery = `
+export const skipTimesSelectQuery = `
 SELECT
   skip_id,
   start_time,
@@ -15,4 +15,7 @@ ORDER BY
 LIMIT 10
 `;
 
-export default skipTimesQuery;
+export const skipTimesInsertQuery = `
+INSERT INTO skip_times
+  VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5, $6, $7, DEFAULT, $8);
+`;
