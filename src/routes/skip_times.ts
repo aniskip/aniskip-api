@@ -56,7 +56,7 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400);
-      res.json({ error: errors.array() });
+      return res.json({ error: errors.array() });
     }
 
     try {
@@ -70,11 +70,11 @@ router.post(
       }
 
       res.status(200);
-      res.json({
+      return res.json({
         message: 'success',
       });
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 );
@@ -145,7 +145,7 @@ router.get(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400);
-      res.json({ error: errors.array() });
+      return res.json({ error: errors.array() });
     }
 
     const { anime_id, episode_number } = req.params;
@@ -158,7 +158,7 @@ router.get(
       res.status(200);
       if (rows.length > 0) {
         const { skip_id, start_time, end_time, episode_length } = rows[0];
-        res.json({
+        return res.json({
           found: true,
           result: {
             skip_times: {
@@ -170,9 +170,9 @@ router.get(
           },
         });
       }
-      res.json({ found: false });
+      return res.json({ found: false });
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 );
@@ -249,7 +249,7 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400);
-      res.json({ error: errors.array() });
+      return res.json({ error: errors.array() });
     }
 
     try {
@@ -275,11 +275,11 @@ router.post(
       ]);
 
       res.status(200);
-      res.json({
+      return res.json({
         message: 'success',
       });
     } catch (err) {
-      next(err);
+      return next(err);
     }
   }
 );
