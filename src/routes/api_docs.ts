@@ -1,15 +1,15 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import packageJson from '../../package.json';
 
 const swaggerSpec = swaggerJSDoc({
   swaggerDefinition: {
     openapi: '3.0.3',
     info: {
-      title: 'Opening and Ending Skipper API',
-      description:
-        'Provides the opening and ending skip times for the Opening and Ending Skipper extension',
-      version: '0.2.0',
+      title: packageJson.name,
+      description: packageJson.description,
+      version: packageJson.version,
     },
     servers: [
       {
