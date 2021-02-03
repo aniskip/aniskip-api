@@ -120,7 +120,7 @@ router.post(
  *                 result:
  *                   type: object
  *                   properties:
- *                     skip_times:
+ *                     interval:
  *                       type: object
  *                       properties:
  *                         start_time:
@@ -129,6 +129,9 @@ router.post(
  *                         end_time:
  *                           type: number
  *                           format: float
+ *                     skip_type:
+ *                       type: string
+ *                       enum: [op, ed]
  *                     skip_id:
  *                       type: string
  *                       format: uuid
@@ -161,10 +164,11 @@ router.get(
         return res.json({
           found: true,
           result: {
-            skip_times: {
+            interval: {
               start_time,
               end_time,
             },
+            skip_type: type,
             skip_id,
             episode_length,
           },
