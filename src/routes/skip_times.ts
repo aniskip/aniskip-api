@@ -186,7 +186,7 @@ router.get(
  *
  * /skip-times/{anime_id}/{episode_number}:
  *   post:
- *     description: Retrieves the opening or ending skip times for a specific anime episode
+ *     description: Creates the opening or ending skip times for a specific anime episode
  *     parameters:
  *       - name: anime_id
  *         in: path
