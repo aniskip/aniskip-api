@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  api:
+    build:
+      dockerfile: ./docker/dev.Dockerfile
+      context: '..'
+    volumes:
+      - ../src:/usr/src/app/src
+      - ../package.json:/usr/src/app/package.json
+      - ../yarn.lock:/usr/src/app/yarn.lock
