@@ -22,7 +22,6 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data
       - ../sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ../sql_scripts/test_input.sql:/docker-entrypoint-initdb.d/test_input.sql
 
 networks:
   backend:

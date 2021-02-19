@@ -11,7 +11,6 @@ app.use(morgan('common'));
 app.use(helmet());
 app.use(
   cors({
-    // origin: /(chrome|moz)-extension:\/\//,
     origin: '*',
   })
 );
