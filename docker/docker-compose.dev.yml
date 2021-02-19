@@ -10,5 +10,5 @@ services:
       - ../yarn.lock:/usr/src/app/yarn.lock
   db:
     volumes:
-      - ../sql_scripts/db.dump:/docker-entrypoint-initdb.d/db.dump
+      - ../sql_scripts/opening-skipper-database-backup/db.dump:/docker-entrypoint-initdb.d/db.dump
       - ../sql_scripts/load_input.sh:/docker-entrypoint-initdb.d/load_input.sh
