@@ -1,3 +1,5 @@
 #!/bin/bash
 
-docker-compose -f ./docker/docker-compose.yml logs -f $1
+cd "${BASH_SOURCE%/*}"
+
+docker-compose -f ./docker-compose.yml logs -f $1

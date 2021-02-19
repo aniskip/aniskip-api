@@ -1,1 +1,3 @@
-& docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.dev.yml up --build -d
+$scriptDir = Split-Path -Path $MyInvocation.MyCommand.Definition
+
+& docker-compose -f $scriptDir/docker-compose.yml -f $scriptDir/docker-compose.dev.yml up --build -d
