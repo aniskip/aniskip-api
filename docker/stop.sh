@@ -1,3 +1,5 @@
 #!/bin/bash
 
-docker-compose -f ./docker/docker-compose.yml down
+cd "${BASH_SOURCE%/*}"
+
+docker-compose -f ./docker-compose.yml down
