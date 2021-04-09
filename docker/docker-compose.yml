@@ -34,3 +34,4 @@ networks:
 
 volumes:
   database_data:
+    name: opening-skipper-backend-database-data
