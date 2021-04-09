@@ -12,8 +12,9 @@ FROM node:12-alpine
 
 WORKDIR /usr/src/app
 
-COPY package.json tsconfig.json ./
+COPY package.json tsconfig.json jest.config.js ./
 COPY src ./src
+COPY test ./test
 COPY --from=install_dev /usr/src/app/node_modules ./node_modules
 
 CMD ["yarn", "dev"]

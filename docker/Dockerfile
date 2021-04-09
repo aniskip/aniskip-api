@@ -39,4 +39,4 @@ COPY --from=install_prod /usr/src/app/node_modules ./node_modules
 RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["node", "dist/app.js"]
+CMD ["node", "dist/src/app.js"]

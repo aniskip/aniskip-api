@@ -14,4 +14,6 @@ const pool = new Pool({
 const query = <T>(queryString: string, params: string[]) =>
   pool.query<T>(queryString, params);
 
-export default { query };
+const close = () => pool.end();
+
+export default { query, close };
