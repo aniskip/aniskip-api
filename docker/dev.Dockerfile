@@ -1,5 +1,5 @@
 # Install dev dependencies stage
-FROM node:12-alpine as install_dev
+FROM node:15-alpine as install_dev
 
 WORKDIR /usr/src/app
 
@@ -8,7 +8,7 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 # Run stage
-FROM node:12-alpine
+FROM node:15-alpine
 
 WORKDIR /usr/src/app
 
