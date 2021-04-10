@@ -45,7 +45,8 @@ jobs:
       - uses: actions/checkout@v2
 
       # execute init script
-      - run: docker exec db psql -U ${{ env.POSTGRES_USER }} -f ./sql_scripts/init.sql
+      - name: Initialise database
+        run: docker exec -i db psql -U ${{ env.POSTGRES_USER }} < ./sql_scripts/init.sql
 
       # run tests
       - run: yarn install
