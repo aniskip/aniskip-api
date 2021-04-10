@@ -27,7 +27,11 @@ describe('GET /v1', () => {
       .get('/v1')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ error: "Not found '/v1'" })
+      .expect((res) => {
+        const { body } = res;
+        expect(body.error).toBe("Not found '/v1'");
+        expect(body.stacktrace).toBeDefined();
+      })
       .expect(404, done);
   });
 
@@ -36,7 +40,11 @@ describe('GET /v1', () => {
       .get('/test-internal-server-error')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ error: 'internal server error' })
+      .expect((res) => {
+        const { body } = res;
+        expect(body.error).toBe('internal server error');
+        expect(body.stacktrace).toBeDefined();
+      })
       .expect(500, done);
   });
 });

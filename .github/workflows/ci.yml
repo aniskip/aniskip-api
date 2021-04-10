@@ -1,11 +1,12 @@
 name: CI
 
 env:
+  POSTGRES_USER: postgres
   POSTGRES_PASSWORD: password
 
 on:
   push:
-    branches: 
+    branches:
       - main
     paths:
       - src/**
@@ -29,7 +30,7 @@ jobs:
       db:
         image: postgres:13-alpine
         env:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
         ports:
           - 5432:5432
@@ -39,6 +40,9 @@ jobs:
     steps:
       # checkout repo
       - uses: actions/checkout@v2
+
+      # execute init script
+      - run: docker exec db psql -U ${{ env.POSTGRES_USER }} -f ./sql_scripts/init.sql
 
       # run tests
       - run: yarn install
