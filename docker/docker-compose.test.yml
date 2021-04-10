@@ -6,6 +6,7 @@ services:
       context: '..'
     restart: 'no'
     environment:
+      NODE_ENV: development
       POSTGRES_HOST: test_db
     depends_on:
       - test_db

@@ -7,10 +7,10 @@ const servers = [];
 const apis = [];
 
 if (process.env.NODE_ENV === 'development') {
-  servers.push({ url: 'http://localhost:5000/api/v1' });
+  servers.push({ url: 'http://localhost:5000/v1' });
   apis.push('./src/routes/*.ts');
 } else {
-  servers.push({ url: 'https://api.mantiquillal.com/api/v1' });
+  servers.push({ url: 'https://api.aniskip.com/v1' });
   apis.push('./dist/src/routes/*.js');
 }
 

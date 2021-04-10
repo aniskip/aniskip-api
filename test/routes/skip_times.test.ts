@@ -10,14 +10,38 @@ const app = express();
 app.use(express.json());
 
 const router = express.Router();
+
 router.use('/skip-times', skipTimes);
-app.use('/api/v1', router);
+app.use('/v1', router);
+app.get('/test-internal-server-error', () => {
+  throw new Error('internal server error');
+});
 app.use(notFoundError);
 app.use(errorHandler);
 
 afterAll(() => db.close());
 
-describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
+describe('GET /v1', () => {
+  it('responds with a not found error', (done) => {
+    request(app)
+      .get('/v1')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({ error: "Not found '/v1'" })
+      .expect(404, done);
+  });
+
+  it('responds with an internal server error', (done) => {
+    request(app)
+      .get('/test-internal-server-error')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({ error: 'internal server error' })
+      .expect(500, done);
+  });
+});
+
+describe('POST /v1/skip-times/vote/{skip_id}', () => {
   beforeAll(() =>
     db.query(skipTimesInsertNoDefaultsQuery, [
       'c9dfd857-0351-4a90-b37e-582a44253910',
@@ -36,7 +60,7 @@ describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
 
   it('responds with success', (done) => {
     request(app)
-      .post('/api/v1/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
+      .post('/v1/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
       .send({ vote_type: 'upvote' })
       .set('Accept', 'application/json')
       .expect({ message: 'success' })
@@ -45,7 +69,7 @@ describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
 
   it('responds with success', (done) => {
     request(app)
-      .post('/api/v1/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
+      .post('/v1/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
       .send({ vote_type: 'downvote' })
       .set('Accept', 'application/json')
       .expect({ message: 'success' })
@@ -54,7 +78,7 @@ describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
 
   it('responds with no skip time found error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/vote/6d1c118e-0484-4b92-82df-896efdcba26f')
+      .post('/v1/skip-times/vote/6d1c118e-0484-4b92-82df-896efdcba26f')
       .send({ vote_type: 'upvote' })
       .set('Accept', 'application/json')
       .expect({
@@ -72,7 +96,7 @@ describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
 
   it('responds with invalid vote type error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
+      .post('/v1/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
       .send({ vote_type: 'wrong' })
       .set('Accept', 'application/json')
       .expect({
@@ -90,7 +114,7 @@ describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
 
   it('responds with invalid skip id error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/vote/1')
+      .post('/v1/skip-times/vote/1')
       .send({ vote_type: 'upvote' })
       .set('Accept', 'application/json')
       .expect({
@@ -107,7 +131,7 @@ describe('POST /api/v1/skip-times/vote/{skip_id}', () => {
   });
 });
 
-describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
+describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
   beforeAll(async () => {
     await db.query(skipTimesInsertNoDefaultsQuery, [
       '6d1c118e-0484-4b92-82df-896efdcba26e',
@@ -140,7 +164,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an opening skip time', (done) => {
     request(app)
-      .get('/api/v1/skip-times/1/1')
+      .get('/v1/skip-times/1/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -161,7 +185,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an ending skip time', (done) => {
     request(app)
-      .get('/api/v1/skip-times/1/1')
+      .get('/v1/skip-times/1/1')
       .query({ type: 'ed' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -182,7 +206,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with no skip time', (done) => {
     request(app)
-      .get('/api/v1/skip-times/2/1')
+      .get('/v1/skip-times/2/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -192,7 +216,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an episode number error', (done) => {
     request(app)
-      .get('/api/v1/skip-times/1/0')
+      .get('/v1/skip-times/1/0')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -211,7 +235,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with skip type error', (done) => {
     request(app)
-      .get('/api/v1/skip-times/1/1')
+      .get('/v1/skip-times/1/1')
       .query({ type: 'wrong' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -230,7 +254,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with anime id error', (done) => {
     request(app)
-      .get('/api/v1/skip-times/0/1')
+      .get('/v1/skip-times/0/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -248,10 +272,10 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
   });
 });
 
-describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
+describe('POST /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with success', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'op',
         provider_name: 'ProviderName',
@@ -268,7 +292,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with success', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -285,7 +309,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an opening skip time', (done) => {
     request(app)
-      .get('/api/v1/skip-times/3/2')
+      .get('/v1/skip-times/3/2')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -305,7 +329,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an opening skip time', (done) => {
     request(app)
-      .get('/api/v1/skip-times/3/2')
+      .get('/v1/skip-times/3/2')
       .query({ type: 'ed' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -325,7 +349,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an anime id error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/0/2')
+      .post('/v1/skip-times/0/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -351,7 +375,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with episode number error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/0')
+      .post('/v1/skip-times/3/0')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -377,7 +401,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with skip type error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'wrong',
         provider_name: 'ProviderName',
@@ -403,7 +427,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with a start time error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -429,7 +453,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an end time constraint error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -448,7 +472,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with end time constraint error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -467,7 +491,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an episode length error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
@@ -493,7 +517,7 @@ describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with submitter id error', (done) => {
     request(app)
-      .post('/api/v1/skip-times/3/2')
+      .post('/v1/skip-times/3/2')
       .send({
         skip_type: 'ed',
         provider_name: 'ProviderName',
