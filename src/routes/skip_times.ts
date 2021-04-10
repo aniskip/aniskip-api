@@ -65,10 +65,23 @@ router.post(
       const { skip_id } = req.params;
       const { vote_type } = req.body;
 
-      if (vote_type === 'upvote') {
-        await db.query(skipTimesUpvoteQuery, [skip_id]);
-      } else {
-        await db.query(skipTimesDownvoteQuery, [skip_id]);
+      const { rowCount } = await db.query(
+        vote_type === 'upvote' ? skipTimesUpvoteQuery : skipTimesDownvoteQuery,
+        [skip_id]
+      );
+
+      if (rowCount === 0) {
+        res.status(404);
+        return res.json({
+          error: [
+            {
+              value: skip_id,
+              msg: 'Skip time not found',
+              param: 'skip_id',
+              location: 'params',
+            },
+          ],
+        });
       }
 
       res.status(200);
