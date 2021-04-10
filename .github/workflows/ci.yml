@@ -1,4 +1,8 @@
-name: Test
+name: CI
+
+env:
+  POSTGRES_HOST: db
+  POSTGRES_PASSWORD: password
 
 on:
   push:
@@ -12,11 +16,14 @@ jobs:
   test_runner:
     name: Test runner
     runs-on: ubuntu-latest
+    container:
+      image: node:15
 
     services:
       db:
-        image: postgres:13.1-alpine
+        image: postgres:13-alpine
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
@@ -24,10 +31,12 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+      # checkout repo
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '15'
+
+      # run tests
       - run: yarn install
-      - run: yarn build
       - run: yarn test
+        env:
+          POSTGRES_HOST: db
+          POSTGRES_PASSWORD: password

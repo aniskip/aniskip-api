@@ -1,24 +1,8 @@
 import express from 'express';
 import request from 'supertest';
 import skipTimes from '../../src/routes/skip_times';
-import db from '../../src/db/db';
-// import { skipTimesInsertQuery } from '../../src/db/db_queries';
-
-// beforeAll(() =>
-//   db.query(skipTimesInsertQuery, [
-//     '6d1c118e-0484-4b92-82df-896efdcba26e',
-//     '39783',
-//     '1',
-//     'ProviderName',
-//     'op',
-//     '10000',
-//     '21.5',
-//     '112.25',
-//     '1445.17',
-//     '2021-02-19 01:48:41.338418',
-//     'e93e3787-3071-4d1f-833f-a78755702f6b',
-//   ])
-// );
+import db from '../../src/db';
+import { skipTimesInsertNoDefaultsQuery } from '../../src/db/db_queries';
 
 const app = express();
 
@@ -29,12 +13,28 @@ router.use('/skip-times', skipTimes);
 
 app.use('/api/v1', router);
 
+beforeAll(() =>
+  db.query(skipTimesInsertNoDefaultsQuery, [
+    '6d1c118e-0484-4b92-82df-896efdcba26e',
+    '0',
+    '1',
+    'ProviderName',
+    'op',
+    '10000',
+    '21.5',
+    '112.25',
+    '1445.17',
+    '2021-02-19 01:48:41.338418',
+    'e93e3787-3071-4d1f-833f-a78755702f6b',
+  ])
+);
+
 afterAll(() => db.close());
 
 describe('GET /api/v1/skip-times', () => {
-  it('responds with a skip time', async () => {
-    await request(app)
-      .get('/api/v1/skip-times/39783/1')
+  it('responds with a skip time', async () =>
+    request(app)
+      .get('/api/v1/skip-times/0/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -50,6 +50,5 @@ describe('GET /api/v1/skip-times', () => {
           episode_length: 1445.17,
         },
       })
-      .expect(200);
-  });
+      .expect(200));
 });

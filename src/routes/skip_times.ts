@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { query, param, validationResult, body } from 'express-validator';
-import db from '../db/db';
+import db from '../db';
 import {
   skipTimesInsertQuery,
   skipTimesSelectQuery,
@@ -17,6 +17,8 @@ const router = express.Router();
  * /skip-times/vote/{skip_id}:
  *   post:
  *     description: Upvotes or downvotes the skip time
+ *     tags:
+ *       - skip-times
  *     parameters:
  *       - name: skip_id
  *         in: path
@@ -85,6 +87,8 @@ router.post(
  * /skip-times/{anime_id}/{episode_number}:
  *   get:
  *     description: Retrieves the opening or ending skip times for a specific anime episode
+ *     tags:
+ *       - skip-times
  *     parameters:
  *       - name: anime_id
  *         in: path
@@ -187,6 +191,8 @@ router.get(
  * /skip-times/{anime_id}/{episode_number}:
  *   post:
  *     description: Creates the opening or ending skip times for a specific anime episode
+ *     tags:
+ *       - skip-times
  *     parameters:
  *       - name: anime_id
  *         in: path

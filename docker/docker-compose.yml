@@ -13,10 +13,12 @@ services:
       - network
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
     depends_on:
       - db
+
   db:
-    image: postgres:13.1-alpine
+    image: postgres:13-alpine
     container_name: typescript-opening-skipper-backend-db
     restart: always
     environment:
