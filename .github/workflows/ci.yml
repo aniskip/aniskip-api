@@ -23,8 +23,6 @@ jobs:
   test_runner:
     name: Test runner
     runs-on: ubuntu-latest
-    container:
-      image: node:15
 
     services:
       db:
@@ -49,5 +47,5 @@ jobs:
       - run: yarn test
         env:
           NODE_ENV: development
-          POSTGRES_HOST: db
+          POSTGRES_HOST: localhost
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
