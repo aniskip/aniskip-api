@@ -11,7 +11,7 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-const query = <T>(queryString: string, params: string[]) =>
+const query = <T>(queryString: string, params: (string | number)[]) =>
   pool.query<T>(queryString, params);
 
 const close = () => pool.end();

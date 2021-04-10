@@ -95,13 +95,15 @@ router.post(
  *         schema:
  *           type: integer
  *           format: int64
+ *           minimum: 1
  *         required: true
  *         description: MAL id of the anime to get
  *       - name: episode_number
  *         in: path
  *         schema:
- *           type: integer
- *           format: int64
+ *           type: number
+ *           format: double
+ *           minimum: 0.5
  *         required: true
  *         description: Episode number to get
  *       - name: type
@@ -129,10 +131,12 @@ router.post(
  *                       properties:
  *                         start_time:
  *                           type: number
- *                           format: float
+ *                           format: double
+ *                           minimum: 0
  *                         end_time:
  *                           type: number
- *                           format: float
+ *                           format: double
+ *                           minimum: 0
  *                     skip_type:
  *                       type: string
  *                       enum: [op, ed]
@@ -141,12 +145,13 @@ router.post(
  *                       format: uuid
  *                     episode_length:
  *                       type: number
- *                       format: float
+ *                       format: double
+ *                       minimum: 0
  */
 router.get(
   '/:anime_id/:episode_number',
-  param('anime_id').isInt(),
-  param('episode_number').isInt(),
+  param('anime_id').isInt({ min: 1 }),
+  param('episode_number').isFloat({ min: 0.5 }),
   query('type').isIn(['op', 'ed']),
   async (req: Request, res: Response, next: CallableFunction) => {
     const errors = validationResult(req);
@@ -199,13 +204,15 @@ router.get(
  *         schema:
  *           type: integer
  *           format: int64
+ *           minimum: 1
  *         required: true
  *         description: MAL id of the anime to create a new skip time for
  *       - name: episode_number
  *         in: path
  *         schema:
- *           type: integer
- *           format: int64
+ *           type: number
+ *           format: double
+ *           minimum: 0.5
  *         required: true
  *         description: Episode number of the anime to to create a new skip time for
  *     requestBody:
@@ -223,13 +230,16 @@ router.get(
  *                 type: string
  *               start_time:
  *                 type: number
- *                 format: float
+ *                 format: double
+ *                 minimum: 0
  *               end_time:
  *                 type: number
- *                 format: float
+ *                 format: double
+ *                 minimum: 0
  *               episode_length:
  *                 type: number
- *                 format: float
+ *                 format: double
+ *                 minimum: 0
  *               submitter_id:
  *                 type: string
  *                 format: uuid
@@ -247,14 +257,14 @@ router.get(
  */
 router.post(
   '/:anime_id/:episode_number',
-  param('anime_id').isInt(),
-  param('episode_number').isInt(),
+  param('anime_id').isInt({ min: 1 }),
+  param('episode_number').isFloat({ min: 0.5 }),
   body('skip_type').isIn(['op', 'ed']),
   body('provider_name').isString(),
-  body('start_time').isFloat(),
-  body('end_time').isFloat(),
-  body('episode_length').isFloat(),
-  body('submitter_id').isString(),
+  body('start_time').isFloat({ min: 0 }),
+  body('end_time').isFloat({ min: 0 }),
+  body('episode_length').isFloat({ min: 0 }),
+  body('submitter_id').isUUID(),
   async (req: Request, res: Response, next: CallableFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -13,28 +13,42 @@ router.use('/skip-times', skipTimes);
 
 app.use('/api/v1', router);
 
-beforeAll(() =>
-  db.query(skipTimesInsertNoDefaultsQuery, [
-    '6d1c118e-0484-4b92-82df-896efdcba26e',
-    '0',
-    '1',
-    'ProviderName',
-    'op',
-    '10000',
-    '21.5',
-    '112.25',
-    '1445.17',
-    '2021-02-19 01:48:41.338418',
-    'e93e3787-3071-4d1f-833f-a78755702f6b',
-  ])
-);
-
 afterAll(() => db.close());
 
 describe('GET /api/v1/skip-times', () => {
-  it('responds with a skip time', async () =>
+  beforeAll(async () => {
+    await db.query(skipTimesInsertNoDefaultsQuery, [
+      '6d1c118e-0484-4b92-82df-896efdcba26e',
+      1,
+      1,
+      'ProviderName',
+      'op',
+      10000,
+      21.5,
+      112.25,
+      1445.17,
+      '2021-02-19 01:48:41.338418',
+      'e93e3787-3071-4d1f-833f-a78755702f6b',
+    ]);
+
+    await db.query(skipTimesInsertNoDefaultsQuery, [
+      '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+      1,
+      1,
+      'ProviderName',
+      'ed',
+      10000,
+      1349.5,
+      1440.485,
+      1445.1238,
+      '2021-02-19 01:48:41.338418',
+      'e93e3787-3071-4d1f-833f-a78755702f6b',
+    ]);
+  });
+
+  it('responds with an opening skip time', (done) => {
     request(app)
-      .get('/api/v1/skip-times/0/1')
+      .get('/api/v1/skip-times/1/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -50,5 +64,73 @@ describe('GET /api/v1/skip-times', () => {
           episode_length: 1445.17,
         },
       })
-      .expect(200));
+      .expect(200, done);
+  });
+
+  it('responds with an ending skip time', (done) => {
+    request(app)
+      .get('/api/v1/skip-times/1/1')
+      .query({ type: 'ed' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        found: true,
+        result: {
+          interval: {
+            start_time: 1349.5,
+            end_time: 1440.485,
+          },
+          skip_type: 'ed',
+          skip_id: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+          episode_length: 1445.1238,
+        },
+      })
+      .expect(200, done);
+  });
+
+  it('responds with no skip time', (done) => {
+    request(app)
+      .get(`/api/v1/skip-times/2/1`)
+      .query({ type: 'op' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({ found: false })
+      .expect(200, done);
+  });
+
+  it('responds with an episode number error', (done) => {
+    request(app)
+      .get(`/api/v1/skip-times/1/0`)
+      .query({ type: 'op' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body.error).toBeDefined();
+      })
+      .expect(400, done);
+  });
+
+  it('responds with skip type error', (done) => {
+    request(app)
+      .get(`/api/v1/skip-times/1/1`)
+      .query({ type: 'asdfasdf' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body.error).toBeDefined();
+      })
+      .expect(400, done);
+  });
+
+  it('responds with anime id error', (done) => {
+    request(app)
+      .get(`/api/v1/skip-times/0/1`)
+      .query({ type: 'op' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body.error).toBeDefined();
+      })
+      .expect(400, done);
+  });
 });
