@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 
 const pool = new Pool({
   user: 'postgres',
-  host: 'db',
+  host: process.env.POSTGRES_HOST,
   database: 'db',
   password: process.env.POSTGRES_PASSWORD,
   port: 5432,
@@ -11,7 +11,9 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-const query = <T>(queryString: string, params: string[]) =>
+const query = <T>(queryString: string, params: (string | number)[]) =>
   pool.query<T>(queryString, params);
 
-export default { query };
+const close = () => pool.end();
+
+export default { query, close };

@@ -23,7 +23,7 @@ app.get('/', (_: Request, res: Response) => {
   });
 });
 
-app.use('/api/v1', routes);
+app.use('/v1', routes);
 
 app.use(notFoundError);
 app.use(errorHandler);

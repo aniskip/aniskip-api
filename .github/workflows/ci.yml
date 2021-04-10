@@ -1,0 +1,56 @@
+name: CI
+
+env:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - src/**
+
+  # add manual trigger
+  workflow_dispatch:
+
+jobs:
+  continuous-integration:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:13-alpine
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          --name db
+
+    steps:
+      # checkout repo
+      - uses: actions/checkout@v2
+
+      # execute init script
+      - name: Initialise database
+        run: docker exec -i db psql -U ${{ env.POSTGRES_USER }} < ./sql_scripts/init.sql
+
+      # run tests
+      - run: yarn install
+      - run: yarn test
+        env:
+          NODE_ENV: development
+          POSTGRES_HOST: localhost
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}

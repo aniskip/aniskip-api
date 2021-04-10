@@ -5,9 +5,6 @@ import apiDocs from './api_docs';
 const router = express.Router();
 
 router.use('/skip-times', skipTimes);
-
-if (process.env.NODE_ENV === 'development') {
-  router.use('/api-docs', apiDocs);
-}
+router.use('/api-docs', apiDocs);
 
 export default router;

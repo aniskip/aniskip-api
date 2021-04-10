@@ -8,6 +8,7 @@ services:
       - ../src:/usr/src/app/src
       - ../package.json:/usr/src/app/package.json
       - ../yarn.lock:/usr/src/app/yarn.lock
+
   db:
     volumes:
       - ../sql_scripts/opening-skipper-database-backup/db.dump:/docker-entrypoint-initdb.d/db.dump

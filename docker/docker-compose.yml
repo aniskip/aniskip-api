@@ -1,31 +1,39 @@
 version: '3.9'
 services:
   api:
+    image: typescript-opening-skipper-backend-api
+    container_name: typescript-opening-skipper-backend-api
     build:
       dockerfile: ./docker/Dockerfile
       context: '..'
+    restart: always
     ports:
       - '5000:5000'
     networks:
-      - backend
+      - network
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
     depends_on:
       - db
+
   db:
-    image: postgres:13.1-alpine
+    image: postgres:13-alpine
+    container_name: typescript-opening-skipper-backend-db
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
-      - backend
+      - network
     volumes:
       - database_data:/var/lib/postgresql/data
       - ../sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 networks:
-  backend:
+  network:
+    name: typescript-opening-skipper-backend-network
     driver: bridge
 
 volumes:
   database_data:
+    name: opening-skipper-backend-database-data

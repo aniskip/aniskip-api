@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  api:
+    build:
+      dockerfile: ./docker/test.Dockerfile
+      context: '..'
+    restart: 'no'
+    environment:
+      NODE_ENV: development
+      POSTGRES_HOST: test_db
+    depends_on:
+      - test_db
+
+  test_db:
+    image: postgres:13-alpine
+    container_name: typescript-opening-skipper-backend-test-db
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - network
+    volumes:
+      - ../sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql

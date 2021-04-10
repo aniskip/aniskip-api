@@ -17,4 +17,4 @@ COPY src ./src
 COPY test ./test
 COPY --from=install_dev /usr/src/app/node_modules ./node_modules
 
-CMD ["yarn", "dev"]
+CMD ["yarn", "test"]

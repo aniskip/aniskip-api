@@ -20,6 +20,11 @@ INSERT INTO skip_times
   VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5, $6, $7, DEFAULT, $8);
 `;
 
+export const skipTimesInsertNoDefaultsQuery = `
+INSERT INTO skip_times
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);
+`;
+
 export const skipTimesUpvoteQuery = `
 UPDATE
   skip_times
