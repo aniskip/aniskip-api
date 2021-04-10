@@ -1,8 +1,9 @@
 import express from 'express';
 import request from 'supertest';
+import { skipTimesInsertNoDefaultsQuery } from '../../src/db/db_queries';
+import { errorHandler, notFoundError } from '../../src/middlewares';
 import skipTimes from '../../src/routes/skip_times';
 import db from '../../src/db';
-import { skipTimesInsertNoDefaultsQuery } from '../../src/db/db_queries';
 
 const app = express();
 
@@ -10,8 +11,9 @@ app.use(express.json());
 
 const router = express.Router();
 router.use('/skip-times', skipTimes);
-
 app.use('/api/v1', router);
+app.use(notFoundError);
+app.use(errorHandler);
 
 afterAll(() => db.close());
 
@@ -180,7 +182,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with no skip time', (done) => {
     request(app)
-      .get(`/api/v1/skip-times/2/1`)
+      .get('/api/v1/skip-times/2/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -190,7 +192,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with an episode number error', (done) => {
     request(app)
-      .get(`/api/v1/skip-times/1/0`)
+      .get('/api/v1/skip-times/1/0')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -209,7 +211,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with skip type error', (done) => {
     request(app)
-      .get(`/api/v1/skip-times/1/1`)
+      .get('/api/v1/skip-times/1/1')
       .query({ type: 'wrong' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -228,7 +230,7 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
 
   it('responds with anime id error', (done) => {
     request(app)
-      .get(`/api/v1/skip-times/0/1`)
+      .get('/api/v1/skip-times/0/1')
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
@@ -239,6 +241,276 @@ describe('GET /api/v1/skip-times/{anime_id}/{episode_number}', () => {
             msg: 'Invalid value',
             param: 'anime_id',
             location: 'params',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+});
+
+describe('POST /api/v1/skip-times/{anime_id}/{episode_number}', () => {
+  it('responds with success', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'op',
+        provider_name: 'ProviderName',
+        start_time: 37.75,
+        end_time: 128.1,
+        episode_length: 1440.05,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({ message: 'success' })
+      .expect(200, done);
+  });
+
+  it('responds with success', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: 1440.0038,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({ message: 'success' })
+      .expect(200, done);
+  });
+
+  it('responds with an opening skip time', (done) => {
+    request(app)
+      .get('/api/v1/skip-times/3/2')
+      .query({ type: 'op' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        const { found, result } = res.body;
+        expect(found).toBe(true);
+        expect(result.interval).toMatchObject({
+          start_time: 37.75,
+          end_time: 128.1,
+        });
+        expect(result.skip_type).toBe('op');
+        expect(result.skip_id).toBeDefined();
+        expect(result.episode_length).toBeCloseTo(1440.05);
+      })
+      .expect(200, done);
+  });
+
+  it('responds with an opening skip time', (done) => {
+    request(app)
+      .get('/api/v1/skip-times/3/2')
+      .query({ type: 'ed' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        const { found, result } = res.body;
+        expect(found).toBe(true);
+        expect(result.interval).toMatchObject({
+          start_time: 1334.75,
+          end_time: 1425,
+        });
+        expect(result.skip_type).toBe('ed');
+        expect(result.skip_id).toBeDefined();
+        expect(result.episode_length).toBeCloseTo(1440.0038);
+      })
+      .expect(200, done);
+  });
+
+  it('responds with an anime id error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/0/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: 1440.0038,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: '0',
+            msg: 'Invalid value',
+            param: 'anime_id',
+            location: 'params',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with episode number error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/0')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: 1440.0038,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: '0',
+            msg: 'Invalid value',
+            param: 'episode_number',
+            location: 'params',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with skip type error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'wrong',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: 1440.0038,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: 'wrong',
+            msg: 'Invalid value',
+            param: 'skip_type',
+            location: 'body',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with a start time error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: -1,
+        end_time: 1425,
+        episode_length: 1440.0038,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: -1,
+            msg: 'Invalid value',
+            param: 'start_time',
+            location: 'body',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with an end time constraint error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 0,
+        episode_length: 1440.0038,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body.error).toBeDefined();
+      })
+      .expect(400, done);
+  });
+
+  it('responds with end time constraint error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: 0,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        expect(res.body.error).toBeDefined();
+      })
+      .expect(400, done);
+  });
+
+  it('responds with an episode length error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: -1,
+        submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: -1,
+            msg: 'Invalid value',
+            param: 'episode_length',
+            location: 'body',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with submitter id error', (done) => {
+    request(app)
+      .post('/api/v1/skip-times/3/2')
+      .send({
+        skip_type: 'ed',
+        provider_name: 'ProviderName',
+        start_time: 1334.75,
+        end_time: 1425,
+        episode_length: 1440.0038,
+        submitter_id: '1',
+      })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: '1',
+            msg: 'Invalid value',
+            param: 'submitter_id',
+            location: 'body',
           },
         ],
       })

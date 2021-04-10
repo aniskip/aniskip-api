@@ -312,6 +312,9 @@ router.post(
         message: 'success',
       });
     } catch (err) {
+      if (err.constraint) {
+        res.status(400);
+      }
       return next(err);
     }
   }
