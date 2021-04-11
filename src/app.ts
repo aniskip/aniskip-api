@@ -7,6 +7,7 @@ import routes from './routes/index';
 
 const app = express();
 
+app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
 app.use(morgan('common'));
 app.use(helmet());
 app.use(
