@@ -1,6 +1,6 @@
 {
   "name": "typescript-opening-skipper-backend",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Provides the opening and ending skip times for the Opening and Ending Skipper extension",
   "main": "src/app.ts",
   "repository": "https://github.com/lexesjan/typescript-opening-skipper-backend",
