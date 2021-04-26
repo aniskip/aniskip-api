@@ -2,7 +2,7 @@ name: CD
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
 on:
   push:
@@ -10,6 +10,8 @@ on:
       - main
     paths:
       - src/**
+      - sql_scripts/**
+      - docker/**
   # add manual trigger
   workflow_dispatch:
 
@@ -25,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: docker login
-        run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_PASSWORD }}
+        run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_TOKEN }}
 
       - name: docker pull latest images
         run: docker-compose pull
