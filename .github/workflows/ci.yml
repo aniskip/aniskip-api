@@ -10,11 +10,10 @@ on:
       - main
     paths:
       - src/**
+      - test/**
   pull_request:
     branches:
       - main
-    paths:
-      - src/**
 
   # add manual trigger
   workflow_dispatch:
