@@ -41,7 +41,7 @@ jobs:
 
       - name: determine db tag by version
         if: env.DB_TAG == ''
-        run: echo "DB_TAG=$(jq -r .version ../package.json)" | tee -a $GITHUB_ENV
+        run: echo "DB_TAG=$(grep -oP '(\d+\.){2}\d+' ../sql_scripts/init.sql)" | tee -a $GITHUB_ENV
 
       - name: docker tag
         run: |
