@@ -1,11 +1,8 @@
 version: '3.9'
 services:
   api:
-    image: typescript-opening-skipper-backend-api
-    container_name: typescript-opening-skipper-backend-api
-    build:
-      dockerfile: ./docker/Dockerfile
-      context: '..'
+    image: lexesjan/aniskip-api
+    container_name: aniskip-api
     restart: always
     ports:
       - '5000:5000'
@@ -18,8 +15,8 @@ services:
       - db
 
   db:
-    image: postgres:13-alpine
-    container_name: typescript-opening-skipper-backend-db
+    image: lexesjan/aniskip-database
+    container_name: aniskip-database
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -27,13 +24,12 @@ services:
       - network
     volumes:
       - database_data:/var/lib/postgresql/data
-      - ../sql_scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 networks:
   network:
-    name: typescript-opening-skipper-backend-network
+    name: aniskip-api-network
     driver: bridge
 
 volumes:
   database_data:
-    name: opening-skipper-backend-database-data
+    name: aniskip-database-data
