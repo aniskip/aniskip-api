@@ -1,0 +1,53 @@
+name: CD
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+  # add manual trigger
+  workflow_dispatch:
+
+jobs:
+  continuous-delivery:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docker
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+
+      - name: docker login
+        run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_PASSWORD }}
+
+      - name: docker pull latest images
+        run: docker-compose pull
+
+      - name: docker layer caching
+        uses: satackey/action-docker-layer-caching@v0.0.11
+
+      - name: docker build
+        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
+
+      - name: determine api tag by version
+        if: env.API_TAG == ''
+        run: echo "API_TAG=$(jq -r .version ../package.json)" | tee -a $GITHUB_ENV
+
+      - name: determine db tag by version
+        if: env.DB_TAG == ''
+        run: echo "DB_TAG=$(jq -r .version ../package.json)" | tee -a $GITHUB_ENV
+
+      - name: docker push with tag
+        run: |
+          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-database:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.DB_TAG }} 
+          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-api:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
+
+      - name: docker push with latest tag
+        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
