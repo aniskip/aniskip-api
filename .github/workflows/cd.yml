@@ -32,11 +32,6 @@ jobs:
       - name: docker pull latest images
         run: docker-compose pull
 
-      - name: docker layer caching
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
-
       - name: docker build
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
 
@@ -48,10 +43,15 @@ jobs:
         if: env.DB_TAG == ''
         run: echo "DB_TAG=$(jq -r .version ../package.json)" | tee -a $GITHUB_ENV
 
+      - name: docker tag
+        run: |
+          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-database:latest ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
+          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-api:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
+          
       - name: docker push with tag
         run: |
-          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-database:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.DB_TAG }} 
-          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-api:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
+          docker push ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
+          docker push ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
 
       - name: docker push with latest tag
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
