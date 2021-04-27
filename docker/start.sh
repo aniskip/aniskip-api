@@ -18,7 +18,7 @@ main () {
 
   case $1 in
     "prod")
-      docker-compose up --build -d
+      docker-compose up -d
       ;;
     "prod-local")
       docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml up --build -d
