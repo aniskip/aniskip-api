@@ -1,13 +1,13 @@
 #!/bin/bash
 
 main () {
-  if [ "$#" -ne 1 ] || [ "$1" != "prod" ] && [ "$1" != "local-prod" ] && [ "$1" != "dev" ] && [ "$1" != "test" ]; then
+  if [ "$#" -ne 1 ] || [ "$1" != "prod" ] && [ "$1" != "prod-local" ] && [ "$1" != "dev" ] && [ "$1" != "test" ]; then
     echo "Usage: $0 TYPE"
     echo "Start the aniskip api using docker"
     echo
     echo "TYPE: the startup type"
     echo "  prod: deploying for production"
-    echo "  local-prod: start production build locally"
+    echo "  prod-local: start production build locally"
     echo "  dev: start development build"
     echo "  test: run tests"
     return 1
@@ -20,7 +20,7 @@ main () {
     "prod")
       docker-compose up --build -d
       ;;
-    "local-prod")
+    "prod-local")
       docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml up --build -d
       ;;
     "dev")

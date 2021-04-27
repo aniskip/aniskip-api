@@ -9,6 +9,7 @@ on:
     branches:
       - main
     paths:
+      - .github/workflows/cd.yml
       - src/**
       - sql_scripts/**
       - docker/**
@@ -47,7 +48,7 @@ jobs:
         run: |
           docker tag ${{ env.DOCKER_USERNAME }}/aniskip-database:latest ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
           docker tag ${{ env.DOCKER_USERNAME }}/aniskip-api:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
-          
+
       - name: docker push with tag
         run: |
           docker push ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
