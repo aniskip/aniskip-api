@@ -12,7 +12,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/src/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon --legacy-watch src/app.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --exec 'yarn ts-node' --legacy-watch src/app.ts",
     "build": "tsc --project ./",
     "test": "jest --coverage"
   },
