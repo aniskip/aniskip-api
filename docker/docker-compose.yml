@@ -2,7 +2,6 @@ version: '3.9'
 services:
   api:
     image: lexesjan/aniskip-api
-    container_name: aniskip-api
     restart: always
     ports:
       - '5000:5000'
@@ -16,7 +15,6 @@ services:
 
   db:
     image: lexesjan/aniskip-database
-    container_name: aniskip-database
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -27,9 +25,7 @@ services:
 
 networks:
   network:
-    name: aniskip-api-network
     driver: bridge
 
 volumes:
   database_data:
-    name: aniskip-database-data

@@ -13,7 +13,6 @@ services:
 
   test_db:
     image: postgres:13-alpine
-    container_name: aniskip-test-db
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:

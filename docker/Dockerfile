@@ -1,10 +1,12 @@
-# Install dev dependencies stage
-FROM node:15-alpine as install_dev
+# Install dependencies stage
+FROM node:15-alpine as install
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY .yarn ./.yarn
+COPY package.json yarn.lock .pnp.js ./
 
+RUN yarn set version berry
 RUN yarn install
 
 # Build stage
@@ -12,31 +14,23 @@ FROM node:15-alpine as build
 
 WORKDIR /usr/src/app
 
-COPY package.json tsconfig.json ./
+COPY package.json tsconfig.json yarn.lock .pnp.js ./
 COPY src ./src
-COPY --from=install_dev /usr/src/app/node_modules ./node_modules
+COPY --from=install /usr/src/app/.yarn ./.yarn
 
+RUN yarn set version berry
 RUN yarn build
-
-# Install prod dependencies stage
-FROM node:15-alpine as install_prod
-
-WORKDIR /usr/src/app
-
-COPY package.json yarn.lock ./
-
-RUN yarn install --prod
 
 # Run stage
 FROM node:15-alpine
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY package.json .pnp.js ./
 COPY --from=build /usr/src/app/dist ./dist
-COPY --from=install_prod /usr/src/app/node_modules ./node_modules
+COPY --from=install /usr/src/app/.yarn ./.yarn
 
 RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["node", "dist/src/app.js"]
+CMD ["yarn", "node", "dist/src/app.js"]
