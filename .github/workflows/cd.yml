@@ -7,7 +7,7 @@ env:
   USERNAME: ${{ secrets.USERNAME }}
   KEY: ${{ secrets.KEY }}
   PORT: ${{ secrets.PORT }}
-  PATH: ${{ secrets.PATH }}
+  REPO_PATH: ${{ secrets.REPO_PATH }}
 
 on:
   push:
@@ -70,7 +70,7 @@ jobs:
           KEY: ${{ env.KEY }}
           port: ${{ env.PORT }}
           script: |
-            cd ${{ env.PATH }}/docker
+            cd ${{ env.REPO_PATH }}/docker
             ./stop
             docker-compose pull
             ./start prod
