@@ -71,6 +71,6 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             cd ${{ env.REPO_PATH }}/docker
-            ./stop
+            ./stop.sh
             docker-compose pull
-            ./start prod
+            ./start.sh prod
