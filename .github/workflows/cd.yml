@@ -3,6 +3,11 @@ name: CD
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+  HOST: ${{ secrets.HOST }}
+  USERNAME: ${{ secrets.USERNAME }}
+  KEY: ${{ secrets.KEY }}
+  PORT: ${{ secrets.PORT }}
+  REPO_PATH: ${{ secrets.REPO_PATH }}
 
 on:
   push:
@@ -56,3 +61,16 @@ jobs:
 
       - name: docker push with latest tag
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
+        
+      - name: deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          KEY: ${{ env.KEY }}
+          port: ${{ env.PORT }}
+          script: |
+            cd ${{ env.REPO_PATH }}/docker
+            ./stop.sh
+            docker-compose pull
+            ./start.sh prod
