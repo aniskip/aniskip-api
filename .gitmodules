@@ -1,3 +1,0 @@
-[submodule "sql_scripts/opening-skipper-database-backup"]
-	path = sql_scripts/opening-skipper-database-backup
-	url = https://github.com/lexesjan/opening-skipper-database-backup.git
