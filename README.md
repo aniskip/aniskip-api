@@ -1,3 +1,3 @@
 # typescript-aniskip-api
 
-Backend for Aniskip web browser extension
+API for Aniskip web browser extension
