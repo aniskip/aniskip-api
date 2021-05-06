@@ -18,6 +18,7 @@ on:
       - src/**
       - sql_scripts/**
       - docker/**
+      - package.json
   # add manual trigger
   workflow_dispatch:
 
