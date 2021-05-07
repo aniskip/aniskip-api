@@ -1,5 +1,8 @@
 name: Update Submodule
 
+env:
+  PAT: ${{ secrets.PAT }}
+
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -11,6 +14,7 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2
         with:
+          token: ${{ env.PAT }}
           submodules: recursive
 
       - name: update submodule
