@@ -14,8 +14,7 @@ jobs:
           submodules: recursive
 
       - name: update submodule
-        run: |
-          git submodule update --remote --merge
+        run: git submodule update --remote --merge
 
       - name: create pull request
         id: cpr
