@@ -1,9 +1,9 @@
 {
-  "name": "typescript-opening-skipper-backend",
-  "version": "0.3.0",
-  "description": "Provides the opening and ending skip times for the Opening and Ending Skipper extension",
+  "name": "typescript-aniskip-api",
+  "version": "0.4.0",
+  "description": "Provides the opening and ending skip times for the Aniskip extension",
   "main": "src/app.ts",
-  "repository": "https://github.com/lexesjan/typescript-opening-skipper-backend",
+  "repository": "https://github.com/lexesjan/typescript-aniskip-api",
   "contributors": [
     "Lexes Jan Mantiquilla <mantiquillal@gmail.com>",
     "Dabreadman <tany3@tcd.ie>"

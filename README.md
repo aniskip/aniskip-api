@@ -1,2 +1,3 @@
-# typescript-opening-skipper-backend
-Backend for opening and ending skipper web browser extension
+# typescript-aniskip-api
+
+API for Aniskip web browser extension
