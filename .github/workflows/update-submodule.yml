@@ -18,7 +18,10 @@ jobs:
           submodules: recursive
 
       - name: update submodule
-        run: git submodule update --remote --merge
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git submodule update --remote --merge
 
       - name: create pull request
         id: cpr
