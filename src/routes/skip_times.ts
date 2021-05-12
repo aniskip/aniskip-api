@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
+import rateLimit from 'express-rate-limit';
 import { query, param, validationResult, body } from 'express-validator';
+
 import db from '../db';
 import {
   skipTimesInsertQuery,
@@ -8,6 +10,7 @@ import {
   skipTimesDownvoteQuery,
 } from '../db/db_queries';
 import SkipTimesDatabaseType from '../types/db/db_types';
+import { getStore, handler } from '../rate_limit';
 
 const router = express.Router();
 
@@ -52,6 +55,13 @@ const router = express.Router();
  */
 router.post(
   '/vote/:skip_id',
+  rateLimit({
+    windowMs: 1000 * 60 * 60, // 1 hour
+    max: 4,
+    store: getStore('post-vote:', 60 * 60),
+    keyGenerator: (req) => `${req.ip}${req.params.skip_id}`,
+    handler,
+  }),
   param('skip_id').isUUID(),
   body('vote_type').isIn(['upvote', 'downvote']),
   async (req: Request, res: Response, next: CallableFunction) => {
@@ -85,9 +95,7 @@ router.post(
       }
 
       res.status(200);
-      return res.json({
-        message: 'success',
-      });
+      return res.json({ message: 'success' });
     } catch (err) {
       return next(err);
     }
@@ -270,6 +278,14 @@ router.get(
  */
 router.post(
   '/:anime_id/:episode_number',
+  rateLimit({
+    windowMs: 1000 * 60 * 60 * 24, // 1 day
+    max: 10,
+    store: getStore('post-skipTime:', 60 * 60 * 24),
+    keyGenerator: (req) =>
+      `${req.ip}${req.params.anime_id}${req.params.episode_number}`,
+    handler,
+  }),
   param('anime_id').isInt({ min: 1 }),
   param('episode_number').isFloat({ min: 0.5 }),
   body('skip_type').isIn(['op', 'ed']),
@@ -308,9 +324,7 @@ router.post(
       ]);
 
       res.status(200);
-      return res.json({
-        message: 'success',
-      });
+      return res.json({ message: 'success' });
     } catch (err) {
       if (err.constraint) {
         res.status(400);

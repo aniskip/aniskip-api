@@ -39,10 +39,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/cors", "npm:2.8.10"],
             ["@types/express", "npm:4.17.11"],
+            ["@types/express-rate-limit", "npm:5.1.1"],
+            ["@types/ioredis", "npm:4.26.3"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/morgan", "npm:1.9.2"],
             ["@types/node", "npm:14.14.42"],
             ["@types/pg", "npm:7.14.11"],
+            ["@types/rate-limit-redis", "npm:1.7.1"],
             ["@types/supertest", "npm:2.0.11"],
             ["@types/swagger-jsdoc", "npm:6.0.0"],
             ["@types/swagger-ui-express", "npm:4.1.2"],
@@ -60,14 +63,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:7.23.2"],
             ["eslint-plugin-react-hooks", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:4.2.0"],
             ["express", "npm:4.17.1"],
+            ["express-rate-limit", "npm:5.2.6"],
             ["express-validator", "npm:6.10.1"],
             ["helmet", "npm:4.5.0"],
+            ["ioredis", "npm:4.27.2"],
             ["jest", "npm:26.6.3"],
             ["morgan", "npm:1.10.0"],
             ["nodemon", "npm:2.0.7"],
             ["openapi-types", "npm:8.0.0"],
             ["pg", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:8.6.0"],
             ["prettier", "npm:2.2.1"],
+            ["rate-limit-redis", "npm:2.1.0"],
             ["supertest", "npm:6.1.3"],
             ["swagger-jsdoc", "npm:6.1.0"],
             ["swagger-ui-express", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:4.1.6"],
@@ -1185,6 +1191,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/express-rate-limit", [
+        ["npm:5.1.1", {
+          "packageLocation": "./.yarn/cache/@types-express-rate-limit-npm-5.1.1-49febf9040-070185ac26.zip/node_modules/@types/express-rate-limit/",
+          "packageDependencies": [
+            ["@types/express-rate-limit", "npm:5.1.1"],
+            ["@types/express", "npm:4.17.11"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/express-serve-static-core", [
         ["npm:4.17.19", {
           "packageLocation": "./.yarn/cache/@types-express-serve-static-core-npm-4.17.19-3f514f7e12-b6c8c357c5.zip/node_modules/@types/express-serve-static-core/",
@@ -1202,6 +1218,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-graceful-fs-npm-4.1.5-91d62e1050-ab79ec306d.zip/node_modules/@types/graceful-fs/",
           "packageDependencies": [
             ["@types/graceful-fs", "npm:4.1.5"],
+            ["@types/node", "npm:15.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/ioredis", [
+        ["npm:4.26.3", {
+          "packageLocation": "./.yarn/cache/@types-ioredis-npm-4.26.3-c3f393148a-804cd0b14a.zip/node_modules/@types/ioredis/",
+          "packageDependencies": [
+            ["@types/ioredis", "npm:4.26.3"],
             ["@types/node", "npm:15.0.0"]
           ],
           "linkType": "HARD",
@@ -1354,6 +1380,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-range-parser-npm-1.2.3-c06253b351-092fabae0e.zip/node_modules/@types/range-parser/",
           "packageDependencies": [
             ["@types/range-parser", "npm:1.2.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/rate-limit-redis", [
+        ["npm:1.7.1", {
+          "packageLocation": "./.yarn/cache/@types-rate-limit-redis-npm-1.7.1-5e2407088b-4be4921ceb.zip/node_modules/@types/rate-limit-redis/",
+          "packageDependencies": [
+            ["@types/rate-limit-redis", "npm:1.7.1"],
+            ["@types/ioredis", "npm:4.26.3"],
+            ["@types/redis", "npm:2.8.28"],
+            ["express-rate-limit", "npm:5.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/redis", [
+        ["npm:2.8.28", {
+          "packageLocation": "./.yarn/cache/@types-redis-npm-2.8.28-913353dc30-a6f17271c3.zip/node_modules/@types/redis/",
+          "packageDependencies": [
+            ["@types/redis", "npm:2.8.28"],
+            ["@types/node", "npm:15.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -2689,12 +2737,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["clone", [
+        ["npm:1.0.4", {
+          "packageLocation": "./.yarn/cache/clone-npm-1.0.4-a610fcbcf9-aaaa58f990.zip/node_modules/clone/",
+          "packageDependencies": [
+            ["clone", "npm:1.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["clone-response", [
         ["npm:1.0.2", {
           "packageLocation": "./.yarn/cache/clone-response-npm-1.0.2-135ae8239d-71832f9219.zip/node_modules/clone-response/",
           "packageDependencies": [
             ["clone-response", "npm:1.0.2"],
             ["mimic-response", "npm:1.0.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["cluster-key-slot", [
+        ["npm:1.1.0", {
+          "packageLocation": "./.yarn/cache/cluster-key-slot-npm-1.1.0-c895b3234e-3b41b06942.zip/node_modules/cluster-key-slot/",
+          "packageDependencies": [
+            ["cluster-key-slot", "npm:1.1.0"]
           ],
           "linkType": "HARD",
         }]
@@ -3192,6 +3258,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["defaults", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/defaults-npm-1.0.3-e829107b9e-974f63dd0a.zip/node_modules/defaults/",
+          "packageDependencies": [
+            ["defaults", "npm:1.0.3"],
+            ["clone", "npm:1.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["defer-to-connect", [
         ["npm:1.1.3", {
           "packageLocation": "./.yarn/cache/defer-to-connect-npm-1.1.3-5887885147-d8632cafae.zip/node_modules/defer-to-connect/",
@@ -3252,6 +3328,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/delegates-npm-1.0.0-9b1942d75f-7459e34d29.zip/node_modules/delegates/",
           "packageDependencies": [
             ["delegates", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["denque", [
+        ["npm:1.5.0", {
+          "packageLocation": "./.yarn/cache/denque-npm-1.5.0-fd3ca7b46a-3564778cda.zip/node_modules/denque/",
+          "packageDependencies": [
+            ["denque", "npm:1.5.0"]
           ],
           "linkType": "HARD",
         }]
@@ -4149,6 +4234,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["type-is", "npm:1.6.18"],
             ["utils-merge", "npm:1.0.1"],
             ["vary", "npm:1.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["express-rate-limit", [
+        ["npm:5.2.6", {
+          "packageLocation": "./.yarn/cache/express-rate-limit-npm-5.2.6-c458b4bca7-03cfcd8b03.zip/node_modules/express-rate-limit/",
+          "packageDependencies": [
+            ["express-rate-limit", "npm:5.2.6"]
           ],
           "linkType": "HARD",
         }]
@@ -5123,6 +5217,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["get-intrinsic", "npm:1.1.1"],
             ["has", "npm:1.0.3"],
             ["side-channel", "npm:1.0.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["ioredis", [
+        ["npm:4.27.2", {
+          "packageLocation": "./.yarn/cache/ioredis-npm-4.27.2-c8fbd65592-8e6e21495b.zip/node_modules/ioredis/",
+          "packageDependencies": [
+            ["ioredis", "npm:4.27.2"],
+            ["cluster-key-slot", "npm:1.1.0"],
+            ["debug", "virtual:af8a359ea31c716d2884e9ae03e25a9933b153949183e8613e22972e11c5d936d758c3b7fdf99f06d7becc64ed251ed3c6cbc4c3c5e3733b5f0c94a60177a3cc#npm:4.3.2"],
+            ["denque", "npm:1.5.0"],
+            ["lodash.defaults", "npm:4.2.0"],
+            ["lodash.flatten", "npm:4.4.0"],
+            ["p-map", "npm:2.1.0"],
+            ["redis-commands", "npm:1.7.0"],
+            ["redis-errors", "npm:1.2.0"],
+            ["redis-parser", "npm:3.0.0"],
+            ["standard-as-callback", "npm:2.1.0"]
           ],
           "linkType": "HARD",
         }]
@@ -6493,6 +6606,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["lodash.defaults", [
+        ["npm:4.2.0", {
+          "packageLocation": "./.yarn/cache/lodash.defaults-npm-4.2.0-c5dea025ab-fde72e71f7.zip/node_modules/lodash.defaults/",
+          "packageDependencies": [
+            ["lodash.defaults", "npm:4.2.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["lodash.flatten", [
         ["npm:4.4.0", {
           "packageLocation": "./.yarn/cache/lodash.flatten-npm-4.4.0-495935e617-f22a7f6f16.zip/node_modules/lodash.flatten/",
@@ -7425,6 +7547,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["p-map", [
+        ["npm:2.1.0", {
+          "packageLocation": "./.yarn/cache/p-map-npm-2.1.0-d9e865dc7c-8557e841ed.zip/node_modules/p-map/",
+          "packageDependencies": [
+            ["p-map", "npm:2.1.0"]
+          ],
+          "linkType": "HARD",
+        }],
         ["npm:4.0.0", {
           "packageLocation": "./.yarn/cache/p-map-npm-4.0.0-4677ae07c7-d51e630d72.zip/node_modules/p-map/",
           "packageDependencies": [
@@ -8039,6 +8168,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["rate-limit-redis", [
+        ["npm:2.1.0", {
+          "packageLocation": "./.yarn/cache/rate-limit-redis-npm-2.1.0-4ba0e90f00-eb1776d0d4.zip/node_modules/rate-limit-redis/",
+          "packageDependencies": [
+            ["rate-limit-redis", "npm:2.1.0"],
+            ["defaults", "npm:1.0.3"],
+            ["redis", "npm:3.1.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["raw-body", [
         ["npm:2.4.0", {
           "packageLocation": "./.yarn/cache/raw-body-npm-2.4.0-14d9d633af-46dc02f8b4.zip/node_modules/raw-body/",
@@ -8157,6 +8297,47 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["readdirp", "npm:3.5.0"],
             ["picomatch", "npm:2.2.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["redis", [
+        ["npm:3.1.2", {
+          "packageLocation": "./.yarn/cache/redis-npm-3.1.2-0dbc9973a0-af9b5162aa.zip/node_modules/redis/",
+          "packageDependencies": [
+            ["redis", "npm:3.1.2"],
+            ["denque", "npm:1.5.0"],
+            ["redis-commands", "npm:1.7.0"],
+            ["redis-errors", "npm:1.2.0"],
+            ["redis-parser", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["redis-commands", [
+        ["npm:1.7.0", {
+          "packageLocation": "./.yarn/cache/redis-commands-npm-1.7.0-528f61f9d8-cbf5d33768.zip/node_modules/redis-commands/",
+          "packageDependencies": [
+            ["redis-commands", "npm:1.7.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["redis-errors", [
+        ["npm:1.2.0", {
+          "packageLocation": "./.yarn/cache/redis-errors-npm-1.2.0-a81fd9b0f1-b260bb64a1.zip/node_modules/redis-errors/",
+          "packageDependencies": [
+            ["redis-errors", "npm:1.2.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["redis-parser", [
+        ["npm:3.0.0", {
+          "packageLocation": "./.yarn/cache/redis-parser-npm-3.0.0-7ebe40abcb-45dbcb05be.zip/node_modules/redis-parser/",
+          "packageDependencies": [
+            ["redis-parser", "npm:3.0.0"],
+            ["redis-errors", "npm:1.2.0"]
           ],
           "linkType": "HARD",
         }]
@@ -8965,6 +9146,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["standard-as-callback", [
+        ["npm:2.1.0", {
+          "packageLocation": "./.yarn/cache/standard-as-callback-npm-2.1.0-8e47620bd4-4d02327de6.zip/node_modules/standard-as-callback/",
+          "packageDependencies": [
+            ["standard-as-callback", "npm:2.1.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["static-extend", [
         ["npm:0.1.2", {
           "packageLocation": "./.yarn/cache/static-extend-npm-0.1.2-2720ee6882-c42052c352.zip/node_modules/static-extend/",
@@ -9748,10 +9938,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript-aniskip-api", "workspace:."],
             ["@types/cors", "npm:2.8.10"],
             ["@types/express", "npm:4.17.11"],
+            ["@types/express-rate-limit", "npm:5.1.1"],
+            ["@types/ioredis", "npm:4.26.3"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/morgan", "npm:1.9.2"],
             ["@types/node", "npm:14.14.42"],
             ["@types/pg", "npm:7.14.11"],
+            ["@types/rate-limit-redis", "npm:1.7.1"],
             ["@types/supertest", "npm:2.0.11"],
             ["@types/swagger-jsdoc", "npm:6.0.0"],
             ["@types/swagger-ui-express", "npm:4.1.2"],
@@ -9769,14 +9962,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:7.23.2"],
             ["eslint-plugin-react-hooks", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:4.2.0"],
             ["express", "npm:4.17.1"],
+            ["express-rate-limit", "npm:5.2.6"],
             ["express-validator", "npm:6.10.1"],
             ["helmet", "npm:4.5.0"],
+            ["ioredis", "npm:4.27.2"],
             ["jest", "npm:26.6.3"],
             ["morgan", "npm:1.10.0"],
             ["nodemon", "npm:2.0.7"],
             ["openapi-types", "npm:8.0.0"],
             ["pg", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:8.6.0"],
             ["prettier", "npm:2.2.1"],
+            ["rate-limit-redis", "npm:2.1.0"],
             ["supertest", "npm:6.1.3"],
             ["swagger-jsdoc", "npm:6.1.0"],
             ["swagger-ui-express", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:4.1.6"],

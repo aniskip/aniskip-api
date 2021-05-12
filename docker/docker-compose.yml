@@ -23,9 +23,18 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data
 
+  redis:
+    image: redis:6-alpine
+    restart: always
+    networks:
+      - network
+    volumes:
+      - redis_data:/data
+
 networks:
   network:
     driver: bridge
 
 volumes:
   database_data:
+  redis_data:
