@@ -12,15 +12,16 @@ export const notFoundError = (
 
 export const errorHandler = (
   error: Error,
-  req: Request,
+  _req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: CallableFunction
+  _next: CallableFunction
 ) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({
     error: error.message,
-    ...(process.env.NODE_ENV === 'development' && { stacktrace: error.stack }),
+    ...(['development', 'test'].some(
+      (environment) => process.env.NODE_ENV === environment
+    ) && { stacktrace: error.stack }),
   });
 };

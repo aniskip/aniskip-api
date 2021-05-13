@@ -4,6 +4,7 @@ import { skipTimesInsertNoDefaultsQuery } from '../../src/db/db_queries';
 import { errorHandler, notFoundError } from '../../src/middlewares';
 import skipTimes from '../../src/routes/skip_times';
 import db from '../../src/db';
+import redisClient from '../../src/redis';
 
 const app = express();
 
@@ -19,7 +20,10 @@ app.get('/test-internal-server-error', () => {
 app.use(notFoundError);
 app.use(errorHandler);
 
-afterAll(() => db.close());
+afterAll(() => {
+  db.close();
+  redisClient.quit();
+});
 
 describe('GET /v1', () => {
   it('responds with a not found error', (done) => {
@@ -173,20 +177,22 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with an opening skip time', (done) => {
     request(app)
       .get('/v1/skip-times/1/1')
-      .query({ type: 'op' })
+      .query({ types: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect({
         found: true,
-        result: {
-          interval: {
-            start_time: 21.5,
-            end_time: 112.25,
+        results: [
+          {
+            interval: {
+              start_time: 21.5,
+              end_time: 112.25,
+            },
+            skip_type: 'op',
+            skip_id: '6d1c118e-0484-4b92-82df-896efdcba26e',
+            episode_length: 1445.17,
           },
-          skip_type: 'op',
-          skip_id: '6d1c118e-0484-4b92-82df-896efdcba26e',
-          episode_length: 1445.17,
-        },
+        ],
       })
       .expect(200, done);
   });
@@ -194,20 +200,54 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with an ending skip time', (done) => {
     request(app)
       .get('/v1/skip-times/1/1')
-      .query({ type: 'ed' })
+      .query({ types: 'ed' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect({
         found: true,
-        result: {
-          interval: {
-            start_time: 1349.5,
-            end_time: 1440.485,
+        results: [
+          {
+            interval: {
+              start_time: 1349.5,
+              end_time: 1440.485,
+            },
+            skip_type: 'ed',
+            skip_id: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+            episode_length: 1445.1238,
           },
-          skip_type: 'ed',
-          skip_id: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
-          episode_length: 1445.1238,
-        },
+        ],
+      })
+      .expect(200, done);
+  });
+
+  it('responds with an opening and ending skip time', (done) => {
+    request(app)
+      .get('/v1/skip-times/1/1')
+      .query({ types: ['op', 'ed'] })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        found: true,
+        results: [
+          {
+            interval: {
+              start_time: 21.5,
+              end_time: 112.25,
+            },
+            skip_type: 'op',
+            skip_id: '6d1c118e-0484-4b92-82df-896efdcba26e',
+            episode_length: 1445.17,
+          },
+          {
+            interval: {
+              start_time: 1349.5,
+              end_time: 1440.485,
+            },
+            skip_type: 'ed',
+            skip_id: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+            episode_length: 1445.1238,
+          },
+        ],
       })
       .expect(200, done);
   });
@@ -215,17 +255,17 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with no skip time', (done) => {
     request(app)
       .get('/v1/skip-times/2/1')
-      .query({ type: 'op' })
+      .query({ types: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ found: false })
+      .expect({ found: false, results: [] })
       .expect(200, done);
   });
 
   it('responds with an episode number error', (done) => {
     request(app)
       .get('/v1/skip-times/1/0')
-      .query({ type: 'op' })
+      .query({ types: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect({
@@ -244,15 +284,15 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with skip type error', (done) => {
     request(app)
       .get('/v1/skip-times/1/1')
-      .query({ type: 'wrong' })
+      .query({ types: 'wrong' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect({
         error: [
           {
-            value: 'wrong',
-            msg: 'Invalid value',
-            param: 'type',
+            value: ['wrong'],
+            msg: "Invalid values 'wrong'",
+            param: 'types',
             location: 'query',
           },
         ],
@@ -263,7 +303,7 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with anime id error', (done) => {
     request(app)
       .get('/v1/skip-times/0/1')
-      .query({ type: 'op' })
+      .query({ types: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect({
@@ -273,6 +313,43 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
             msg: 'Invalid value',
             param: 'anime_id',
             location: 'params',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with an invalid types error', (done) => {
+    request(app)
+      .get('/v1/skip-times/1/1')
+      .query({})
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            msg: 'Invalid value',
+            param: 'types',
+            location: 'query',
+          },
+        ],
+      })
+      .expect(400, done);
+  });
+
+  it('responds with duplicate types error', (done) => {
+    request(app)
+      .get('/v1/skip-times/1/1')
+      .query({ types: ['op', 'op'] })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        error: [
+          {
+            value: ['op', 'op'],
+            msg: 'Duplicate types',
+            param: 'types',
+            location: 'query',
           },
         ],
       })
@@ -294,7 +371,11 @@ describe('POST /v1/skip-times/{anime_id}/{episode_number}', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ message: 'success' })
+      .expect((res) => {
+        const { body } = res;
+        expect(body.message).toBe('success');
+        expect(body.skip_id).toBeDefined();
+      })
       .expect(200, done);
   });
 
@@ -311,26 +392,10 @@ describe('POST /v1/skip-times/{anime_id}/{episode_number}', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ message: 'success' })
-      .expect(200, done);
-  });
-
-  it('responds with an opening skip time', (done) => {
-    request(app)
-      .get('/v1/skip-times/3/2')
-      .query({ type: 'op' })
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
       .expect((res) => {
-        const { found, result } = res.body;
-        expect(found).toBe(true);
-        expect(result.interval).toMatchObject({
-          start_time: 37.75,
-          end_time: 128.1,
-        });
-        expect(result.skip_type).toBe('op');
-        expect(result.skip_id).toBeDefined();
-        expect(result.episode_length).toBeCloseTo(1440.05);
+        const { body } = res;
+        expect(body.message).toBe('success');
+        expect(body.skip_id).toBeDefined();
       })
       .expect(200, done);
   });
@@ -338,19 +403,39 @@ describe('POST /v1/skip-times/{anime_id}/{episode_number}', () => {
   it('responds with an opening skip time', (done) => {
     request(app)
       .get('/v1/skip-times/3/2')
-      .query({ type: 'ed' })
+      .query({ types: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect((res) => {
-        const { found, result } = res.body;
+        const { found, results } = res.body;
         expect(found).toBe(true);
-        expect(result.interval).toMatchObject({
+        expect(results[0].interval).toMatchObject({
+          start_time: 37.75,
+          end_time: 128.1,
+        });
+        expect(results[0].skip_type).toBe('op');
+        expect(results[0].skip_id).toBeDefined();
+        expect(results[0].episode_length).toBeCloseTo(1440.05);
+      })
+      .expect(200, done);
+  });
+
+  it('responds with an opening skip time', (done) => {
+    request(app)
+      .get('/v1/skip-times/3/2')
+      .query({ types: 'ed' })
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect((res) => {
+        const { found, results } = res.body;
+        expect(found).toBe(true);
+        expect(results[0].interval).toMatchObject({
           start_time: 1334.75,
           end_time: 1425,
         });
-        expect(result.skip_type).toBe('ed');
-        expect(result.skip_id).toBeDefined();
-        expect(result.episode_length).toBeCloseTo(1440.0038);
+        expect(results[0].skip_type).toBe('ed');
+        expect(results[0].skip_id).toBeDefined();
+        expect(results[0].episode_length).toBeCloseTo(1440.0038);
       })
       .expect(200, done);
   });

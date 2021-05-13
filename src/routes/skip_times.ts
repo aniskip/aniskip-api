@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
+import rateLimit from 'express-rate-limit';
 import { query, param, validationResult, body } from 'express-validator';
+
 import db from '../db';
 import {
   skipTimesInsertQuery,
@@ -7,7 +9,12 @@ import {
   skipTimesUpvoteQuery,
   skipTimesDownvoteQuery,
 } from '../db/db_queries';
-import SkipTimesDatabaseType from '../types/db/db_types';
+import {
+  SkipTimesDatabaseType,
+  SkipTimesInsertQueryResponseType,
+} from '../types/db/db_types';
+import { getStore, handler } from '../rate_limit';
+import autoVote from '../auto_vote';
 
 const router = express.Router();
 
@@ -52,6 +59,13 @@ const router = express.Router();
  */
 router.post(
   '/vote/:skip_id',
+  rateLimit({
+    windowMs: 1000 * 60 * 60, // 1 hour
+    max: 4,
+    store: getStore('post-vote:', 60 * 60),
+    keyGenerator: (req) => `${req.ip}${req.params.skip_id}`,
+    handler,
+  }),
   param('skip_id').isUUID(),
   body('vote_type').isIn(['upvote', 'downvote']),
   async (req: Request, res: Response, next: CallableFunction) => {
@@ -85,9 +99,7 @@ router.post(
       }
 
       res.status(200);
-      return res.json({
-        message: 'success',
-      });
+      return res.json({ message: 'success' });
     } catch (err) {
       return next(err);
     }
@@ -119,16 +131,20 @@ router.post(
  *           minimum: 0.5
  *         required: true
  *         description: Episode number to get
- *       - name: type
+ *       - name: types
  *         in: query
  *         schema:
- *           type: string
- *           enum: [op, ed]
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: [op, ed]
+ *         style: form
+ *         explode: true
  *         required: true
  *         description: Type of skip time to get
  *     responses:
  *       '200':
- *         description: Skip times object
+ *         description: Skip times object(s)
  *         content:
  *           application/json:
  *             schema:
@@ -136,36 +152,65 @@ router.post(
  *               properties:
  *                 found:
  *                   type: boolean
- *                 result:
- *                   type: object
- *                   properties:
- *                     interval:
- *                       type: object
- *                       properties:
- *                         start_time:
- *                           type: number
- *                           format: double
- *                           minimum: 0
- *                         end_time:
- *                           type: number
- *                           format: double
- *                           minimum: 0
- *                     skip_type:
- *                       type: string
- *                       enum: [op, ed]
- *                     skip_id:
- *                       type: string
- *                       format: uuid
- *                     episode_length:
- *                       type: number
- *                       format: double
- *                       minimum: 0
+ *                   enum: [true]
+ *                 results:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       interval:
+ *                         type: object
+ *                         properties:
+ *                           start_time:
+ *                             type: number
+ *                             format: double
+ *                             minimum: 0
+ *                           end_time:
+ *                             type: number
+ *                             format: double
+ *                             minimum: 0
+ *                       skip_type:
+ *                         type: string
+ *                         enum: [op, ed]
+ *                       skip_id:
+ *                         type: string
+ *                         format: uuid
+ *                       episode_length:
+ *                         type: number
+ *                         format: double
+ *                         minimum: 0
  */
 router.get(
   '/:anime_id/:episode_number',
+  rateLimit({
+    windowMs: 1000 * 60, // 1 min
+    max: 120,
+    store: getStore('get-skipTime:', 60),
+    handler,
+  }),
   param('anime_id').isInt({ min: 1 }),
   param('episode_number').isFloat({ min: 0.5 }),
-  query('type').isIn(['op', 'ed']),
+  query('types')
+    .customSanitizer((typeOrTypes: string | string[]) =>
+      typeof typeOrTypes === 'string' ? [typeOrTypes] : typeOrTypes
+    )
+    .custom((types: string[] | undefined) => {
+      if (!types) {
+        throw new Error('Invalid value');
+      }
+
+      const validTypes = ['op', 'ed'];
+      if (new Set(types).size !== types.length) {
+        throw new Error('Duplicate types');
+      }
+
+      const invalidValues = types.filter((type) => !validTypes.includes(type));
+      if (invalidValues.length !== 0) {
+        throw new Error(`Invalid values '${invalidValues}'`);
+      }
+
+      return true;
+    }),
   async (req: Request, res: Response, next: CallableFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -174,29 +219,34 @@ router.get(
     }
 
     const { anime_id, episode_number } = req.params;
-    const type = req.query.type as string;
+    const types = req.query.types as string[];
     try {
-      const { rows } = await db.query<SkipTimesDatabaseType>(
-        skipTimesSelectQuery,
-        [anime_id, episode_number, type]
-      );
+      const skipTimes = (
+        await Promise.all(
+          types.map(async (type) => {
+            const { rows } = await db.query<SkipTimesDatabaseType>(
+              skipTimesSelectQuery,
+              [anime_id, episode_number, type]
+            );
+            if (rows.length > 0) {
+              const { skip_id, start_time, end_time, episode_length } = rows[0];
+              return {
+                interval: {
+                  start_time,
+                  end_time,
+                },
+                skip_type: type,
+                skip_id,
+                episode_length,
+              };
+            }
+
+            return null;
+          })
+        )
+      ).filter((skipTime) => skipTime !== null);
       res.status(200);
-      if (rows.length > 0) {
-        const { skip_id, start_time, end_time, episode_length } = rows[0];
-        return res.json({
-          found: true,
-          result: {
-            interval: {
-              start_time,
-              end_time,
-            },
-            skip_type: type,
-            skip_id,
-            episode_length,
-          },
-        });
-      }
-      return res.json({ found: false });
+      return res.json({ found: skipTimes.length !== 0, results: skipTimes });
     } catch (err) {
       return next(err);
     }
@@ -267,9 +317,20 @@ router.get(
  *                 message:
  *                   type: string
  *                   enum: [success]
+ *                 skip_id:
+ *                   type: string
+ *                   format: uuid
  */
 router.post(
   '/:anime_id/:episode_number',
+  rateLimit({
+    windowMs: 1000 * 60 * 60 * 24, // 1 day
+    max: 10,
+    store: getStore('post-skipTime:', 60 * 60 * 24),
+    keyGenerator: (req) =>
+      `${req.ip}${req.params.anime_id}${req.params.episode_number}`,
+    handler,
+  }),
   param('anime_id').isInt({ min: 1 }),
   param('episode_number').isFloat({ min: 0.5 }),
   body('skip_type').isIn(['op', 'ed']),
@@ -296,21 +357,30 @@ router.post(
         submitter_id,
       } = req.body;
 
-      await db.query(skipTimesInsertQuery, [
-        anime_id,
-        episode_number,
-        provider_name,
-        skip_type,
+      const votes = await autoVote(
         start_time,
         end_time,
         episode_length,
-        submitter_id,
-      ]);
+        submitter_id
+      );
+
+      const { rows } = await db.query<SkipTimesInsertQueryResponseType>(
+        skipTimesInsertQuery,
+        [
+          anime_id,
+          episode_number,
+          provider_name,
+          skip_type,
+          votes,
+          start_time,
+          end_time,
+          episode_length,
+          submitter_id,
+        ]
+      );
 
       res.status(200);
-      return res.json({
-        message: 'success',
-      });
+      return res.json({ message: 'success', skip_id: rows[0].skip_id });
     } catch (err) {
       if (err.constraint) {
         res.status(400);

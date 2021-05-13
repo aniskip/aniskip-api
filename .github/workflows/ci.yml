@@ -52,6 +52,6 @@ jobs:
       - run: yarn install
       - run: yarn test
         env:
-          NODE_ENV: development
+          NODE_ENV: test
           POSTGRES_HOST: localhost
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}

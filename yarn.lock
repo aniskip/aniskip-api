@@ -862,6 +862,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/express-rate-limit@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@types/express-rate-limit@npm:5.1.1"
+  dependencies:
+    "@types/express": "*"
+  checksum: 070185ac26589df97f0fa53e5521fe4e9d5625248c415f4e3153b0823a847701a660dfdc2b6b6ce2fdb2556374170d06ca9ca6c141f7007c50c6c6c884539484
+  languageName: node
+  linkType: hard
+
 "@types/express-serve-static-core@npm:^4.17.18":
   version: 4.17.19
   resolution: "@types/express-serve-static-core@npm:4.17.19"
@@ -891,6 +900,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: ab79ec306d51775542b94bd768162e85fe2a0d47bd2f6033e2aad65bfcae399614ee7662a1370091fc508a8b639e3de0abf6b7232c9fb52047f207ba114ff390
+  languageName: node
+  linkType: hard
+
+"@types/ioredis@npm:*, @types/ioredis@npm:^4.26.3":
+  version: 4.26.3
+  resolution: "@types/ioredis@npm:4.26.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 804cd0b14ab778dee7ecf635753af21f25795d82ad13d78e87b9ac89e53633343cd063c63a7d962dd25ed6b8ae1cddbf2f2fb7b47aea8fe351ae4679ea0b2215
   languageName: node
   linkType: hard
 
@@ -1018,6 +1036,26 @@ __metadata:
   version: 1.2.3
   resolution: "@types/range-parser@npm:1.2.3"
   checksum: 092fabae0ecbd728d3e4debc938cd043e97cb9f210cfec1c56ff6065c6e91666f376eb586591825d6757a058fd1a1dc4831d34e04ecfbb0800f35b8d86d38635
+  languageName: node
+  linkType: hard
+
+"@types/rate-limit-redis@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "@types/rate-limit-redis@npm:1.7.1"
+  dependencies:
+    "@types/ioredis": "*"
+    "@types/redis": "*"
+    express-rate-limit: ">=3.4.0"
+  checksum: 4be4921ceb1429c1779311c5db3344ab47419efc9f7d9ee58f9542565e69b223cb301a585cf3dd5ce89e43c38a89b6f90df006b112972c4bc62b8d1126f57827
+  languageName: node
+  linkType: hard
+
+"@types/redis@npm:*":
+  version: 2.8.28
+  resolution: "@types/redis@npm:2.8.28"
+  dependencies:
+    "@types/node": "*"
+  checksum: a6f17271c35e443999189177d44d11531808e52429a6f1aa44b12b46e35e5a29a22080991547d62201a17a01e209db57da515b58121bec3b366a824840f1f3bd
   languageName: node
   linkType: hard
 
@@ -2112,6 +2150,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clone@npm:^1.0.2":
+  version: 1.0.4
+  resolution: "clone@npm:1.0.4"
+  checksum: aaaa58f9906002d9c07630682536cb00581ee02d7a76cfa8573ad59784add4d5d6d4afe894c21899b974044f153f8c5c6419ffc8b1cdde61bf104ad52e3a185d
+  languageName: node
+  linkType: hard
+
+"cluster-key-slot@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "cluster-key-slot@npm:1.1.0"
+  checksum: 3b41b06942f6b0df71029dec9df6a272be2ab78353d60fcdc5a4af3b88a749d7fb2d1d3b092db0108b2bdd104086c03edcaa3b25ef432590bb954981d6cd7715
+  languageName: node
+  linkType: hard
+
 "co@npm:^4.6.0":
   version: 4.6.0
   resolution: "co@npm:4.6.0"
@@ -2440,7 +2492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1":
+"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1":
   version: 4.3.2
   resolution: "debug@npm:4.3.2"
   dependencies:
@@ -2512,6 +2564,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"defaults@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "defaults@npm:1.0.3"
+  dependencies:
+    clone: ^1.0.2
+  checksum: 974f63dd0acb79d14e94ac0f2ea69a880ab2a6e4b341bb9bdc2409b4091b928abe2709a4e140528948d02f29c286efdef22851d1dc972636eed2ce8e1c5b7465
+  languageName: node
+  linkType: hard
+
 "defer-to-connect@npm:^1.0.1":
   version: 1.1.3
   resolution: "defer-to-connect@npm:1.1.3"
@@ -2567,6 +2628,13 @@ __metadata:
   version: 1.0.0
   resolution: "delegates@npm:1.0.0"
   checksum: 7459e34d29cadd9bfd340728bfcc70ea96da5d940fb197298b523f805822680e583cba3ec34d36a18004325f1ec9de55e202a92b414d01db18cd87bb8a2ae5bd
+  languageName: node
+  linkType: hard
+
+"denque@npm:^1.1.0, denque@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "denque@npm:1.5.0"
+  checksum: 3564778cda60c7dee3f1d71e397e50e6b39a8c06118aab9843b9396cb621b3191ab56d13de5237b8beee2b87bec485e8239c58ca3133472d2d1eaa3d2d518022
   languageName: node
   linkType: hard
 
@@ -3254,6 +3322,13 @@ __metadata:
     jest-message-util: ^26.6.2
     jest-regex-util: ^26.0.0
   checksum: a4ec4cbafac8b05eb02a8af5f086dede84a3a701abbfdafeadca24a1d286bd07035b32b2864a6ff012a733009beb0b96c10469b40832c5ee0d2dd0bb6b50a5b0
+  languageName: node
+  linkType: hard
+
+"express-rate-limit@npm:>=3.4.0, express-rate-limit@npm:^5.2.6":
+  version: 5.2.6
+  resolution: "express-rate-limit@npm:5.2.6"
+  checksum: 03cfcd8b039b08be5ffa1edbdc9b0a2eb5199ba4687bfb6d52e7327827eb1e17f612f497ffd6182e1521438cc18ea0bce062500e21af2ce0b2a0b2b59946cd8f
   languageName: node
   linkType: hard
 
@@ -4162,6 +4237,24 @@ __metadata:
     has: ^1.0.3
     side-channel: ^1.0.4
   checksum: 2465f832aa80c3740f2cfc5c75e74c727b4a45b8d80e295bb66dbb59435de536b9951b7f4d1a8075d5bb90054bd30ff22a37356a247fba3608987c7765569345
+  languageName: node
+  linkType: hard
+
+"ioredis@npm:^4.27.2":
+  version: 4.27.2
+  resolution: "ioredis@npm:4.27.2"
+  dependencies:
+    cluster-key-slot: ^1.1.0
+    debug: ^4.3.1
+    denque: ^1.1.0
+    lodash.defaults: ^4.2.0
+    lodash.flatten: ^4.4.0
+    p-map: ^2.1.0
+    redis-commands: 1.7.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+    standard-as-callback: ^2.1.0
+  checksum: 8e6e21495bbbc726e4dc6349441d48fd013713f6de9896db3b1790e7d707b36652fa96060121e7aac875c22fdf96a0e95a0ebb5a076d08d02ddce1f5f4fc5913
   languageName: node
   linkType: hard
 
@@ -5382,6 +5475,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.defaults@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "lodash.defaults@npm:4.2.0"
+  checksum: fde72e71f7b7ece10c24e43dd601574168467d50bc76687302d40de341d5cb8e35b100105d938458747d2ad5f20d8bb736e62523ef39d1a8b40f7307c50f10ac
+  languageName: node
+  linkType: hard
+
 "lodash.flatten@npm:^4.4.0":
   version: 4.4.0
   resolution: "lodash.flatten@npm:4.4.0"
@@ -6229,6 +6329,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"p-map@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "p-map@npm:2.1.0"
+  checksum: 8557e841ed832a489aaee7d825b7bea73e0559c452578821f5af418f430a8455727ab8dd5b4318b6b6733096029cfa571aa0e8d21bdd2c213025f02f919f7a9a
+  languageName: node
+  linkType: hard
+
 "p-map@npm:^4.0.0":
   version: 4.0.0
   resolution: "p-map@npm:4.0.0"
@@ -6734,6 +6841,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rate-limit-redis@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "rate-limit-redis@npm:2.1.0"
+  dependencies:
+    defaults: ^1.0.3
+    redis: ^3.0.2
+  checksum: eb1776d0d441dcc38f058738c8d2a9850e47d1f41ede9fcbc5a33ef3ca43762730fbe5aac5166364be0f80c5aa76070739ebb277bafe84e1239b3d3fdca8d7ae
+  languageName: node
+  linkType: hard
+
 "raw-body@npm:2.4.0":
   version: 2.4.0
   resolution: "raw-body@npm:2.4.0"
@@ -6850,6 +6967,41 @@ __metadata:
   dependencies:
     picomatch: ^2.2.1
   checksum: a64fe5606937d9655252230003362d95da05dbfd3baecedb4bb8c1bc0df497d051a192f9b75345c944e58a0b362c68349be602d6dbf05d03770e510b35a9f80f
+  languageName: node
+  linkType: hard
+
+"redis-commands@npm:1.7.0, redis-commands@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "redis-commands@npm:1.7.0"
+  checksum: cbf5d33768b1c8e1001e2a7ffdaeb6ef830c538ef812d803a1c5e6038cf03482cf0a22b29eadf1182aa02a522331826e3af0967ae75fa7883da8a139ad2fc77b
+  languageName: node
+  linkType: hard
+
+"redis-errors@npm:^1.0.0, redis-errors@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "redis-errors@npm:1.2.0"
+  checksum: b260bb64a1c8523d32a56701681ac3e5cc6bb0a4eb09f1d30729ebba397021d274216ff189909c08fe3c6b706ec8b74948e20ea410b6f69d31b35bda3fb82a59
+  languageName: node
+  linkType: hard
+
+"redis-parser@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "redis-parser@npm:3.0.0"
+  dependencies:
+    redis-errors: ^1.0.0
+  checksum: 45dbcb05bed2c80a4aac288bbefed2347ecf3508c24d542ab42efa21fd63b5aaca4208b206f05818835a2ac43abe09250c2638c11c3b0b66a5d67e83985e350f
+  languageName: node
+  linkType: hard
+
+"redis@npm:^3.0.2":
+  version: 3.1.2
+  resolution: "redis@npm:3.1.2"
+  dependencies:
+    denque: ^1.5.0
+    redis-commands: ^1.7.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+  checksum: af9b5162aa98e3894fab9914e622019ba3e557c6e2285db419354b83fad30e971defb84600191c48985657d2c33d0c0549990fa4efdb9352e81c9727a309f691
   languageName: node
   linkType: hard
 
@@ -7576,6 +7728,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"standard-as-callback@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "standard-as-callback@npm:2.1.0"
+  checksum: 4d02327de69a3d867b8b4a069213b90ee5db4d09364fea694e3f67f8b1ee909be0724a0c8e8ee220365c972363d318242d97d7dd1c79ccf84b8bb52234be525e
+  languageName: node
+  linkType: hard
+
 "static-extend@npm:^0.1.1":
   version: 0.1.2
   resolution: "static-extend@npm:0.1.2"
@@ -8239,10 +8398,13 @@ resolve@^2.0.0-next.3:
   dependencies:
     "@types/cors": ^2.8.10
     "@types/express": ^4.17.11
+    "@types/express-rate-limit": ^5.1.1
+    "@types/ioredis": ^4.26.3
     "@types/jest": ^26.0.23
     "@types/morgan": ^1.9.2
     "@types/node": 14.14.42
     "@types/pg": ^7.14.11
+    "@types/rate-limit-redis": ^1.7.1
     "@types/supertest": ^2.0.11
     "@types/swagger-jsdoc": ^6.0.0
     "@types/swagger-ui-express": ^4.1.2
@@ -8260,14 +8422,17 @@ resolve@^2.0.0-next.3:
     eslint-plugin-react: ^7.23.2
     eslint-plugin-react-hooks: ^4.2.0
     express: ^4.17.1
+    express-rate-limit: ^5.2.6
     express-validator: ^6.10.1
     helmet: ^4.5.0
+    ioredis: ^4.27.2
     jest: ^26.6.3
     morgan: ^1.10.0
     nodemon: ^2.0.7
     openapi-types: ^8.0.0
     pg: ^8.6.0
     prettier: ^2.2.1
+    rate-limit-redis: ^2.1.0
     supertest: ^6.1.3
     swagger-jsdoc: 6.1.0
     swagger-ui-express: ^4.1.6
