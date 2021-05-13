@@ -26,6 +26,7 @@ const autoVote = async (
     [submitterId]
   );
 
+  // User has good reputation
   if (rows[0].avg > 2) {
     return 1;
   }
