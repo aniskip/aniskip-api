@@ -20,6 +20,8 @@ export const errorHandler = (
   res.status(statusCode);
   res.json({
     error: error.message,
-    ...(process.env.NODE_ENV === 'development' && { stacktrace: error.stack }),
+    ...(['development', 'test'].some(
+      (environment) => process.env.NODE_ENV === environment
+    ) && { stacktrace: error.stack }),
   });
 };

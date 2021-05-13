@@ -4,6 +4,7 @@ import { skipTimesInsertNoDefaultsQuery } from '../../src/db/db_queries';
 import { errorHandler, notFoundError } from '../../src/middlewares';
 import skipTimes from '../../src/routes/skip_times';
 import db from '../../src/db';
+import redisClient from '../../src/redis';
 
 const app = express();
 
@@ -19,7 +20,10 @@ app.get('/test-internal-server-error', () => {
 app.use(notFoundError);
 app.use(errorHandler);
 
-afterAll(() => db.close());
+afterAll(() => {
+  db.close();
+  redisClient.quit();
+});
 
 describe('GET /v1', () => {
   it('responds with a not found error', (done) => {
@@ -30,7 +34,6 @@ describe('GET /v1', () => {
       .expect((res) => {
         const { body } = res;
         expect(body.error).toBe("Not found '/v1'");
-        expect(body.stacktrace).toBeDefined();
       })
       .expect(404, done);
   });
@@ -43,7 +46,6 @@ describe('GET /v1', () => {
       .expect((res) => {
         const { body } = res;
         expect(body.error).toBe('internal server error');
-        expect(body.stacktrace).toBeDefined();
       })
       .expect(500, done);
   });
