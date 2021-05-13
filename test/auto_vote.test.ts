@@ -35,7 +35,7 @@ describe('autovote', () => {
     ]);
   });
 
-  it('detects a bad skip time', async (done) => {
+  it("detects a bad skip time in a 'full' episode", async (done) => {
     const votes = await autoVote(
       0,
       0,
@@ -46,7 +46,7 @@ describe('autovote', () => {
     done();
   });
 
-  it('detects a bad skip time', async (done) => {
+  it("detects a bad skip time in a 'full' episode", async (done) => {
     const votes = await autoVote(
       1,
       1.5,
@@ -57,7 +57,7 @@ describe('autovote', () => {
     done();
   });
 
-  it('detects a bad skip time', async (done) => {
+  it("detects a bad skip time in a 'full' episode", async (done) => {
     const votes = await autoVote(
       0,
       1000,
@@ -68,7 +68,7 @@ describe('autovote', () => {
     done();
   });
 
-  it('detects a bad skip time', async (done) => {
+  it("detects a bad skip time in a 'full' episode", async (done) => {
     const votes = await autoVote(
       0,
       1440,
@@ -90,11 +90,77 @@ describe('autovote', () => {
     done();
   });
 
-  it('detects a normal skip time', async (done) => {
+  it("detects a normal skip time in a 'full' episode", async (done) => {
     const votes = await autoVote(
       130,
       210,
       1440,
+      '17ca2744-c222-4856-bc75-450498b1699e'
+    );
+    expect(votes).toBe(0);
+    done();
+  });
+
+  it("detects a bad skip time in a 'short' episode", async (done) => {
+    const votes = await autoVote(
+      0,
+      55,
+      118,
+      '17ca2744-c222-4856-bc75-450498b1699e'
+    );
+    expect(votes).toBe(-10);
+    done();
+  });
+
+  it("detects a normal skip time in a 'short' episode", async (done) => {
+    const votes = await autoVote(
+      30,
+      55,
+      119,
+      '17ca2744-c222-4856-bc75-450498b1699e'
+    );
+    expect(votes).toBe(0);
+    done();
+  });
+
+  it("detects a bad skip time in a 'half' episode", async (done) => {
+    const votes = await autoVote(
+      0,
+      240,
+      719,
+      '17ca2744-c222-4856-bc75-450498b1699e'
+    );
+    expect(votes).toBe(-10);
+    done();
+  });
+
+  it("detects a normal skip time in a 'half' episode", async (done) => {
+    const votes = await autoVote(
+      100,
+      160,
+      719,
+      '17ca2744-c222-4856-bc75-450498b1699e'
+    );
+    expect(votes).toBe(0);
+    done();
+  });
+
+  it("detects a bad skip time in a 'movie' episode", async (done) => {
+    const votes = await autoVote(
+      0,
+      960,
+      5400,
+      '17ca2744-c222-4856-bc75-450498b1699e'
+    );
+    expect(votes).toBe(-10);
+    done();
+  });
+
+  it("detects a normal skip time in a 'movie' episode", async (done) => {
+    const votes = await autoVote(
+      0,
+      420,
+      5400,
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(0);
