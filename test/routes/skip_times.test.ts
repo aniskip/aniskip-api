@@ -34,6 +34,7 @@ describe('GET /v1', () => {
       .expect((res) => {
         const { body } = res;
         expect(body.error).toBe("Not found '/v1'");
+        expect(body.stacktrace).toBeDefined();
       })
       .expect(404, done);
   });
@@ -46,6 +47,7 @@ describe('GET /v1', () => {
       .expect((res) => {
         const { body } = res;
         expect(body.error).toBe('internal server error');
+        expect(body.stacktrace).toBeDefined();
       })
       .expect(500, done);
   });
@@ -220,7 +222,7 @@ describe('GET /v1/skip-times/{anime_id}/{episode_number}', () => {
       .query({ type: 'op' })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ found: false })
+      .expect({ found: false, result: {} })
       .expect(200, done);
   });
 

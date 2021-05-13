@@ -204,7 +204,7 @@ router.get(
           },
         });
       }
-      return res.json({ found: false });
+      return res.json({ found: false, result: {} });
     } catch (err) {
       return next(err);
     }
