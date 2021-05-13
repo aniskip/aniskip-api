@@ -298,7 +298,11 @@ describe('POST /v1/skip-times/{anime_id}/{episode_number}', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ message: 'success' })
+      .expect((res) => {
+        const { body } = res;
+        expect(body.message).toBe('success');
+        expect(body.skip_id).toBeDefined();
+      })
       .expect(200, done);
   });
 
@@ -315,7 +319,11 @@ describe('POST /v1/skip-times/{anime_id}/{episode_number}', () => {
       })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect({ message: 'success' })
+      .expect((res) => {
+        const { body } = res;
+        expect(body.message).toBe('success');
+        expect(body.skip_id).toBeDefined();
+      })
       .expect(200, done);
   });
 

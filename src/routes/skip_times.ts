@@ -9,7 +9,10 @@ import {
   skipTimesUpvoteQuery,
   skipTimesDownvoteQuery,
 } from '../db/db_queries';
-import SkipTimesDatabaseType from '../types/db/db_types';
+import {
+  SkipTimesDatabaseType,
+  SkipTimesInsertQueryResponseType,
+} from '../types/db/db_types';
 import { getStore, handler } from '../rate_limit';
 
 const router = express.Router();
@@ -312,19 +315,22 @@ router.post(
         submitter_id,
       } = req.body;
 
-      await db.query(skipTimesInsertQuery, [
-        anime_id,
-        episode_number,
-        provider_name,
-        skip_type,
-        start_time,
-        end_time,
-        episode_length,
-        submitter_id,
-      ]);
+      const { rows } = await db.query<SkipTimesInsertQueryResponseType>(
+        skipTimesInsertQuery,
+        [
+          anime_id,
+          episode_number,
+          provider_name,
+          skip_type,
+          start_time,
+          end_time,
+          episode_length,
+          submitter_id,
+        ]
+      );
 
       res.status(200);
-      return res.json({ message: 'success' });
+      return res.json({ message: 'success', skip_id: rows[0].skip_id });
     } catch (err) {
       if (err.constraint) {
         res.status(400);

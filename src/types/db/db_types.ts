@@ -1,4 +1,4 @@
-interface SkipTimesDatabaseType {
+export interface SkipTimesDatabaseType {
   skip_id: string;
   anime_id: number;
   episode_number: number;
@@ -12,4 +12,6 @@ interface SkipTimesDatabaseType {
   submitter_id: string;
 }
 
-export default SkipTimesDatabaseType;
+export interface SkipTimesInsertQueryResponseType {
+  skip_id: string;
+}
