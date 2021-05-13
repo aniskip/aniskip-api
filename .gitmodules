@@ -1,4 +1,0 @@
-[submodule "sql_scripts/aniskip-database-backup"]
-	path = sql_scripts/aniskip-database-backup
-	url = git@github.com:lexesjan/aniskip-database-backup
-	branch = main
