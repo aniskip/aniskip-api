@@ -62,7 +62,7 @@ jobs:
 
       - name: docker push with latest tag
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
-        
+
       - name: deploy to production
         uses: appleboy/ssh-action@master
         with:
@@ -72,6 +72,7 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             cd ${{ env.REPO_PATH }}/docker
+            git pull
             ./stop.sh
             docker-compose pull
             ./start.sh prod
