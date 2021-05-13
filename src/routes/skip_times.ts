@@ -184,7 +184,7 @@ router.get(
   '/:anime_id/:episode_number',
   rateLimit({
     windowMs: 1000 * 60, // 1 min
-    max: 12,
+    max: 120,
     store: getStore('get-skipTime:', 60),
     handler,
   }),
