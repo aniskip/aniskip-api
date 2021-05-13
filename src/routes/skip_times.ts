@@ -131,16 +131,20 @@ router.post(
  *           minimum: 0.5
  *         required: true
  *         description: Episode number to get
- *       - name: type
+ *       - name: types
  *         in: query
  *         schema:
- *           type: string
- *           enum: [op, ed]
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: [op, ed]
+ *         style: form
+ *         explode: true
  *         required: true
  *         description: Type of skip time to get
  *     responses:
  *       '200':
- *         description: Skip times object
+ *         description: Skip times object(s)
  *         content:
  *           application/json:
  *             schema:
@@ -148,36 +152,59 @@ router.post(
  *               properties:
  *                 found:
  *                   type: boolean
- *                 result:
- *                   type: object
- *                   properties:
- *                     interval:
- *                       type: object
- *                       properties:
- *                         start_time:
- *                           type: number
- *                           format: double
- *                           minimum: 0
- *                         end_time:
- *                           type: number
- *                           format: double
- *                           minimum: 0
- *                     skip_type:
- *                       type: string
- *                       enum: [op, ed]
- *                     skip_id:
- *                       type: string
- *                       format: uuid
- *                     episode_length:
- *                       type: number
- *                       format: double
- *                       minimum: 0
+ *                   enum: [true]
+ *                 results:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       interval:
+ *                         type: object
+ *                         properties:
+ *                           start_time:
+ *                             type: number
+ *                             format: double
+ *                             minimum: 0
+ *                           end_time:
+ *                             type: number
+ *                             format: double
+ *                             minimum: 0
+ *                       skip_type:
+ *                         type: string
+ *                         enum: [op, ed]
+ *                       skip_id:
+ *                         type: string
+ *                         format: uuid
+ *                       episode_length:
+ *                         type: number
+ *                         format: double
+ *                         minimum: 0
  */
 router.get(
   '/:anime_id/:episode_number',
   param('anime_id').isInt({ min: 1 }),
   param('episode_number').isFloat({ min: 0.5 }),
-  query('type').isIn(['op', 'ed']),
+  query('types')
+    .customSanitizer((typeOrTypes: string | string[]) =>
+      typeof typeOrTypes === 'string' ? [typeOrTypes] : typeOrTypes
+    )
+    .custom((types: string[] | undefined) => {
+      if (!types) {
+        throw new Error('Invalid value');
+      }
+
+      const validTypes = ['op', 'ed'];
+      if (new Set(types).size !== types.length) {
+        throw new Error('Duplicate types');
+      }
+
+      const invalidValues = types.filter((type) => !validTypes.includes(type));
+      if (invalidValues.length !== 0) {
+        throw new Error(`Invalid values '${invalidValues}'`);
+      }
+
+      return true;
+    }),
   async (req: Request, res: Response, next: CallableFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -186,29 +213,34 @@ router.get(
     }
 
     const { anime_id, episode_number } = req.params;
-    const type = req.query.type as string;
+    const types = req.query.types as string[];
     try {
-      const { rows } = await db.query<SkipTimesDatabaseType>(
-        skipTimesSelectQuery,
-        [anime_id, episode_number, type]
-      );
+      const skipTimes = (
+        await Promise.all(
+          types.map(async (type) => {
+            const { rows } = await db.query<SkipTimesDatabaseType>(
+              skipTimesSelectQuery,
+              [anime_id, episode_number, type]
+            );
+            if (rows.length > 0) {
+              const { skip_id, start_time, end_time, episode_length } = rows[0];
+              return {
+                interval: {
+                  start_time,
+                  end_time,
+                },
+                skip_type: type,
+                skip_id,
+                episode_length,
+              };
+            }
+
+            return null;
+          })
+        )
+      ).filter((skipTime) => skipTime !== null);
       res.status(200);
-      if (rows.length > 0) {
-        const { skip_id, start_time, end_time, episode_length } = rows[0];
-        return res.json({
-          found: true,
-          result: {
-            interval: {
-              start_time,
-              end_time,
-            },
-            skip_type: type,
-            skip_id,
-            episode_length,
-          },
-        });
-      }
-      return res.json({ found: false, result: {} });
+      return res.json({ found: skipTimes.length !== 0, results: skipTimes });
     } catch (err) {
       return next(err);
     }

@@ -5,8 +5,8 @@ import { skipTimesInsertNoDefaultsQuery } from '../src/db/db_queries';
 afterAll(() => db.close());
 
 describe('autovote', () => {
-  beforeAll(() => {
-    db.query(skipTimesInsertNoDefaultsQuery, [
+  beforeAll(async () => {
+    await db.query(skipTimesInsertNoDefaultsQuery, [
       'c9dfd857-0351-4a90-b37e-582a44253912',
       1,
       1,
@@ -20,7 +20,7 @@ describe('autovote', () => {
       'e93e3787-3071-4d1f-833f-a78755702f6b',
     ]);
 
-    db.query(skipTimesInsertNoDefaultsQuery, [
+    await db.query(skipTimesInsertNoDefaultsQuery, [
       'c9dfd857-0351-4a90-b37e-582a44253911',
       1,
       1,
