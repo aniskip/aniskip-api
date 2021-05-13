@@ -14,6 +14,7 @@ import {
   SkipTimesInsertQueryResponseType,
 } from '../types/db/db_types';
 import { getStore, handler } from '../rate_limit';
+import autoVote from '../auto_vote';
 
 const router = express.Router();
 
@@ -278,6 +279,9 @@ router.get(
  *                 message:
  *                   type: string
  *                   enum: [success]
+ *                 skip_id:
+ *                   type: string
+ *                   format: uuid
  */
 router.post(
   '/:anime_id/:episode_number',
@@ -315,6 +319,13 @@ router.post(
         submitter_id,
       } = req.body;
 
+      const votes = await autoVote(
+        start_time,
+        end_time,
+        episode_length,
+        submitter_id
+      );
+
       const { rows } = await db.query<SkipTimesInsertQueryResponseType>(
         skipTimesInsertQuery,
         [
@@ -322,6 +333,7 @@ router.post(
           episode_number,
           provider_name,
           skip_type,
+          votes,
           start_time,
           end_time,
           episode_length,
