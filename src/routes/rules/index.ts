@@ -6,6 +6,68 @@ import rules from './rules';
 
 const router = express.Router();
 
+/**
+ * @openapi
+ *
+ * /rules/{anime_id}:
+ *   get:
+ *     description: Retrieves anime episode number redirection rules
+ *     tags:
+ *       - rules
+ *     parameters:
+ *       - name: anime_id
+ *         in: path
+ *         schema:
+ *           type: integer
+ *           format: int64
+ *           minimum: 1
+ *         required: true
+ *         description: MAL id of the anime to get rules for
+ *     responses:
+ *       '200':
+ *         description: Rules object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 found:
+ *                   type: boolean
+ *                   enum: [true]
+ *                 rules:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       from:
+ *                         type: object
+ *                         required: ['start']
+ *                         properties:
+ *                           start:
+ *                             type: integer
+ *                             format: int64
+ *                             minimum: 1
+ *                           end:
+ *                             type: integer
+ *                             format: int64
+ *                             minimum: 1
+ *                       to:
+ *                         type: object
+ *                         required: ['start', 'malId']
+ *                         properties:
+ *                           malId:
+ *                             type: integer
+ *                             format: int64
+ *                             minimum: 1
+ *                           start:
+ *                             type: integer
+ *                             format: int64
+ *                             minimum: 1
+ *                           end:
+ *                             type: integer
+ *                             format: int64
+ *                             minimum: 1
+ */
 router.get(
   '/:anime_id',
   param('anime_id').isInt({ min: 1 }),
