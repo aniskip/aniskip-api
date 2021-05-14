@@ -2,19 +2,19 @@ import express, { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import { query, param, validationResult, body } from 'express-validator';
 
-import db from '../db';
+import db from '../../db';
 import {
   skipTimesInsertQuery,
   skipTimesSelectQuery,
   skipTimesUpvoteQuery,
   skipTimesDownvoteQuery,
-} from '../db/db_queries';
+} from '../../db/queries';
 import {
   SkipTimesDatabaseType,
   SkipTimesInsertQueryResponseType,
-} from '../types/db/db_types';
-import { getStore, handler } from '../rate_limit';
-import autoVote from '../auto_vote';
+} from '../../types/db/db_types';
+import { getStore, handler } from '../../rate_limit';
+import autoVote from './auto_vote';
 
 const router = express.Router();
 
