@@ -106,7 +106,7 @@ class Rules {
         end = start;
       }
 
-      return { start, ...(end && { to: end }) };
+      return { start, ...(end && { end }) };
     };
 
     const fromMalId = parseInt(matches[1], 10);

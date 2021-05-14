@@ -55,12 +55,12 @@ describe('GET /v1/rules', () => {
           {
             from: {
               start: 13,
-              to: 13,
+              end: 13,
             },
             to: {
               malId: 7739,
               start: 1,
-              to: 1,
+              end: 1,
             },
           },
         ],
@@ -79,12 +79,12 @@ describe('GET /v1/rules', () => {
           {
             from: {
               start: 23,
-              to: 44,
+              end: 44,
             },
             to: {
               malId: 35180,
               start: 1,
-              to: 22,
+              end: 22,
             },
           },
         ],
@@ -103,12 +103,12 @@ describe('GET /v1/rules', () => {
           {
             from: {
               start: 14,
-              to: 26,
+              end: 26,
             },
             to: {
               malId: 33253,
               start: 1,
-              to: 13,
+              end: 13,
             },
           },
         ],
@@ -127,12 +127,12 @@ describe('GET /v1/rules', () => {
           {
             from: {
               start: 52,
-              to: 102,
+              end: 102,
             },
             to: {
               malId: 38804,
               start: 1,
-              to: 51,
+              end: 51,
             },
           },
           {
