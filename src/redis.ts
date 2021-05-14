@@ -5,4 +5,8 @@ const redisClient = new Redis({
   port: 6379,
 });
 
+if (process.env.NODE_ENV === 'test') {
+  redisClient.quit();
+}
+
 export default redisClient;

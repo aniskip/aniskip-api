@@ -5,7 +5,6 @@ import { skipTimesInsertNoDefaultsQuery } from '../../../src/db/queries';
 import { errorHandler, notFoundError } from '../../../src/middlewares';
 import skipTimes from '../../../src/routes/skip_times';
 import db from '../../../src/db';
-import redisClient from '../../../src/redis';
 
 const app = express();
 
@@ -24,7 +23,6 @@ app.use(errorHandler);
 
 afterAll(() => {
   db.close();
-  redisClient.quit();
 });
 
 describe('GET /v1', () => {

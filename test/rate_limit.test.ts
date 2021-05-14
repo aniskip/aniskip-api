@@ -25,8 +25,6 @@ app.get(
 app.use(notFoundError);
 app.use(errorHandler);
 
-afterAll(() => redisClient.quit());
-
 describe('GET /v1', () => {
   it('responds with hello world', (done) => {
     request(app)

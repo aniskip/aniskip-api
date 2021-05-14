@@ -1,8 +1,10 @@
 import express, { Request, Response } from 'express';
 import { param } from 'express-validator';
+import rateLimit from 'express-rate-limit';
 
 import { validationHandler } from '../../middlewares';
 import rules from './rules';
+import { getStore, handler } from '../../rate_limit';
 
 const router = express.Router();
 
@@ -70,6 +72,12 @@ const router = express.Router();
  */
 router.get(
   '/:anime_id',
+  rateLimit({
+    windowMs: 1000 * 60, // 1 min
+    max: 120,
+    store: getStore('get-rule:', 60),
+    handler,
+  }),
   param('anime_id').isInt({ min: 1 }),
   validationHandler,
   (req: Request, res: Response) => {
