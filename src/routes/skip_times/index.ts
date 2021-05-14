@@ -1,6 +1,6 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
-import { query, param, validationResult, body } from 'express-validator';
+import { query, param, body } from 'express-validator';
 
 import db from '../../db';
 import {
@@ -15,6 +15,7 @@ import {
 } from '../../types/db/db_types';
 import { getStore, handler } from '../../rate_limit';
 import autoVote from './auto_vote';
+import { validationHandler } from '../../middlewares';
 
 const router = express.Router();
 
@@ -68,20 +69,15 @@ router.post(
   }),
   param('skip_id').isUUID(),
   body('vote_type').isIn(['upvote', 'downvote']),
-  async (req: Request, res: Response, next: CallableFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400);
-      return res.json({ error: errors.array() });
-    }
-
+  validationHandler,
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { skip_id } = req.params;
-      const { vote_type } = req.body;
+      const { skip_id: skipId } = req.params;
+      const { vote_type: voteType } = req.body;
 
       const { rowCount } = await db.query(
-        vote_type === 'upvote' ? skipTimesUpvoteQuery : skipTimesDownvoteQuery,
-        [skip_id]
+        voteType === 'upvote' ? skipTimesUpvoteQuery : skipTimesDownvoteQuery,
+        [skipId]
       );
 
       if (rowCount === 0) {
@@ -89,7 +85,7 @@ router.post(
         return res.json({
           error: [
             {
-              value: skip_id,
+              value: skipId,
               msg: 'Skip time not found',
               param: 'skip_id',
               location: 'params',
@@ -211,14 +207,9 @@ router.get(
 
       return true;
     }),
-  async (req: Request, res: Response, next: CallableFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400);
-      return res.json({ error: errors.array() });
-    }
-
-    const { anime_id, episode_number } = req.params;
+  validationHandler,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { anime_id: animeId, episode_number: episodeNumber } = req.params;
     const types = req.query.types as string[];
     try {
       const skipTimes = (
@@ -226,18 +217,23 @@ router.get(
           types.map(async (type) => {
             const { rows } = await db.query<SkipTimesDatabaseType>(
               skipTimesSelectQuery,
-              [anime_id, episode_number, type]
+              [animeId, episodeNumber, type]
             );
             if (rows.length > 0) {
-              const { skip_id, start_time, end_time, episode_length } = rows[0];
+              const {
+                skip_id: skipId,
+                start_time: startTime,
+                end_time: endTime,
+                episode_length: episodeLength,
+              } = rows[0];
               return {
                 interval: {
-                  start_time,
-                  end_time,
+                  start_time: startTime,
+                  end_time: endTime,
                 },
                 skip_type: type,
-                skip_id,
-                episode_length,
+                skip_id: skipId,
+                episode_length: episodeLength,
               };
             }
 
@@ -339,43 +335,38 @@ router.post(
   body('end_time').isFloat({ min: 0 }),
   body('episode_length').isFloat({ min: 0 }),
   body('submitter_id').isUUID(),
-  async (req: Request, res: Response, next: CallableFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400);
-      return res.json({ error: errors.array() });
-    }
-
+  validationHandler,
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { anime_id, episode_number } = req.params;
+      const { anime_id: animeId, episode_number: episodeNumber } = req.params;
       const {
-        provider_name,
-        skip_type,
-        start_time,
-        end_time,
-        episode_length,
-        submitter_id,
+        provider_name: providerName,
+        skip_type: skipType,
+        start_time: startTime,
+        end_time: endTime,
+        episode_length: episodeLength,
+        submitter_id: submittedId,
       } = req.body;
 
       const votes = await autoVote(
-        start_time,
-        end_time,
-        episode_length,
-        submitter_id
+        startTime,
+        endTime,
+        episodeLength,
+        submittedId
       );
 
       const { rows } = await db.query<SkipTimesInsertQueryResponseType>(
         skipTimesInsertQuery,
         [
-          anime_id,
-          episode_number,
-          provider_name,
-          skip_type,
+          animeId,
+          episodeNumber,
+          providerName,
+          skipType,
           votes,
-          start_time,
-          end_time,
-          episode_length,
-          submitter_id,
+          startTime,
+          endTime,
+          episodeLength,
+          submittedId,
         ]
       );
 

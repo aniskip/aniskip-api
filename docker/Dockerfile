@@ -27,6 +27,7 @@ FROM node:15-alpine
 WORKDIR /usr/src/app
 
 COPY package.json .pnp.js ./
+COPY deps ./dist/deps
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=install /usr/src/app/.yarn ./.yarn
 

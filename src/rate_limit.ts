@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import RedisStore from 'rate-limit-redis';
 
 import redisClient from './redis';
@@ -18,11 +18,7 @@ export const getStore = (prefix?: string, expiry?: number) =>
  * @param res Response object
  * @param next Next middleware function
  */
-export const handler = (
-  _req: Request,
-  res: Response,
-  next: CallableFunction
-) => {
+export const handler = (_req: Request, res: Response, next: NextFunction) => {
   const error = new Error('Too many requests, please try again later');
 
   res.status(429);

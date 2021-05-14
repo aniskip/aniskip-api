@@ -1,9 +1,23 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
+
+export const validationHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400);
+    res.json({ error: errors.array() });
+  }
+  next();
+};
 
 export const notFoundError = (
   req: Request,
   res: Response,
-  next: CallableFunction
+  next: NextFunction
 ) => {
   res.status(404);
   const error = new Error(`Not found '${req.originalUrl}'`);
@@ -14,7 +28,7 @@ export const errorHandler = (
   error: Error,
   _req: Request,
   res: Response,
-  _next: CallableFunction
+  _next: NextFunction
 ) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);

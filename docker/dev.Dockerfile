@@ -16,6 +16,7 @@ WORKDIR /usr/src/app
 
 COPY package.json tsconfig.json yarn.lock .pnp.js ./
 COPY src ./src
+COPY deps ./deps
 COPY --from=install /usr/src/app/.yarn ./.yarn
 
 RUN yarn set version berry

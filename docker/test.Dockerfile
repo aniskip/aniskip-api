@@ -16,6 +16,7 @@ WORKDIR /usr/src/app
 
 COPY package.json tsconfig.json yarn.lock .pnp.js jest.config.js ./
 COPY src ./src
+COPY deps ./deps
 COPY test ./test
 COPY --from=install /usr/src/app/.yarn ./.yarn
 
