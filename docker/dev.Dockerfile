@@ -15,8 +15,8 @@ FROM node:15-alpine
 WORKDIR /usr/src/app
 
 COPY package.json tsconfig.json yarn.lock .pnp.js ./
+COPY deps ./deps/anime-relations/anime-relations.txt
 COPY src ./src
-COPY deps ./deps
 COPY --from=install /usr/src/app/.yarn ./.yarn
 
 RUN yarn set version berry
