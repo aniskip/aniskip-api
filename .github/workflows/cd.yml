@@ -30,8 +30,10 @@ jobs:
         working-directory: ./docker
 
     steps:
-      - name: checkout repo
+      - name: checkout repo and submodules
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: docker login
         run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_TOKEN }}
