@@ -1,10 +1,10 @@
 import express from 'express';
 import request from 'supertest';
-import { skipTimesInsertNoDefaultsQuery } from '../../src/db/db_queries';
-import { errorHandler, notFoundError } from '../../src/middlewares';
-import skipTimes from '../../src/routes/skip_times';
-import db from '../../src/db';
-import redisClient from '../../src/redis';
+
+import { skipTimesInsertNoDefaultsQuery } from '../../../src/db/queries';
+import { errorHandler, notFoundError } from '../../../src/middlewares';
+import skipTimes from '../../../src/routes/skip_times';
+import db from '../../../src/db';
 
 const app = express();
 
@@ -13,6 +13,7 @@ app.use(express.json());
 const router = express.Router();
 
 router.use('/skip-times', skipTimes);
+
 app.use('/v1', router);
 app.get('/test-internal-server-error', () => {
   throw new Error('internal server error');
@@ -22,7 +23,6 @@ app.use(errorHandler);
 
 afterAll(() => {
   db.close();
-  redisClient.quit();
 });
 
 describe('GET /v1', () => {

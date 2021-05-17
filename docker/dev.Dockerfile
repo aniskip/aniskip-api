@@ -15,6 +15,7 @@ FROM node:15-alpine
 WORKDIR /usr/src/app
 
 COPY package.json tsconfig.json yarn.lock .pnp.js ./
+COPY deps/anime-relations/anime-relations.txt ./deps/anime-relations/anime-relations.txt
 COPY src ./src
 COPY --from=install /usr/src/app/.yarn ./.yarn
 

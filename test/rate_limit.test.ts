@@ -3,7 +3,6 @@ import rateLimit from 'express-rate-limit';
 import request from 'supertest';
 import { errorHandler, notFoundError } from '../src/middlewares';
 import { getStore, handler } from '../src/rate_limit';
-import redisClient from '../src/redis';
 
 const app = express();
 
@@ -24,8 +23,6 @@ app.get(
 
 app.use(notFoundError);
 app.use(errorHandler);
-
-afterAll(() => redisClient.quit());
 
 describe('GET /v1', () => {
   it('responds with hello world', (done) => {

@@ -30,8 +30,10 @@ jobs:
         working-directory: ./docker
 
     steps:
-      - name: checkout repo
+      - name: checkout repo and submodules
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: docker login
         run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_TOKEN }}
@@ -62,7 +64,7 @@ jobs:
 
       - name: docker push with latest tag
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
-        
+
       - name: deploy to production
         uses: appleboy/ssh-action@master
         with:
@@ -72,6 +74,8 @@ jobs:
           port: ${{ env.PORT }}
           script: |
             cd ${{ env.REPO_PATH }}/docker
+            git checkout main
+            git pull
             ./stop.sh
             docker-compose pull
             ./start.sh prod

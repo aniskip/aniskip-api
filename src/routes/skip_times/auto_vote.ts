@@ -1,6 +1,6 @@
-import db from './db';
-import { getAverageOfLastTenSkipTimesVoteQuery } from './db/db_queries';
-import { EpisodeType } from './types/db/episode_type';
+import db from '../../db';
+import { getAverageOfLastTenSkipTimesVoteQuery } from '../../db/queries';
+import { EpisodeType } from '../../types/db/episode_type';
 
 /**
  * Returns the type of episode according to specified intervals
