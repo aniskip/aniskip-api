@@ -40,12 +40,12 @@ jobs:
           --name db
 
     steps:
-      - name: checkout repo and submodules
+      - name: Checkout repo and submodules
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
-      - name: initialise database
+      - name: Initialise database
         run: docker exec -i db psql -U ${{ env.POSTGRES_USER }} < ./sql_scripts/init.sql
 
       # run tests
