@@ -30,42 +30,42 @@ jobs:
         working-directory: ./docker
 
     steps:
-      - name: checkout repo and submodules
+      - name: Checkout repo and submodules
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
-      - name: docker login
+      - name: Docker login
         run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_TOKEN }}
 
-      - name: docker pull latest images
+      - name: Docker pull latest images
         run: docker-compose pull
 
-      - name: docker build
+      - name: Docker build
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
 
-      - name: determine api tag by version
+      - name: Determine api tag by version
         if: env.API_TAG == ''
         run: echo "API_TAG=$(jq -r .version ../package.json)" | tee -a $GITHUB_ENV
 
-      - name: determine db tag by version
+      - name: Determine db tag by version
         if: env.DB_TAG == ''
         run: echo "DB_TAG=$(grep -oP '(\d+\.){2}\d+' ../sql_scripts/init.sql)" | tee -a $GITHUB_ENV
 
-      - name: docker tag
+      - name: Docker tag
         run: |
           docker tag ${{ env.DOCKER_USERNAME }}/aniskip-database:latest ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
           docker tag ${{ env.DOCKER_USERNAME }}/aniskip-api:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
 
-      - name: docker push with tag
+      - name: Docker push with tag
         run: |
           docker push ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
           docker push ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
 
-      - name: docker push with latest tag
-        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
+      - name: Docker push with latest tag
+        run: Docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
 
-      - name: deploy to production
+      - name: Deploy to production
         uses: appleboy/ssh-action@master
         with:
           host: ${{ env.HOST }}
