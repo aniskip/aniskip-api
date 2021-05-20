@@ -63,7 +63,7 @@ jobs:
           docker push ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
 
       - name: Docker push with latest tag
-        run: Docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
+        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
 
       - name: Deploy to production
         uses: appleboy/ssh-action@master
