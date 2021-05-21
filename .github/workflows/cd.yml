@@ -46,11 +46,11 @@ jobs:
 
       - name: Determine api tag by version
         if: env.API_TAG == ''
-        run: echo "API_TAG=$(jq -r .version ../package.json)" | tee -a $GITHUB_ENV
+        run: echo "API_TAG=$(jq -r .version ../package.json)" >> $GITHUB_ENV
 
       - name: Determine db tag by version
         if: env.DB_TAG == ''
-        run: echo "DB_TAG=$(grep -oP '(\d+\.){2}\d+' ../sql_scripts/init.sql)" | tee -a $GITHUB_ENV
+        run: echo "DB_TAG=$(grep -oP '(\d+\.){2}\d+' ../sql_scripts/init.sql)" >> $GITHUB_ENV
 
       - name: Docker tag
         run: |
@@ -63,7 +63,7 @@ jobs:
           docker push ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
 
       - name: Docker push with latest tag
-        run: Docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
+        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
 
       - name: Deploy to production
         uses: appleboy/ssh-action@master
