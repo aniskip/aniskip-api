@@ -9,9 +9,10 @@ export const validationHandler = (
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400);
-    res.json({ error: errors.array() });
+    return res.json({ error: errors.array() });
   }
-  next();
+
+  return next();
 };
 
 export const notFoundError = (
