@@ -1,5 +1,5 @@
 # Install dependencies stage
-FROM node:15-alpine as install
+FROM node:16-alpine as install
 
 WORKDIR /usr/src/app
 
@@ -10,7 +10,7 @@ RUN yarn set version berry
 RUN yarn install
 
 # Run stage
-FROM node:15-alpine
+FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
