@@ -68,6 +68,23 @@ describe('GET /v1/rules', () => {
       .expect(200, done);
   });
 
+  it('responds with a single episode rule', (done) => {
+    request(app)
+      .get('/v1/rules/18153')
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .expect({
+        found: true,
+        rules: [
+          {
+            from: { start: 0, end: 0 },
+            to: { malId: 23385, start: 1, end: 1 },
+          },
+        ],
+      })
+      .expect(200, done);
+  });
+
   it('responds with range rule', (done) => {
     request(app)
       .get('/v1/rules/31646')
