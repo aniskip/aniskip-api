@@ -43,8 +43,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/ioredis", "npm:4.26.4"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/morgan", "npm:1.9.2"],
-            ["@types/node", "npm:14.17.0"],
-            ["@types/pg", "npm:7.14.11"],
+            ["@types/node", "npm:15.6.0"],
+            ["@types/pg", "npm:8.6.0"],
             ["@types/rate-limit-redis", "npm:1.7.1"],
             ["@types/supertest", "npm:2.0.11"],
             ["@types/swagger-jsdoc", "npm:6.0.0"],
@@ -70,7 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "npm:26.6.3"],
             ["morgan", "npm:1.10.0"],
             ["nodemon", "npm:2.0.7"],
-            ["openapi-types", "npm:8.0.0"],
+            ["openapi-types", "npm:9.0.0"],
             ["pg", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:8.6.0"],
             ["prettier", "npm:2.3.0"],
             ["rate-limit-redis", "npm:2.1.0"],
@@ -1329,17 +1329,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/node", [
-        ["npm:14.17.0", {
-          "packageLocation": "./.yarn/cache/@types-node-npm-14.17.0-2942ba859f-f437147b39.zip/node_modules/@types/node/",
-          "packageDependencies": [
-            ["@types/node", "npm:14.17.0"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:15.0.0", {
           "packageLocation": "./.yarn/cache/@types-node-npm-15.0.0-b4dfeecb83-9d3ced65fe.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:15.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:15.6.0", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-15.6.0-2f2269856c-54515155db.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:15.6.0"]
           ],
           "linkType": "HARD",
         }]
@@ -1354,10 +1354,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/pg", [
-        ["npm:7.14.11", {
-          "packageLocation": "./.yarn/cache/@types-pg-npm-7.14.11-ece1b5ae53-215f6e6441.zip/node_modules/@types/pg/",
+        ["npm:8.6.0", {
+          "packageLocation": "./.yarn/cache/@types-pg-npm-8.6.0-8a44e030dd-7595688124.zip/node_modules/@types/pg/",
           "packageDependencies": [
-            ["@types/pg", "npm:7.14.11"],
+            ["@types/pg", "npm:8.6.0"],
             ["@types/node", "npm:15.0.0"],
             ["pg-protocol", "npm:1.5.0"],
             ["pg-types", "npm:2.2.0"]
@@ -7543,10 +7543,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["openapi-types", [
-        ["npm:8.0.0", {
-          "packageLocation": "./.yarn/cache/openapi-types-npm-8.0.0-16c5ffa743-ae34484177.zip/node_modules/openapi-types/",
+        ["npm:9.0.0", {
+          "packageLocation": "./.yarn/cache/openapi-types-npm-9.0.0-05ef4d31e7-bb1788371b.zip/node_modules/openapi-types/",
           "packageDependencies": [
-            ["openapi-types", "npm:8.0.0"]
+            ["openapi-types", "npm:9.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -10048,8 +10048,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/ioredis", "npm:4.26.4"],
             ["@types/jest", "npm:26.0.23"],
             ["@types/morgan", "npm:1.9.2"],
-            ["@types/node", "npm:14.17.0"],
-            ["@types/pg", "npm:7.14.11"],
+            ["@types/node", "npm:15.6.0"],
+            ["@types/pg", "npm:8.6.0"],
             ["@types/rate-limit-redis", "npm:1.7.1"],
             ["@types/supertest", "npm:2.0.11"],
             ["@types/swagger-jsdoc", "npm:6.0.0"],
@@ -10075,7 +10075,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "npm:26.6.3"],
             ["morgan", "npm:1.10.0"],
             ["nodemon", "npm:2.0.7"],
-            ["openapi-types", "npm:8.0.0"],
+            ["openapi-types", "npm:9.0.0"],
             ["pg", "virtual:27fa8f2892cc83bdc4ae135b3f69eefbea3d50c9d153ecf5be9695d77335961f111d4a76899efa5cefdeaf08dedd71f3e3f7051278ba9e68699d55ad9813aa4a#npm:8.6.0"],
             ["prettier", "npm:2.3.0"],
             ["rate-limit-redis", "npm:2.1.0"],

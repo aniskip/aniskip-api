@@ -1002,10 +1002,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:14.17.0":
-  version: 14.17.0
-  resolution: "@types/node@npm:14.17.0"
-  checksum: f437147b39e04b23272eae604ec301b5a91956d386f96a2a796efa856d813df116c1afea511b2c23d908c0456c479bad32862aea6d6f0eaffcc1056603b98e64
+"@types/node@npm:15.6.0":
+  version: 15.6.0
+  resolution: "@types/node@npm:15.6.0"
+  checksum: 54515155db4f5d18e36725dafa477e0cee664b5a807560a026692c2c2251034675d9ef55a15bc44b7694a4a2e4866b9ca063872915b34a0564ab955b0da101eb
   languageName: node
   linkType: hard
 
@@ -1016,14 +1016,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg@npm:^7.14.11":
-  version: 7.14.11
-  resolution: "@types/pg@npm:7.14.11"
+"@types/pg@npm:^8.6.0":
+  version: 8.6.0
+  resolution: "@types/pg@npm:8.6.0"
   dependencies:
     "@types/node": "*"
-    pg-protocol: ^1.2.0
+    pg-protocol: "*"
     pg-types: ^2.2.0
-  checksum: 215f6e64416db9582fc502edcc3700d5ff542a96cb6f764d558a8e8610d24ef8fccd48d849110021a28c94ad7def57ba212985d6fb681db7f5af59ec8f32f5fb
+  checksum: 759568812434c2155126f8cc8c344f51319ad46e26d58b13b1952ecd60c1372f41ced99d51c0e1582190d3b05453e52326496f6b022d65acee332ab1ff8f4bc2
   languageName: node
   linkType: hard
 
@@ -6325,10 +6325,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openapi-types@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "openapi-types@npm:8.0.0"
-  checksum: ae344841778ce034ba41197ef60f7a15ff6a4fd3b7ec07aea879584cf9ca57f8e3183d0ca1f3362ed0b27d22b24b74945888b96ed7c62311af3861fb7cd74e3f
+"openapi-types@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "openapi-types@npm:9.0.0"
+  checksum: bb1788371b043e0f48a28fdaf75e2918750d457859caf22fda6575dc25b53bf37468799cd6c6d76c6c15622795ba1b9604d66fe6e7290c9a268d40e6d32769d7
   languageName: node
   linkType: hard
 
@@ -6613,7 +6613,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-protocol@npm:^1.2.0, pg-protocol@npm:^1.5.0":
+"pg-protocol@npm:*, pg-protocol@npm:^1.5.0":
   version: 1.5.0
   resolution: "pg-protocol@npm:1.5.0"
   checksum: 270e72d38aaed3ee23ec35802899c707b91e176f94373ce571c45b604ee9c5fbe60f629bec0a05bb607d23d0c016c23e4e318ec3c391f83467f705284190970c
@@ -8499,8 +8499,8 @@ resolve@^2.0.0-next.3:
     "@types/ioredis": ^4.26.4
     "@types/jest": ^26.0.23
     "@types/morgan": ^1.9.2
-    "@types/node": 14.17.0
-    "@types/pg": ^7.14.11
+    "@types/node": 15.6.0
+    "@types/pg": ^8.6.0
     "@types/rate-limit-redis": ^1.7.1
     "@types/supertest": ^2.0.11
     "@types/swagger-jsdoc": ^6.0.0
@@ -8526,7 +8526,7 @@ resolve@^2.0.0-next.3:
     jest: ^26.6.3
     morgan: ^1.10.0
     nodemon: ^2.0.7
-    openapi-types: ^8.0.0
+    openapi-types: ^9.0.0
     pg: ^8.6.0
     prettier: ^2.3.0
     rate-limit-redis: ^2.1.0
