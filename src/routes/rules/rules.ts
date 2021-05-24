@@ -95,18 +95,18 @@ class Rules {
       let end: number | null;
 
       if (matches[secondIndex]) {
-        if (matches[secondIndex] !== '?') {
-          end = parseInt(matches[secondIndex], 10);
-        } else {
+        if (matches[secondIndex] === '?') {
           // Unknown range end (airing series)
           end = null;
+        } else {
+          end = parseInt(matches[secondIndex], 10);
         }
       } else {
         // Singular episode
         end = start;
       }
 
-      return { start, ...(end && { end }) };
+      return { start, ...(end !== null && { end }) };
     };
 
     const fromMalId = parseInt(matches[1], 10);
