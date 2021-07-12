@@ -35,7 +35,7 @@ describe('autovote', () => {
     ]);
   });
 
-  it("detects a bad skip time in a 'full' episode", async (done) => {
+  it("detects a bad skip time in a 'full' episode", async () => {
     const votes = await autoVote(
       0,
       0,
@@ -43,10 +43,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it("detects a bad skip time in a 'full' episode", async (done) => {
+  it("detects a bad skip time in a 'full' episode", async () => {
     const votes = await autoVote(
       1,
       1.5,
@@ -54,10 +53,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it("detects a bad skip time in a 'full' episode", async (done) => {
+  it("detects a bad skip time in a 'full' episode", async () => {
     const votes = await autoVote(
       0,
       1000,
@@ -65,10 +63,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it("detects a bad skip time in a 'full' episode", async (done) => {
+  it("detects a bad skip time in a 'full' episode", async () => {
     const votes = await autoVote(
       0,
       1440,
@@ -76,10 +73,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it('detects a user with good reputation', async (done) => {
+  it('detects a user with good reputation', async () => {
     const votes = await autoVote(
       130,
       210,
@@ -87,10 +83,9 @@ describe('autovote', () => {
       'e93e3787-3071-4d1f-833f-a78755702f6b'
     );
     expect(votes).toBe(1);
-    done();
   });
 
-  it("detects a normal skip time in a 'full' episode", async (done) => {
+  it("detects a normal skip time in a 'full' episode", async () => {
     const votes = await autoVote(
       130,
       210,
@@ -98,10 +93,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(0);
-    done();
   });
 
-  it("detects a bad skip time in a 'short' episode", async (done) => {
+  it("detects a bad skip time in a 'short' episode", async () => {
     const votes = await autoVote(
       0,
       55,
@@ -109,10 +103,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it("detects a normal skip time in a 'short' episode", async (done) => {
+  it("detects a normal skip time in a 'short' episode", async () => {
     const votes = await autoVote(
       30,
       55,
@@ -120,10 +113,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(0);
-    done();
   });
 
-  it("detects a bad skip time in a 'half' episode", async (done) => {
+  it("detects a bad skip time in a 'half' episode", async () => {
     const votes = await autoVote(
       0,
       240,
@@ -131,10 +123,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it("detects a normal skip time in a 'half' episode", async (done) => {
+  it("detects a normal skip time in a 'half' episode", async () => {
     const votes = await autoVote(
       100,
       160,
@@ -142,10 +133,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(0);
-    done();
   });
 
-  it("detects a bad skip time in a 'movie' episode", async (done) => {
+  it("detects a bad skip time in a 'movie' episode", async () => {
     const votes = await autoVote(
       0,
       960,
@@ -153,10 +143,9 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(-10);
-    done();
   });
 
-  it("detects a normal skip time in a 'movie' episode", async (done) => {
+  it("detects a normal skip time in a 'movie' episode", async () => {
     const votes = await autoVote(
       0,
       420,
@@ -164,6 +153,5 @@ describe('autovote', () => {
       '17ca2744-c222-4856-bc75-450498b1699e'
     );
     expect(votes).toBe(0);
-    done();
   });
 });

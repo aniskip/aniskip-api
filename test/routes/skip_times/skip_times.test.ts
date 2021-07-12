@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import request from 'supertest';
 
 import { skipTimesInsertNoDefaultsQuery } from '../../../src/db/queries';
@@ -8,7 +8,7 @@ import db from '../../../src/db';
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json() as RequestHandler);
 
 const router = express.Router();
 
