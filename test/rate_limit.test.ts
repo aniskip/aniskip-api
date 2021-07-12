@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import rateLimit from 'express-rate-limit';
 import request from 'supertest';
 import { errorHandler, notFoundError } from '../src/middlewares';
@@ -6,7 +6,7 @@ import { getStore, handler } from '../src/rate_limit';
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json() as RequestHandler);
 
 app.get(
   '/v1',

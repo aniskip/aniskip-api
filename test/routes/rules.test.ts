@@ -1,11 +1,11 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import request from 'supertest';
 
 import rules from '../../src/routes/rules';
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json() as RequestHandler);
 
 const router = express.Router();
 
