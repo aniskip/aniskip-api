@@ -1,4 +1,4 @@
-import express, { Response, Request } from 'express';
+import express, { Response, Request, RequestHandler } from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -8,14 +8,14 @@ import routes from './routes/index';
 const app = express();
 
 app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
-app.use(morgan('common'));
-app.use(helmet());
+app.use(morgan('common') as RequestHandler);
+app.use(helmet() as RequestHandler);
 app.use(
   cors({
     origin: '*',
   })
 );
-app.use(express.json());
+app.use(express.json() as RequestHandler);
 
 app.get('/', (_: Request, res: Response) => {
   res.status(200);
