@@ -726,9 +726,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "@eslint/eslintrc@npm:0.4.2"
+"@eslint/eslintrc@npm:^0.4.3":
+  version: 0.4.3
+  resolution: "@eslint/eslintrc@npm:0.4.3"
   dependencies:
     ajv: ^6.12.4
     debug: ^4.1.1
@@ -739,7 +739,7 @@ __metadata:
     js-yaml: ^3.13.1
     minimatch: ^3.0.4
     strip-json-comments: ^3.1.1
-  checksum: 60b66ce4257bf5c36a920dea83a056102fef746e7afd7100a6fe245a126ff455f67f4948e75d28ed73090bff8f8556b6a996e74a124911ca703440bc245dbc23
+  checksum: fa916db689fac96c749571f03f931448d896ce07c3da40079082f28621f52defa36cc0c88bfcdd8d19b9981a6549c3a9a3977953db2f6945aba1135bb83a3d35
   languageName: node
   linkType: hard
 
@@ -1257,12 +1257,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ioredis@npm:^4.26.5":
-  version: 4.26.5
-  resolution: "@types/ioredis@npm:4.26.5"
+"@types/ioredis@npm:^4.26.6":
+  version: 4.26.6
+  resolution: "@types/ioredis@npm:4.26.6"
   dependencies:
     "@types/node": "*"
-  checksum: 4324d34e18083557135062ff9298d92a96074a8053be0aea7f0fd82755181b78e96dca54e0efb7f3f007bff55d4f05cd0959425f1b6a845a4d7b08d55d8572e5
+  checksum: caaae6865ea07cd446bf0d38ead414c258bd99172fa707e0f9a9c27d93684b49d0b2d7b0274847505eb6aa0e527723fda446bd85ad224c9064b39ee2432b82b3
   languageName: node
   linkType: hard
 
@@ -1347,10 +1347,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.3.1":
-  version: 16.3.1
-  resolution: "@types/node@npm:16.3.1"
-  checksum: 2021138afd66a9235f4b64e412dd8a8d1199f3d17303c2868ab062a10214ba76b793bf4f59e14c3bf981623e099843855776390b445d840779cb171c2fcb97a9
+"@types/node@npm:16.3.3":
+  version: 16.3.3
+  resolution: "@types/node@npm:16.3.3"
+  checksum: e597a54070815170d8f541c778900023f2522c27be9c56b2b8411d663da1ef5226f9d16ec158c5d9c84ddcc85551e3d02aa68046aa108b4c6085bc7c95a5bebb
   languageName: node
   linkType: hard
 
@@ -3375,12 +3375,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^7.30.0":
-  version: 7.30.0
-  resolution: "eslint@npm:7.30.0"
+"eslint@npm:^7.31.0":
+  version: 7.31.0
+  resolution: "eslint@npm:7.31.0"
   dependencies:
     "@babel/code-frame": 7.12.11
-    "@eslint/eslintrc": ^0.4.2
+    "@eslint/eslintrc": ^0.4.3
     "@humanwhocodes/config-array": ^0.5.0
     ajv: ^6.10.0
     chalk: ^4.0.0
@@ -3421,7 +3421,7 @@ __metadata:
     v8-compile-cache: ^2.0.3
   bin:
     eslint: bin/eslint.js
-  checksum: 028048847e0252d6c972ac612fe37be55822ae2255d10d1bf68255749f7ae1364b2aa538cd95f3bc4d951fc7d36195e46b62fe8d215297ef9a6a8aeb8ca28a90
+  checksum: 38c000372bfafc3715da2d2b6db2a75d4b3b95ac2c20696d774185aa5b6118065a37d0a1292eaa91292e07f86d53a0993cf9bfb838a7a9b935524a125e21af98
   languageName: node
   linkType: hard
 
@@ -7831,10 +7831,10 @@ resolve@^2.0.0-next.3:
     "@types/cors": ^2.8.12
     "@types/express": ^4.17.13
     "@types/express-rate-limit": ^5.1.3
-    "@types/ioredis": ^4.26.5
+    "@types/ioredis": ^4.26.6
     "@types/jest": ^26.0.24
     "@types/morgan": ^1.9.3
-    "@types/node": 16.3.1
+    "@types/node": 16.3.3
     "@types/pg": ^8.6.1
     "@types/rate-limit-redis": ^1.7.2
     "@types/supertest": ^2.0.11
@@ -7844,7 +7844,7 @@ resolve@^2.0.0-next.3:
     "@typescript-eslint/parser": ^4.28.3
     cors: ^2.8.5
     cross-env: ^7.0.3
-    eslint: ^7.30.0
+    eslint: ^7.31.0
     eslint-config-airbnb-typescript: ^12.3.1
     eslint-config-prettier: ^8.3.0
     eslint-import-resolver-node: ^0.3.4
