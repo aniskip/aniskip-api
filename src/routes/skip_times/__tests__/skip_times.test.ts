@@ -1,10 +1,10 @@
 import express, { RequestHandler } from 'express';
 import request from 'supertest';
 
-import { skipTimesInsertNoDefaultsQuery } from '../../../src/db/queries';
-import { errorHandler, notFoundError } from '../../../src/middlewares';
-import skipTimes from '../../../src/routes/skip_times';
-import db from '../../../src/db';
+import { skipTimesInsertNoDefaultsQuery } from '../../../db/queries';
+import { errorHandler, notFoundError } from '../../../middlewares';
+import skipTimes from '../skip_times';
+import db from '../../../db';
 
 const app = express();
 

@@ -17,7 +17,6 @@ WORKDIR /usr/src/app
 COPY package.json tsconfig.json yarn.lock .pnp.js jest.config.js ./
 COPY deps/anime-relations/anime-relations.txt ./deps/anime-relations/anime-relations.txt
 COPY src ./src
-COPY test ./test
 COPY --from=install /usr/src/app/.yarn ./.yarn
 
 RUN yarn set version berry
