@@ -11,9 +11,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=production node dist/src/app.js",
-    "dev": "cross-env NODE_ENV=development nodemon --exec 'yarn ts-node' --legacy-watch src/app.ts",
     "build": "tsc --project ./",
+    "dev": "cross-env NODE_ENV=development nodemon --exec 'yarn ts-node' --legacy-watch src/app.ts",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "start": "cross-env NODE_ENV=production node dist/src/app.js",
     "test": "jest --coverage"
   },
   "dependencies": {
