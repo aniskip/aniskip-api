@@ -5,7 +5,7 @@ export const validationHandler = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Response<any, Record<string, any>> | void => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400);
@@ -19,7 +19,7 @@ export const notFoundError = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   res.status(404);
   const error = new Error(`Not found '${req.originalUrl}'`);
   next(error);
@@ -30,7 +30,7 @@ export const errorHandler = (
   _req: Request,
   res: Response,
   _next: NextFunction
-) => {
+): void => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode);
   res.json({

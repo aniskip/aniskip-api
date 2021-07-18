@@ -19,7 +19,7 @@ class Rules {
   /**
    * Read and parse anime-relations rules
    */
-  async readRelations() {
+  async readRelations(): Promise<void> {
     const animeRelationsFilePath = path.join(
       __dirname,
       '..',
@@ -78,7 +78,7 @@ class Rules {
    * Parses a rule and adds it the rules table
    * @param ruleString Rule as a string to parse
    */
-  parseRule(ruleString: string) {
+  parseRule(ruleString: string): void {
     const idsPattern = /(\d+|[?~])\|(\d+|[?~])\|(\d+|[?~])/;
     const episodePattern = /(\d+|[?])(?:-(\d+|[?]))?/;
     const rulePattern = new RegExp(
@@ -90,7 +90,10 @@ class Rules {
       return;
     }
 
-    const getRange = (firstIndex: number, secondIndex: number) => {
+    const getRange = (
+      firstIndex: number,
+      secondIndex: number
+    ): { start: number; end?: number } => {
       const start = parseInt(matches[firstIndex], 10);
       let end: number | null;
 
@@ -134,7 +137,7 @@ class Rules {
    * Get the rules for the given MAL id
    * @param animeId MAL id of the anime to retrieve the rules of
    */
-  get(animeId: number) {
+  get(animeId: number): RuleType[] {
     return this.rules[animeId] || [];
   }
 }

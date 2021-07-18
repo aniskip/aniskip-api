@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, QueryArrayResult } from 'pg';
 
 const pool = new Pool({
   user: 'postgres',
@@ -11,9 +11,11 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-const query = <T>(queryString: string, params: (string | number)[]) =>
-  pool.query<T>(queryString, params);
+const query = <T>(
+  queryString: string,
+  params: (string | number)[]
+): Promise<QueryArrayResult<any>> => pool.query<T>(queryString, params);
 
-const close = () => pool.end();
+const close = (): Promise<void> => pool.end();
 
 export default { query, close };

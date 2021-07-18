@@ -36,7 +36,7 @@ const autoVote = async (
   endTime: number,
   episodeLength: number,
   submitterId: string
-) => {
+): Promise<number> => {
   const episodeType = getEpisodeType(episodeLength);
   const intervalLength = endTime - startTime;
 
