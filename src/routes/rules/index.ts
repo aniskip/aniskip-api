@@ -73,7 +73,7 @@ const router = express.Router();
 router.get(
   '/:anime_id',
   rateLimit({
-    windowMs: 1000 * 60, // 1 min
+    windowMs: 1000 * 60, // 1 min.
     max: 120,
     store: getStore('get-rule:', 60),
     handler,

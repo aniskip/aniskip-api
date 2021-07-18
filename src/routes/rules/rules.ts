@@ -17,7 +17,7 @@ class Rules {
   }
 
   /**
-   * Read and parse anime-relations rules
+   * Read and parse anime-relations rules.
    */
   async readRelations(): Promise<void> {
     const animeRelationsFilePath = path.join(
@@ -75,8 +75,9 @@ class Rules {
   }
 
   /**
-   * Parses a rule and adds it the rules table
-   * @param ruleString Rule as a string to parse
+   * Parses a rule and adds it the rules table.
+   *
+   * @param ruleString Rule as a string to parse.
    */
   parseRule(ruleString: string): void {
     const idsPattern = /(\d+|[?~])\|(\d+|[?~])\|(\d+|[?~])/;
@@ -99,13 +100,13 @@ class Rules {
 
       if (matches[secondIndex]) {
         if (matches[secondIndex] === '?') {
-          // Unknown range end (airing series)
+          // Unknown range end (airing series).
           end = null;
         } else {
           end = parseInt(matches[secondIndex], 10);
         }
       } else {
-        // Singular episode
+        // Singular episode.
         end = start;
       }
 

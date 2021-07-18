@@ -61,7 +61,7 @@ const router = express.Router();
 router.post(
   '/vote/:skip_id',
   rateLimit({
-    windowMs: 1000 * 60 * 60, // 1 hour
+    windowMs: 1000 * 60 * 60, // 1 hour.
     max: 4,
     store: getStore('post-vote:', 60 * 60),
     keyGenerator: (req) => `${req.ip}${req.params.skip_id}`,
@@ -179,7 +179,7 @@ router.post(
 router.get(
   '/:anime_id/:episode_number',
   rateLimit({
-    windowMs: 1000 * 60, // 1 min
+    windowMs: 1000 * 60, // 1 min.
     max: 120,
     store: getStore('get-skipTime:', 60),
     handler,
@@ -320,7 +320,7 @@ router.get(
 router.post(
   '/:anime_id/:episode_number',
   rateLimit({
-    windowMs: 1000 * 60 * 60 * 24, // 1 day
+    windowMs: 1000 * 60 * 60 * 24, // 1 day.
     max: 10,
     store: getStore('post-skipTime:', 60 * 60 * 24),
     keyGenerator: (req) =>
