@@ -2,17 +2,14 @@ import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import { query, param, body } from 'express-validator';
 
-import db from '../../db';
-import {
+import db, {
   skipTimesInsertQuery,
   skipTimesSelectQuery,
   skipTimesUpvoteQuery,
   skipTimesDownvoteQuery,
-} from '../../db/queries';
-import {
   SkipTimesDatabaseType,
-  SkipTimesInsertQueryResponseType,
-} from '../../types/db/db_types';
+  SkipTimesInsertQueryResponse,
+} from '../../db';
 import { getStore, handler } from '../../rate_limit';
 import autoVote from './auto_vote';
 import { validationHandler } from '../../middlewares';
@@ -355,7 +352,7 @@ router.post(
         submittedId
       );
 
-      const { rows } = await db.query<SkipTimesInsertQueryResponseType>(
+      const { rows } = await db.query<SkipTimesInsertQueryResponse>(
         skipTimesInsertQuery,
         [
           animeId,
