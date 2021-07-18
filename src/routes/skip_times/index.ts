@@ -7,11 +7,11 @@ import db, {
   skipTimesSelectQuery,
   skipTimesUpvoteQuery,
   skipTimesDownvoteQuery,
-  SkipTimesDatabaseType,
+  DatabaseSkipTime,
   SkipTimesInsertQueryResponse,
 } from '../../db';
 import { getStore, handler } from '../../rate_limit';
-import autoVote from './auto_vote';
+import { autoVote } from '../../utils/auto_vote';
 import { validationHandler } from '../../middlewares';
 
 const router = express.Router();
@@ -212,7 +212,7 @@ router.get(
       const skipTimes = (
         await Promise.all(
           types.map(async (type) => {
-            const { rows } = await db.query<SkipTimesDatabaseType>(
+            const { rows } = await db.query<DatabaseSkipTime>(
               skipTimesSelectQuery,
               [animeId, episodeNumber, type]
             );

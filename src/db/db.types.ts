@@ -1,4 +1,4 @@
-export type SkipTimesDatabaseType = {
+export type DatabaseSkipTime = {
   skip_id: string;
   anime_id: number;
   episode_number: number;

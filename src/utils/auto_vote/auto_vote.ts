@@ -1,6 +1,6 @@
 import db from '../../db';
 import { getAverageOfLastTenSkipTimesVoteQuery } from '../../db/queries';
-import { EpisodeType } from '../../types/db/episode_type';
+import { EpisodeType } from './auto_vote.types';
 
 /**
  * Returns the type of episode according to specified intervals.
@@ -33,7 +33,7 @@ const getEpisodeType = (episodeLength: number): EpisodeType => {
  * @param endTime End time of the skip interval.
  * @param episodeLength Length of the episode.
  */
-const autoVote = async (
+export const autoVote = async (
   startTime: number,
   endTime: number,
   episodeLength: number,
@@ -85,5 +85,3 @@ const autoVote = async (
 
   return 0;
 };
-
-export default autoVote;

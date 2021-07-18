@@ -1,6 +1,6 @@
-import autoVote from '../../../src/routes/skip_times/auto_vote';
-import db from '../../../src/db';
-import { skipTimesInsertNoDefaultsQuery } from '../../../src/db/queries';
+import { autoVote } from '../auto_vote';
+import db from '../../../db';
+import { skipTimesInsertNoDefaultsQuery } from '../../../db/queries';
 
 afterAll(() => db.close());
 
