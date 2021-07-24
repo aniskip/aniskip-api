@@ -1,6 +1,5 @@
 import express, { RequestHandler } from 'express';
 import request from 'supertest';
-
 import rules from '../rules';
 
 const app = express();

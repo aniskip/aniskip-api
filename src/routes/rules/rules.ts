@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import { param } from 'express-validator';
 import rateLimit from 'express-rate-limit';
-
 import { validationHandler } from '../../middlewares';
 import { rules } from '../../utils/relation_rules';
 import { getStore, handler } from '../../rate_limit';

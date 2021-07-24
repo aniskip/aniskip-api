@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import RedisStore from 'rate-limit-redis';
-
 import redisClient from './redis';
 
 /**

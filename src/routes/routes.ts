@@ -1,5 +1,4 @@
 import express from 'express';
-
 import apiDocs from './api_docs';
 import rules from './rules';
 import skipTimes from './skip_times';

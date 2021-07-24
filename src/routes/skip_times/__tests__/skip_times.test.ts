@@ -1,6 +1,5 @@
 import express, { RequestHandler } from 'express';
 import request from 'supertest';
-
 import { skipTimesInsertNoDefaultsQuery } from '../../../db/queries';
 import { errorHandler, notFoundError } from '../../../middlewares';
 import skipTimes from '../skip_times';

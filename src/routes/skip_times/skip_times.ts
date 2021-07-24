@@ -1,7 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import { query, param, body } from 'express-validator';
-
 import db, {
   skipTimesInsertQuery,
   skipTimesSelectQuery,

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-
 import { Rule, SectionType } from './relation_rules.types';
 
 class Rules {
