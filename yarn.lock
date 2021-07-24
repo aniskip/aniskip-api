@@ -1347,10 +1347,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.4.1":
-  version: 16.4.1
-  resolution: "@types/node@npm:16.4.1"
-  checksum: 8b9fda74322631febbf084e3c7a26b799a3a1b8f45d6bbaedfb8943c7b3eb743aa2e41c04de6f5f87f63c99451f3ed0b37822614cbd42ed55c8c9c8f9462d231
+"@types/node@npm:16.4.2":
+  version: 16.4.2
+  resolution: "@types/node@npm:16.4.2"
+  checksum: cc67dcab59476bc784d6e72d36de7b380bff38d897f77308a89030bad1703bbd10050d5c4d2233ea080b940ed96990e1f167a9efccc570bdff4add1e75cc047a
   languageName: node
   linkType: hard
 
@@ -7844,7 +7844,7 @@ resolve@^2.0.0-next.3:
     "@types/ioredis": ^4.26.6
     "@types/jest": ^26.0.24
     "@types/morgan": ^1.9.3
-    "@types/node": 16.4.1
+    "@types/node": 16.4.2
     "@types/pg": ^8.6.1
     "@types/rate-limit-redis": ^1.7.2
     "@types/supertest": ^2.0.11
