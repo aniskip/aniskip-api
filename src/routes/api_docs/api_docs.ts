@@ -1,7 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import packageJson from '../../package.json';
+import packageJson from '../../../package.json';
 
 const servers = [];
 const apis = [];

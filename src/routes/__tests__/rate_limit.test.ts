@@ -1,8 +1,8 @@
 import express, { RequestHandler } from 'express';
 import rateLimit from 'express-rate-limit';
 import request from 'supertest';
-import { errorHandler, notFoundError } from '../src/middlewares';
-import { getStore, handler } from '../src/rate_limit';
+import { errorHandler, notFoundError } from '../../middlewares';
+import { getStore, handler } from '../../rate_limit';
 
 const app = express();
 
