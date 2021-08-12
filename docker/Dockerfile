@@ -25,8 +25,8 @@ FROM node:16-alpine as install-prod
 
 WORKDIR /usr/src/app
 
-COPY .yarn ./.yarn
 COPY package.json yarn.lock .yarnrc.yml ./
+COPY --from=install-dev /usr/src/app/.yarn ./.yarn
 
 RUN yarn workspaces focus --production
 
