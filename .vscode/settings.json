@@ -1,8 +1,10 @@
 {
   "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "search.exclude": {
     "**/.yarn": true,
     "**/.pnp.*": true
   },
+  "files.eol": "\n"
 }
