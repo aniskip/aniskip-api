@@ -12,10 +12,11 @@
   "private": true,
   "scripts": {
     "build": "tsc --project ./",
+    "clean": "rimraf dist",
     "dev": "cross-env NODE_ENV=development nodemon --exec 'yarn ts-node' --legacy-watch src/main.ts",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "start": "cross-env NODE_ENV=production node dist/main.js",
-    "test": "jest --coverage"
+    "test": "jest --coverage ./src"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.6",
@@ -43,6 +44,7 @@
     "jest": "^27.0.6",
     "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
+    "rimraf": "^3.0.2",
     "supertest": "^6.1.6",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
