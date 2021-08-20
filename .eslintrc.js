@@ -25,7 +25,6 @@ module.exports = {
     sourceType: 'module',
     createDefaultProgram: true,
   },
-  root: true,
   env: {
     node: true,
     jest: true,
