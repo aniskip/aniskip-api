@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SkipTimesModule } from './skip-times/skip-times.module';
+import { poolConfig, PostgresModule } from './postgres';
+import { SkipTimesModule } from './skip-times';
 
 @Module({
-  imports: [SkipTimesModule],
+  imports: [PostgresModule.forRoot(poolConfig), SkipTimesModule],
 })
 export class AppModule {}
