@@ -16,7 +16,7 @@ export class SkipTimesRepository {
    *
    * @param skipId Skip ID of the skip time to upvote.
    */
-  async upvote(skipId: string): Promise<boolean> {
+  async upvoteSkipTime(skipId: string): Promise<boolean> {
     const { rowCount } = await this.database.query(
       `
       UPDATE
@@ -37,7 +37,7 @@ export class SkipTimesRepository {
    *
    * @param skipId Skip ID of the skip time to downvote.
    */
-  async downvote(skipId: string): Promise<boolean> {
+  async downvoteSkipTime(skipId: string): Promise<boolean> {
     const { rowCount } = await this.database.query(
       `
       UPDATE
@@ -58,7 +58,7 @@ export class SkipTimesRepository {
    *
    * @param skipTime Skip time to create.
    */
-  async create(skipTime: InternalSkipTime): Promise<string> {
+  async createSkipTime(skipTime: InternalSkipTime): Promise<string> {
     const { rows } = await this.database.query<SkipTimesCreateQueryResponse>(
       `
       INSERT INTO skip_times
@@ -93,7 +93,7 @@ export class SkipTimesRepository {
    * @param episodeNumber Episode number to filter with.
    * @param skipType Skip type to filter with.
    */
-  async find(
+  async findSkipTimes(
     animeId: number,
     episodeNumber: number,
     skipType: SkipType

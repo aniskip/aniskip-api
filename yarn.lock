@@ -2107,6 +2107,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"class-transformer@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "class-transformer@npm:0.4.0"
+  checksum: 4057346b512705b1a5a68025b025a5be1ff847d7e0e76e82bbb937f832cf6235c5f66e874487d4bd35d67401411e8a3279c9d36bdd8c800336d5507ee6e94af0
+  languageName: node
+  linkType: hard
+
 "class-validator@npm:^0.13.1":
   version: 0.13.1
   resolution: "class-validator@npm:0.13.1"
@@ -7325,6 +7332,7 @@ __metadata:
     "@types/supertest": ^2.0.11
     "@typescript-eslint/eslint-plugin": ^4.29.2
     "@typescript-eslint/parser": ^4.29.2
+    class-transformer: ^0.4.0
     class-validator: ^0.13.1
     cross-env: ^7.0.3
     eslint: ^7.32.0

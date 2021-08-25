@@ -17,15 +17,17 @@ export class SkipTimesService {
    * @param voteType Voting type, can be upvote or downvote.
    * @param skipId Skip Id to upvote or downvote.
    */
-  async vote(voteType: VoteType, skipId: string): Promise<boolean> {
+  async voteSkipTime(voteType: VoteType, skipId: string): Promise<boolean> {
     let voteSuccessful = false;
 
     switch (voteType) {
       case 'upvote':
-        voteSuccessful = await this.skipTimesRepository.upvote(skipId);
+        voteSuccessful = await this.skipTimesRepository.upvoteSkipTime(skipId);
         break;
       case 'downvote':
-        voteSuccessful = await this.skipTimesRepository.downvote(skipId);
+        voteSuccessful = await this.skipTimesRepository.downvoteSkipTime(
+          skipId
+        );
         break;
       default:
     }
@@ -38,8 +40,8 @@ export class SkipTimesService {
    *
    * @param skipTime Skip time to create.
    */
-  async create(skipTime: InternalSkipTime): Promise<string> {
-    return this.skipTimesRepository.create(skipTime);
+  async createSkipTime(skipTime: InternalSkipTime): Promise<string> {
+    return this.skipTimesRepository.createSkipTime(skipTime);
   }
 
   /**
@@ -49,7 +51,7 @@ export class SkipTimesService {
    * @param episodeNumber Episode number filter.
    * @param skipTypes Skip types to filter, should be unique.
    */
-  async find(
+  async findSkipTimes(
     animeId: number,
     episodeNumber: number,
     skipTypes: SkipType[]
@@ -57,7 +59,7 @@ export class SkipTimesService {
     const result: SkipTime[] = (
       await Promise.all(
         skipTypes.map(async (skipType) => {
-          const skipTimes = await this.skipTimesRepository.find(
+          const skipTimes = await this.skipTimesRepository.findSkipTimes(
             animeId,
             episodeNumber,
             skipType
