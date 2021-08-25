@@ -58,7 +58,9 @@ export class SkipTimesRepository {
    *
    * @param skipTime Skip time to create.
    */
-  async createSkipTime(skipTime: InternalSkipTime): Promise<string> {
+  async createSkipTime(
+    skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date'>
+  ): Promise<string> {
     const { rows } = await this.database.query<SkipTimesCreateQueryResponse>(
       `
       INSERT INTO skip_times

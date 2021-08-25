@@ -9,12 +9,15 @@ import {
 } from '@nestjs/common';
 import {
   GetSkipTimesRequestParams,
+  GetSkipTimesRequestQuery,
   GetSkipTimesResponse,
+  PostCreateSkipTimeRequestBody,
+  PostCreateSkipTimeRequestParams,
+  PostCreateSkipTimeResponse,
   PostVoteRequestBody,
   PostVoteRequestParams,
   PostVoteResponse,
 } from './models';
-import { GetSkipTimesRequestQuery } from './models/get-skip-times/get-skip-times-request-query';
 import { SkipTimesService } from './skip-times.service';
 
 @Controller({
@@ -71,6 +74,35 @@ export class SkipTimesControllerV1 {
     if (!response.found) {
       throw new HttpException(response, response.statusCode);
     }
+
+    return response;
+  }
+
+  @Post('/:anime_id/:episode_number')
+  async createSkipTime(
+    @Param() params: PostCreateSkipTimeRequestParams,
+    @Body() body: PostCreateSkipTimeRequestBody
+  ): Promise<PostCreateSkipTimeResponse> {
+    const votes = 0; // TODO: Add auto voting service.
+
+    const skipTime = {
+      anime_id: params.anime_id,
+      end_time: body.end_time,
+      episode_length: body.episode_length,
+      episode_number: params.episode_number,
+      provider_name: body.provider_name,
+      skip_type: body.skip_type,
+      start_time: body.start_time,
+      submitter_id: body.submitter_id,
+      votes,
+    };
+
+    const skipId = await this.skipTimesService.createSkipTime(skipTime);
+
+    const response = new PostCreateSkipTimeResponse();
+    response.message = 'successfully created a skip time';
+    response.skip_id = skipId;
+    response.statusCode = 200;
 
     return response;
   }
