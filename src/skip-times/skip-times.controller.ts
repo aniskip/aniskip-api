@@ -46,7 +46,7 @@ export class SkipTimesControllerV1 {
     }
 
     const response = new PostVoteResponse();
-    response.message = 'successfully upvoted the skip time';
+    response.message = `successfully ${body.vote_type} the skip time`;
     response.statusCode = 200;
 
     return response;
