@@ -23,3 +23,5 @@ export type InternalSkipTime = Omit<SkipTime, 'interval'> &
 export type SkipTimesCreateQueryResponse = {
   skip_id: string;
 };
+
+export type VoteType = 'upvote' | 'downvote';
