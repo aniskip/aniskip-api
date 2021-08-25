@@ -83,8 +83,6 @@ export class SkipTimesControllerV1 {
     @Param() params: PostCreateSkipTimeRequestParams,
     @Body() body: PostCreateSkipTimeRequestBody
   ): Promise<PostCreateSkipTimeResponse> {
-    const votes = 0; // TODO: Add auto voting service.
-
     const skipTime = {
       anime_id: params.anime_id,
       end_time: body.end_time,
@@ -94,7 +92,6 @@ export class SkipTimesControllerV1 {
       skip_type: body.skip_type,
       start_time: body.start_time,
       submitter_id: body.submitter_id,
-      votes,
     };
 
     const skipId = await this.skipTimesService.createSkipTime(skipTime);

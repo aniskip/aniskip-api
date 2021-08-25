@@ -41,9 +41,16 @@ export class SkipTimesService {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date'>
+    skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date' | 'votes'>
   ): Promise<string> {
-    return this.skipTimesRepository.createSkipTime(skipTime);
+    const votes = 0;
+
+    const skipTimeWithVotes = {
+      ...skipTime,
+      votes,
+    };
+
+    return this.skipTimesRepository.createSkipTime(skipTimeWithVotes);
   }
 
   /**
