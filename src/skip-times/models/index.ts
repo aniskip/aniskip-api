@@ -1,3 +1,2 @@
-export * from './vote-request-body';
-export * from './vote-request-params';
-export * from './vote-response';
+export * from './get-skip-times';
+export * from './post-vote';
