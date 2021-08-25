@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { SkipTimesService } from './skip-times.service';
 
 @Controller({
@@ -7,9 +7,4 @@ import { SkipTimesService } from './skip-times.service';
 })
 export class SkipTimesControllerV1 {
   constructor(private skipTimesService: SkipTimesService) {}
-
-  @Get('hello')
-  getSkipTimes(): string {
-    return this.skipTimesService.hello();
-  }
 }

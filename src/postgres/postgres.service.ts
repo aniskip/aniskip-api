@@ -7,7 +7,7 @@ export class PostgresService {
   /**
    * Pool instance.
    */
-  pool: Pool;
+  private pool: Pool;
 
   /**
    * Constructor.

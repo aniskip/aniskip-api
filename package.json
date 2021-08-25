@@ -22,6 +22,7 @@
     "@nestjs/common": "^8.0.6",
     "@nestjs/core": "^8.0.6",
     "@nestjs/platform-express": "^8.0.6",
+    "class-validator": "^0.13.1",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.3.0"

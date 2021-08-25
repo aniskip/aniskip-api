@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { SkipTimesRepository } from './skip-times.repository';
 
 @Injectable()
 export class SkipTimesService {
-  hello(): string {
-    return 'hello world';
-  }
+  constructor(private skipTimesRepository: SkipTimesRepository) {}
 }
