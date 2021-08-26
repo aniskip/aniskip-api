@@ -7,6 +7,7 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   app.enableVersioning();
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableCors({ origin: '*' });
   app.use(helmet());
   await app.listen(5000);
 }
