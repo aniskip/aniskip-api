@@ -5,7 +5,7 @@ import {
   SkipTime,
   SkipTimesCreateQueryResponse,
   SkipType,
-} from './skip-times.types';
+} from '../skip-times';
 
 @Injectable()
 export class SkipTimesRepository {

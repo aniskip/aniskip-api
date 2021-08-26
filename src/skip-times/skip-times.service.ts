@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SkipTimesRepository } from './skip-times.repository';
+import { SkipTimesRepository } from '../repositories';
 import {
   InternalSkipTime,
   SkipTime,

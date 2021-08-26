@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsIn, IsNumber, IsString, IsUUID, Min } from 'class-validator';
-import { SkipType } from 'src/skip-times/skip-times.types';
+import { SkipType } from '../../skip-times.types';
 
 export class PostCreateSkipTimeRequestBody {
   @IsIn(['op', 'ed'])
