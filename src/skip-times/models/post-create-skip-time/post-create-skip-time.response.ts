@@ -1,5 +1,5 @@
 export class PostCreateSkipTimeResponse {
-  statusCode!: number;
+  status_code!: number;
 
   message!: string;
 

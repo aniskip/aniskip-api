@@ -1,5 +1,5 @@
 export class PostVoteResponse {
-  statusCode!: number;
+  status_code!: number;
 
   message!: string;
 }

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -40,14 +41,14 @@ export class SkipTimesControllerV1 {
     if (!isSuccess) {
       const response = new PostVoteResponse();
       response.message = 'Skip time not found';
-      response.statusCode = 404;
+      response.status_code = HttpStatus.NOT_FOUND;
 
-      throw new HttpException(response, 404);
+      throw new HttpException(response, response.status_code);
     }
 
     const response = new PostVoteResponse();
     response.message = `successfully ${body.vote_type} the skip time`;
-    response.statusCode = 200;
+    response.status_code = HttpStatus.CREATED;
 
     return response;
   }
@@ -69,10 +70,12 @@ export class SkipTimesControllerV1 {
     response.message = response.found
       ? 'successfully found skip times'
       : 'no skip times found';
-    response.statusCode = response.found ? 200 : 404;
+    response.status_code = response.found
+      ? HttpStatus.OK
+      : HttpStatus.NOT_FOUND;
 
     if (!response.found) {
-      throw new HttpException(response, response.statusCode);
+      throw new HttpException(response, response.status_code);
     }
 
     return response;
@@ -99,7 +102,7 @@ export class SkipTimesControllerV1 {
     const response = new PostCreateSkipTimeResponse();
     response.message = 'successfully created a skip time';
     response.skip_id = skipId;
-    response.statusCode = 200;
+    response.status_code = HttpStatus.CREATED;
 
     return response;
   }
