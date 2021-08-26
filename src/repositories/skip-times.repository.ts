@@ -3,9 +3,10 @@ import { PostgresService } from '../postgres';
 import {
   InternalSkipTime,
   SkipTime,
-  SkipTimesCreateQueryResponse,
+  CreateSkipTimesQueryResponse,
   SkipType,
-} from '../skip-times';
+  GetAverageOfLastTenSkipTimesVotesQueryResponse,
+} from '../skip-times/skip-times.types';
 
 @Injectable()
 export class SkipTimesRepository {
@@ -61,7 +62,7 @@ export class SkipTimesRepository {
   async createSkipTime(
     skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date'>
   ): Promise<string> {
-    const { rows } = await this.database.query<SkipTimesCreateQueryResponse>(
+    const { rows } = await this.database.query<CreateSkipTimesQueryResponse>(
       `
       INSERT INTO skip_times
         VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, DEFAULT, $9)
@@ -132,5 +133,33 @@ export class SkipTimesRepository {
     }));
 
     return skipTimes;
+  }
+
+  /**
+   * Returns the average of the votes of last ten skip times submitted.
+   *
+   * @param submitterId ID of the submitter to check.
+   */
+  async getAverageOfLastTenSkipTimesVotes(
+    submitterId: string
+  ): Promise<number> {
+    const { rows } =
+      await this.database.query<GetAverageOfLastTenSkipTimesVotesQueryResponse>(
+        `
+        SELECT
+          avg(t.votes)
+        FROM (
+          SELECT
+            votes
+          FROM
+            skip_times
+          WHERE
+            submitter_id = $1
+          LIMIT 10) AS t
+        `,
+        [submitterId]
+      );
+
+    return rows[0].avg;
   }
 }

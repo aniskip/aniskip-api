@@ -20,8 +20,10 @@ export type InternalSkipTime = Omit<SkipTime, 'interval'> &
     submitter_id: string;
   };
 
-export type SkipTimesCreateQueryResponse = {
+export type CreateSkipTimesQueryResponse = {
   skip_id: string;
 };
 
 export type VoteType = 'upvote' | 'downvote';
+
+export type GetAverageOfLastTenSkipTimesVotesQueryResponse = { avg: number };
