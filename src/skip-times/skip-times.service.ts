@@ -43,7 +43,7 @@ export class SkipTimesService {
   async createSkipTime(
     skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date' | 'votes'>
   ): Promise<string> {
-    const votes = 0;
+    const votes = 0; // TODO: Add voting service.
 
     const skipTimeWithVotes = {
       ...skipTime,
