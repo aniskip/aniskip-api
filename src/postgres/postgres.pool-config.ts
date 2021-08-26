@@ -1,5 +1,8 @@
 import { PoolConfig } from 'pg';
 
+/**
+ * Pool config used to connect to the Postgres database.
+ */
 export const poolConfig: PoolConfig = {
   user: 'postgres',
   host: process.env.POSTGRES_HOST,
