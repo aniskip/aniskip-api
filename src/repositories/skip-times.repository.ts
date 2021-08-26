@@ -106,6 +106,7 @@ export class SkipTimesRepository {
       SELECT
         skip_id,
         start_time,
+        skip_type,
         end_time,
         episode_length
       FROM
