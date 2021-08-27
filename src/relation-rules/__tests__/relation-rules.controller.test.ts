@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RelationRulesService } from '../relation-rules.service';
-import { RelationRulesControllerV1 } from '../relation-rules.controller';
 import { getOptionsToken } from '@nestjs/throttler';
 import { ThrottlerStorageProvider } from '@nestjs/throttler/dist/throttler.providers';
+import { RelationRulesService } from '../relation-rules.service';
+import { RelationRulesControllerV1 } from '../relation-rules.controller';
 
 describe('RelationRulesController', () => {
   let relationRulesController: RelationRulesControllerV1;
