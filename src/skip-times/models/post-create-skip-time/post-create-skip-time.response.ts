@@ -7,6 +7,9 @@ export class PostCreateSkipTimeResponse {
   @ApiProperty()
   message!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    type: String,
+    format: 'uuid',
+  })
   skipId!: string;
 }
