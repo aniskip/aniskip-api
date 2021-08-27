@@ -6,7 +6,7 @@ import { VoteService } from '../../vote';
 import { SkipTimesService } from '../skip-times.service';
 
 describe('SkipTimesService', () => {
-  let service: SkipTimesService;
+  let skipTimesService: SkipTimesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -19,10 +19,10 @@ describe('SkipTimesService', () => {
       ],
     }).compile();
 
-    service = module.get<SkipTimesService>(SkipTimesService);
+    skipTimesService = module.get<SkipTimesService>(SkipTimesService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(skipTimesService).toBeDefined();
   });
 });
