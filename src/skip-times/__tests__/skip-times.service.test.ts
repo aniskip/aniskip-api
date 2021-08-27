@@ -1,4 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Pool } from 'pg';
+import { PostgresService } from '../../postgres';
+import { SkipTimesRepository } from '../../repositories';
+import { VoteService } from '../../vote';
 import { SkipTimesService } from '../skip-times.service';
 
 describe('SkipTimesService', () => {
@@ -6,7 +10,13 @@ describe('SkipTimesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SkipTimesService],
+      providers: [
+        Pool,
+        PostgresService,
+        SkipTimesRepository,
+        VoteService,
+        SkipTimesService,
+      ],
     }).compile();
 
     service = module.get<SkipTimesService>(SkipTimesService);
