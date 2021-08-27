@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { resolve } from 'path/posix';
 import { Pool } from 'pg';
 import { PostgresService } from '../../postgres';
 import { SkipTimesRepository } from '../../repositories';
