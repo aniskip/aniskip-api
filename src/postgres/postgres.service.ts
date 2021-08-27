@@ -1,20 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Pool, PoolConfig, QueryResult } from 'pg';
-import { POOL_CONFIG } from './postgres.constants';
+import { Injectable } from '@nestjs/common';
+import { Pool, QueryResult } from 'pg';
 
 @Injectable()
 export class PostgresService {
   /**
-   * Pool instance.
-   */
-  private pool: Pool;
-
-  /**
    * Constructor.
    */
-  constructor(@Inject(POOL_CONFIG) private poolConfig: PoolConfig) {
-    this.pool = new Pool(this.poolConfig);
-  }
+  constructor(private pool: Pool) {}
 
   /**
    * Queries the database.
