@@ -783,6 +783,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/mapped-types@npm:1.0.0":
+  version: 1.0.0
+  resolution: "@nestjs/mapped-types@npm:1.0.0"
+  peerDependencies:
+    "@nestjs/common": ^7.0.8 || ^8.0.0
+    class-transformer: ^0.2.0 || ^0.3.0 || ^0.4.0
+    class-validator: ^0.11.1 || ^0.12.0 || ^0.13.0
+    reflect-metadata: ^0.1.12
+  checksum: 64e4bb9313a0d71c9535a36679e3c0d3590a8cfd3cd0897175213131afa9bb4b47f547607955f0e3578f26c509e755d7adc898bfcf47bb90117688b5d9b333fb
+  languageName: node
+  linkType: hard
+
 "@nestjs/platform-express@npm:^8.0.6":
   version: 8.0.6
   resolution: "@nestjs/platform-express@npm:8.0.6"
@@ -796,6 +808,28 @@ __metadata:
     "@nestjs/common": ^8.0.0
     "@nestjs/core": ^8.0.0
   checksum: c1db29163a5aa125b9dd98bff8e9500c69dabb6794b0e24b5495272e5bfe968c1e0d674e381ffbc7a6ccf56e5740d2671df00b60e8e45306aa2fa150d75c2b06
+  languageName: node
+  linkType: hard
+
+"@nestjs/swagger@npm:^5.0.9":
+  version: 5.0.9
+  resolution: "@nestjs/swagger@npm:5.0.9"
+  dependencies:
+    "@nestjs/mapped-types": 1.0.0
+    lodash: 4.17.21
+    path-to-regexp: 3.2.0
+  peerDependencies:
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+    fastify-swagger: "*"
+    reflect-metadata: ^0.1.12
+    swagger-ui-express: "*"
+  peerDependenciesMeta:
+    fastify-swagger:
+      optional: true
+    swagger-ui-express:
+      optional: true
+  checksum: b11554a2fab883107f7e12f63ecde9452315b5b876b3048460efb10c1ce2c82124bcb378ab04ca78ef03edc244bff80de9a8679bbcbe645d28d241ccc85586ba
   languageName: node
   linkType: hard
 
@@ -5059,7 +5093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:4.x, lodash@npm:^4.7.0":
+"lodash@npm:4.17.21, lodash@npm:4.x, lodash@npm:^4.7.0":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -6997,6 +7031,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"swagger-ui-dist@npm:^3.18.1":
+  version: 3.52.0
+  resolution: "swagger-ui-dist@npm:3.52.0"
+  checksum: fe8d6a71a0386f9c0043f3da0c79baef5e7559a5e51642d894820d5a9d2fcdefad763aa1b2eb68083667af60b681d08e47211196e9964769f8db600357d16449
+  languageName: node
+  linkType: hard
+
+"swagger-ui-express@npm:^4.1.6":
+  version: 4.1.6
+  resolution: "swagger-ui-express@npm:4.1.6"
+  dependencies:
+    swagger-ui-dist: ^3.18.1
+  peerDependencies:
+    express: ">=4.0.0"
+  checksum: aff79812940fa1e693eb9a9f2abd7f6e38d62a9d60b9a70fc90749e572d997d70f4cc110b791774f09c5197f8da32941bec25da780ab4c6d58593df23628d735
+  languageName: node
+  linkType: hard
+
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -7331,6 +7383,7 @@ __metadata:
     "@nestjs/common": ^8.0.6
     "@nestjs/core": ^8.0.6
     "@nestjs/platform-express": ^8.0.6
+    "@nestjs/swagger": ^5.0.9
     "@nestjs/testing": ^8.0.6
     "@types/express": ^4.17.13
     "@types/jest": ^27.0.1
@@ -7358,6 +7411,7 @@ __metadata:
     rimraf: ^3.0.2
     rxjs: ^7.3.0
     supertest: ^6.1.6
+    swagger-ui-express: ^4.1.6
     ts-jest: ^27.0.5
     ts-node: ^10.2.1
     typescript: ^4.3.5

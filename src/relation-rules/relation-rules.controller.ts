@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Param,
 } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   GetRelationRulesRequestParams,
   GetRelationRulesResponse,
@@ -19,6 +20,14 @@ export class RelationRulesControllerV1 {
   constructor(private relationRulesService: RelationRulesService) {}
 
   @Get('/:animeId')
+  @ApiTags('relation-rules')
+  @ApiOperation({
+    description: 'Retrieves anime episode number redirection rules',
+  })
+  @ApiOkResponse({
+    type: GetRelationRulesResponse,
+    description: 'Rules object',
+  })
   getRules(
     @Param() params: GetRelationRulesRequestParams
   ): GetRelationRulesResponse {
