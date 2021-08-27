@@ -70,7 +70,10 @@ export class SkipTimesControllerV1 {
     description:
       'Retrieves the opening or ending skip times for a specific anime episode',
   })
-  @ApiOkResponse({ type: GetSkipTimesResponse })
+  @ApiOkResponse({
+    type: GetSkipTimesResponse,
+    description: 'Skip times object(s)',
+  })
   async getSkipTimes(
     @Param() params: GetSkipTimesRequestParams,
     @Query() query: GetSkipTimesRequestQuery
@@ -97,6 +100,14 @@ export class SkipTimesControllerV1 {
   }
 
   @Post('/:animeId/:episodeNumber')
+  @ApiOperation({
+    description:
+      'Creates the opening or ending skip times for a specific anime episode',
+  })
+  @ApiOkResponse({
+    type: PostCreateSkipTimeResponse,
+    description: 'An object containing the skip time parameters',
+  })
   async createSkipTime(
     @Param() params: PostCreateSkipTimeRequestParams,
     @Body() body: PostCreateSkipTimeRequestBody
