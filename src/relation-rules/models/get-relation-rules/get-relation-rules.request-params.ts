@@ -5,5 +5,5 @@ export class GetRelationRulesRequestParams {
   @IsInt()
   @Min(1)
   @Type(() => Number)
-  anime_id!: number;
+  animeId!: number;
 }

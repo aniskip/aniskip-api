@@ -1,7 +1,7 @@
 import { SkipTime } from '../../skip-times.types';
 
 export class GetSkipTimesResponse {
-  status_code!: number;
+  statusCode!: number;
 
   message!: string;
 

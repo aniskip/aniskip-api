@@ -28,39 +28,39 @@ import { SkipTimesService } from './skip-times.service';
 export class SkipTimesControllerV1 {
   constructor(private skipTimesService: SkipTimesService) {}
 
-  @Post('/vote/:skip_id')
+  @Post('/vote/:skipId')
   async voteSkipTime(
     @Param() params: PostVoteRequestParams,
     @Body() body: PostVoteRequestBody
   ): Promise<PostVoteResponse> {
     const isSuccess = await this.skipTimesService.voteSkipTime(
-      body.vote_type,
-      params.skip_id
+      body.voteType,
+      params.skipId
     );
 
     if (!isSuccess) {
       const response = new PostVoteResponse();
       response.message = 'Skip time not found';
-      response.status_code = HttpStatus.NOT_FOUND;
+      response.statusCode = HttpStatus.NOT_FOUND;
 
-      throw new HttpException(response, response.status_code);
+      throw new HttpException(response, response.statusCode);
     }
 
     const response = new PostVoteResponse();
-    response.message = `successfully ${body.vote_type} the skip time`;
-    response.status_code = HttpStatus.CREATED;
+    response.message = `Successfully ${body.voteType} the skip time`;
+    response.statusCode = HttpStatus.CREATED;
 
     return response;
   }
 
-  @Get('/:anime_id/:episode_number')
+  @Get('/:animeId/:episodeNumber')
   async getSkipTimes(
     @Param() params: GetSkipTimesRequestParams,
     @Query() query: GetSkipTimesRequestQuery
   ): Promise<GetSkipTimesResponse> {
     const skipTimes = await this.skipTimesService.findSkipTimes(
-      params.anime_id,
-      params.episode_number,
+      params.animeId,
+      params.episodeNumber,
       query.types
     );
 
@@ -68,41 +68,44 @@ export class SkipTimesControllerV1 {
     response.found = skipTimes.length !== 0;
     response.results = skipTimes;
     response.message = response.found
-      ? 'successfully found skip times'
-      : 'no skip times found';
-    response.status_code = response.found
-      ? HttpStatus.OK
-      : HttpStatus.NOT_FOUND;
+      ? 'Successfully found skip times'
+      : 'No skip times found';
+    response.statusCode = response.found ? HttpStatus.OK : HttpStatus.NOT_FOUND;
 
     if (!response.found) {
-      throw new HttpException(response, response.status_code);
+      throw new HttpException(response, response.statusCode);
     }
 
     return response;
   }
 
-  @Post('/:anime_id/:episode_number')
+  @Post('/:animeId/:episodeNumber')
   async createSkipTime(
     @Param() params: PostCreateSkipTimeRequestParams,
     @Body() body: PostCreateSkipTimeRequestBody
   ): Promise<PostCreateSkipTimeResponse> {
     const skipTime = {
-      anime_id: params.anime_id,
-      end_time: body.end_time,
-      episode_length: body.episode_length,
-      episode_number: params.episode_number,
-      provider_name: body.provider_name,
-      skip_type: body.skip_type,
-      start_time: body.start_time,
-      submitter_id: body.submitter_id,
+      anime_id: params.animeId,
+      end_time: body.endTime,
+      episode_length: body.episodeLength,
+      episode_number: params.episodeNumber,
+      provider_name: body.providerName,
+      skip_type: body.skipType,
+      start_time: body.startTime,
+      submitter_id: body.submitterId,
     };
 
-    const skipId = await this.skipTimesService.createSkipTime(skipTime);
+    let skipId;
+    try {
+      skipId = await this.skipTimesService.createSkipTime(skipTime);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
 
     const response = new PostCreateSkipTimeResponse();
-    response.message = 'successfully created a skip time';
-    response.skip_id = skipId;
-    response.status_code = HttpStatus.CREATED;
+    response.message = 'Successfully created a skip time';
+    response.skipId = skipId;
+    response.statusCode = HttpStatus.CREATED;
 
     return response;
   }

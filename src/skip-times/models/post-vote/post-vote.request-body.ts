@@ -3,5 +3,5 @@ import { VoteType } from '../../skip-times.types';
 
 export class PostVoteRequestBody {
   @IsIn(['upvote', 'downvote'])
-  vote_type!: VoteType;
+  voteType!: VoteType;
 }

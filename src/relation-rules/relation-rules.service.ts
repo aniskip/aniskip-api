@@ -122,7 +122,7 @@ export class RelationRulesService {
     const toMalId = matches[6] === '~' ? fromMalId : parseInt(matches[6], 10);
     const from = getRange(4, 5);
     const toRange = getRange(9, 10);
-    const to = { mal_id: toMalId, ...toRange };
+    const to = { malId: toMalId, ...toRange };
     const rule = { from, to };
     rules.push(rule);
     this.rules[fromMalId] = rules;

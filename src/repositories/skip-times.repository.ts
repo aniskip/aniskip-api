@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PostgresService } from '../postgres';
 import {
-  InternalSkipTime,
+  DatabaseSkipTime,
   SkipTime,
   CreateSkipTimesQueryResponse,
   SkipType,
@@ -60,7 +60,7 @@ export class SkipTimesRepository {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date'>
+    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'>
   ): Promise<string> {
     const { rows } = await this.database.query<CreateSkipTimesQueryResponse>(
       `
@@ -86,7 +86,7 @@ export class SkipTimesRepository {
       throw new Error('Unable to create skip time');
     }
 
-    return rows[0].skip_id;
+    return rows[0].skipId;
   }
 
   /**
@@ -101,7 +101,7 @@ export class SkipTimesRepository {
     episodeNumber: number,
     skipType: SkipType
   ): Promise<SkipTime[]> {
-    const { rows } = await this.database.query<InternalSkipTime>(
+    const { rows } = await this.database.query<DatabaseSkipTime>(
       `
       SELECT
         skip_id,
@@ -125,12 +125,12 @@ export class SkipTimesRepository {
 
     const skipTimes: SkipTime[] = rows.map((row) => ({
       interval: {
-        start_time: row.start_time,
-        end_time: row.end_time,
+        startTime: row.start_time,
+        endTime: row.end_time,
       },
-      skip_type: row.skip_type,
-      skip_id: row.skip_id,
-      episode_length: row.episode_length,
+      skipType: row.skip_type,
+      skipId: row.skip_id,
+      episodeLength: row.episode_length,
     }));
 
     return skipTimes;

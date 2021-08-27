@@ -4,26 +4,26 @@ import { SkipType } from '../../skip-times.types';
 
 export class PostCreateSkipTimeRequestBody {
   @IsIn(['op', 'ed'])
-  skip_type!: SkipType;
+  skipType!: SkipType;
 
   @IsString()
-  provider_name!: string;
+  providerName!: string;
 
   @IsNumber()
   @Min(0)
   @Type(() => Number)
-  start_time!: number;
+  startTime!: number;
 
   @IsNumber()
   @Min(0)
   @Type(() => Number)
-  end_time!: number;
+  endTime!: number;
 
   @IsNumber()
   @Min(0)
   @Type(() => Number)
-  episode_length!: number;
+  episodeLength!: number;
 
   @IsUUID()
-  submitter_id!: string;
+  submitterId!: string;
 }

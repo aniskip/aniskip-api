@@ -5,10 +5,10 @@ export class GetSkipTimesRequestParams {
   @IsInt()
   @Min(1)
   @Type(() => Number)
-  anime_id!: number;
+  animeId!: number;
 
   @IsNumber()
   @Min(0.5)
   @Type(() => Number)
-  episode_number!: number;
+  episodeNumber!: number;
 }

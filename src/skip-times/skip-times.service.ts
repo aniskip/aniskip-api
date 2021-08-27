@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { VoteService } from '../vote';
 import { SkipTimesRepository } from '../repositories';
 import {
-  InternalSkipTime,
+  DatabaseSkipTime,
   SkipTime,
   SkipType,
   VoteType,
@@ -45,7 +45,7 @@ export class SkipTimesService {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<InternalSkipTime, 'skip_id' | 'submit_date' | 'votes'>
+    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date' | 'votes'>
   ): Promise<string> {
     const votes = await this.voteService.autoVote(
       skipTime.start_time,
