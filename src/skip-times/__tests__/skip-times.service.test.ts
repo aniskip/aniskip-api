@@ -186,10 +186,10 @@ describe('SkipTimesService', () => {
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
     });
 
-    it('should nothing', async () => {
+    it('should return nothing', async () => {
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([]));
+        .mockReturnValue(Promise.resolve([]));
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, [
         'op',
