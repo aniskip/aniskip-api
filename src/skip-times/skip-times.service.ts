@@ -33,7 +33,7 @@ export class SkipTimesService {
           skipId
         );
         break;
-      default:
+      // no default
     }
 
     return voteSuccessful;

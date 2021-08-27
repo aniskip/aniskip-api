@@ -185,5 +185,18 @@ describe('SkipTimesService', () => {
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
     });
+
+    it('should nothing', async () => {
+      jest
+        .spyOn(skipTimesRepository, 'findSkipTimes')
+        .mockReturnValueOnce(Promise.resolve([]));
+
+      const skipTimes = await skipTimesService.findSkipTimes(40028, 1, [
+        'op',
+        'ed',
+      ]);
+
+      expect(skipTimes).toEqual([]);
+    });
   });
 });
