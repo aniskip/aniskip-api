@@ -16,11 +16,11 @@ import { RelationRulesService } from './relation-rules.service';
   path: 'relation-rules',
   version: '1',
 })
+@ApiTags('relation-rules')
 export class RelationRulesControllerV1 {
   constructor(private relationRulesService: RelationRulesService) {}
 
   @Get('/:animeId')
-  @ApiTags('relation-rules')
   @ApiOperation({
     description: 'Retrieves anime episode number redirection rules',
   })

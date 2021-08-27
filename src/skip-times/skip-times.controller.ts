@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   GetSkipTimesRequestParams,
   GetSkipTimesRequestQuery,
@@ -25,10 +26,16 @@ import { SkipTimesService } from './skip-times.service';
   path: 'skip-times',
   version: '1',
 })
+@ApiTags('skip-times')
 export class SkipTimesControllerV1 {
   constructor(private skipTimesService: SkipTimesService) {}
 
   @Post('/vote/:skipId')
+  @ApiOperation({ description: 'Upvotes or downvotes the skip time' })
+  @ApiCreatedResponse({
+    type: PostVoteResponse,
+    description: 'Success message',
+  })
   async voteSkipTime(
     @Param() params: PostVoteRequestParams,
     @Body() body: PostVoteRequestBody
