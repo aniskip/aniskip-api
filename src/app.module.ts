@@ -1,13 +1,18 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
+import * as Redis from 'ioredis';
 import { poolConfig, PostgresModule } from './postgres';
 import { RelationRulesModule } from './relation-rules';
 import { SkipTimesModule } from './skip-times';
 import { MorganMiddleware } from './utils';
+import { redisConfig } from './redis';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot(),
+    ThrottlerModule.forRoot({
+      storage: new ThrottlerStorageRedisService(new Redis(redisConfig)),
+    }),
     PostgresModule.forRoot(poolConfig),
     SkipTimesModule,
     RelationRulesModule,
