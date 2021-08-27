@@ -74,6 +74,7 @@ export class VoteService {
           return -10;
         }
         break;
+      // no default
     }
 
     const averageVotes =
