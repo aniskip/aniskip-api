@@ -19,6 +19,12 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': ['error'],
       },
     },
+    {
+      files: ['*.test.ts'],
+      rules: {
+        'max-classes-per-file': ['off'],
+      },
+    },
   ],
   extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
   parserOptions: {
