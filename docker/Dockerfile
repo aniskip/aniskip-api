@@ -43,4 +43,4 @@ COPY --from=install-prod /usr/src/app/node_modules ./node_modules
 RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["yarn", "node", "dist/main.js"]
+CMD ["yarn", "node", "dist/src/main.js"]
