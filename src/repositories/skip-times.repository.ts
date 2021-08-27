@@ -86,7 +86,7 @@ export class SkipTimesRepository {
       throw new Error('Unable to create skip time');
     }
 
-    return rows[0].skipId;
+    return rows[0].skip_id;
   }
 
   /**

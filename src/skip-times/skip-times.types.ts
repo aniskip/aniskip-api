@@ -25,7 +25,7 @@ export type DatabaseSkipTime = {
 };
 
 export type CreateSkipTimesQueryResponse = {
-  skipId: string;
+  skip_id: string;
 };
 
 export type VoteType = 'upvote' | 'downvote';
