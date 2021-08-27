@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsIn } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { SkipType } from '../../skip-times.types';
@@ -8,5 +9,10 @@ export class GetSkipTimesRequestQuery {
   @IsArray()
   @IsIn(['op', 'ed'], { each: true })
   @Transform(({ value }) => (!Array.isArray(value) ? [value] : value))
+  @ApiProperty({
+    type: [String],
+    enum: ['op', 'ed'],
+    description: 'Type of skip time to get',
+  })
   types!: SkipType[];
 }

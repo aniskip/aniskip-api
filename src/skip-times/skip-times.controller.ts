@@ -8,7 +8,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   GetSkipTimesRequestParams,
   GetSkipTimesRequestQuery,
@@ -61,6 +66,11 @@ export class SkipTimesControllerV1 {
   }
 
   @Get('/:animeId/:episodeNumber')
+  @ApiOperation({
+    description:
+      'Retrieves the opening or ending skip times for a specific anime episode',
+  })
+  @ApiOkResponse({ type: GetSkipTimesResponse })
   async getSkipTimes(
     @Param() params: GetSkipTimesRequestParams,
     @Query() query: GetSkipTimesRequestQuery
