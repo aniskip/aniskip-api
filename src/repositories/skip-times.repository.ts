@@ -82,10 +82,6 @@ export class SkipTimesRepository {
       ]
     );
 
-    if (rows.length !== 1) {
-      throw new Error('Unable to create skip time');
-    }
-
     return rows[0].skip_id;
   }
 
@@ -161,6 +157,6 @@ export class SkipTimesRepository {
         [submitterId]
       );
 
-    return rows[0].avg;
+    return rows[0].avg ?? 0;
   }
 }
