@@ -10,7 +10,7 @@ describe('SkipTimesService', () => {
   let voteService: VoteService;
 
   beforeEach(async () => {
-    const mockSkipTimesRepository = {
+    const mockSkipTimesRepositoryProvider = {
       provide: SkipTimesRepository,
       useValue: {
         upvoteSkipTime: jest.fn(),
@@ -21,15 +21,17 @@ describe('SkipTimesService', () => {
       },
     };
 
-    const mockVoteService = {
+    const mockVoteServiceProvider = {
       provide: VoteService,
-      useValue: {
-        autoVote: jest.fn(),
-      },
+      useValue: { autoVote: jest.fn() },
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [mockSkipTimesRepository, mockVoteService, SkipTimesService],
+      providers: [
+        mockSkipTimesRepositoryProvider,
+        mockVoteServiceProvider,
+        SkipTimesService,
+      ],
     }).compile();
 
     skipTimesService = module.get<SkipTimesService>(SkipTimesService);

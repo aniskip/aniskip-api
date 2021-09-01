@@ -1,10 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getOptionsToken } from '@nestjs/throttler';
-import { ThrottlerStorageProvider } from '@nestjs/throttler/dist/throttler.providers';
-import { Pool } from 'pg';
-import { PostgresService } from '../../postgres';
-import { SkipTimesRepository } from '../../repositories';
-import { VoteService } from '../../vote';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import {
+  PostSkipTimesThrottlerGuard,
+  PostVoteSkipTimesThrottlerGuard,
+} from '../../utils';
 import { SkipTimesControllerV1 } from '../skip-times.controller';
 import { SkipTimesService } from '../skip-times.service';
 
@@ -12,19 +11,38 @@ describe('SkipTimesController', () => {
   let skipTimesController: SkipTimesControllerV1;
 
   beforeEach(async () => {
+    const mockSkipTimesServiceProvider = {
+      provide: SkipTimesService,
+      useValue: {
+        voteSkipTime: jest.fn(),
+        createSkipTime: jest.fn(),
+        findSkipTimes: jest.fn(),
+      },
+    };
+
+    const mockPostVoteSkipTimesThrottlerGuardProvider = {
+      provide: PostVoteSkipTimesThrottlerGuard,
+      useValue: { canActivate: jest.fn(() => true) },
+    };
+
+    const mockThrottlerGuardProvider = {
+      provide: ThrottlerGuard,
+      useValue: { canActivate: jest.fn(() => true) },
+    };
+
+    const mockPostSkipTimesThrottlerGuardProvider = {
+      provide: PostSkipTimesThrottlerGuard,
+      useValue: { canActivate: jest.fn(() => true) },
+    };
+
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ThrottlerModule.forRoot()],
       controllers: [SkipTimesControllerV1],
       providers: [
-        {
-          provide: getOptionsToken(),
-          useValue: {},
-        },
-        ThrottlerStorageProvider,
-        Pool,
-        PostgresService,
-        SkipTimesRepository,
-        VoteService,
-        SkipTimesService,
+        mockSkipTimesServiceProvider,
+        mockPostVoteSkipTimesThrottlerGuardProvider,
+        mockThrottlerGuardProvider,
+        mockPostSkipTimesThrottlerGuardProvider,
       ],
     }).compile();
 
