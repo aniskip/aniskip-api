@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RelationRulesService } from '../relation-rules.service';
 
@@ -6,6 +7,7 @@ describe('RelationRulesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModule.forRoot({ load: [] })],
       providers: [RelationRulesService],
     }).compile();
 

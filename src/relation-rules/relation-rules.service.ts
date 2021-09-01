@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
-import * as path from 'path';
+import { RelationsConfig } from '../config';
 import { Rule, SectionType } from './relation-rules.types';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class RelationRulesService {
 
   lastModified: Date;
 
-  constructor() {
+  constructor(private configService: ConfigService) {
     this.rules = {};
     this.version = '';
     this.lastModified = new Date();
@@ -23,14 +24,12 @@ export class RelationRulesService {
    * Read and parse anime-relations rules.
    */
   readRelations(): void {
-    const animeRelationsFilePath = path.join(
-      __dirname,
-      '..',
-      '..',
-      'deps',
-      'anime-relations',
-      'anime-relations.txt'
-    );
+    const animeRelationsFilePath =
+      this.configService.get<RelationsConfig>('relations')?.filePath;
+
+    if (!animeRelationsFilePath) {
+      return;
+    }
 
     const animeRelations = fs.readFileSync(animeRelationsFilePath, 'utf-8');
 

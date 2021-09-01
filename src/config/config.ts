@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Config } from './config.types';
 
 export const config = (): Config => ({
@@ -14,5 +15,15 @@ export const config = (): Config => ({
   redis: {
     host: 'redis',
     port: 6379,
+  },
+  relations: {
+    filePath: path.join(
+      __dirname,
+      '..',
+      '..',
+      'deps',
+      'anime-relations',
+      'anime-relations.txt'
+    ),
   },
 });

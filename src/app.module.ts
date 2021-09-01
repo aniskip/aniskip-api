@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerStorageRedisService } from 'nestjs-throttler-storage-redis';
 import { config } from './config';
-import { PostgresModule } from './postgres';
 import { RelationRulesModule } from './relation-rules';
 import { SkipTimesModule } from './skip-times';
 import { MorganMiddleware } from './utils';
@@ -18,7 +17,6 @@ import { MorganMiddleware } from './utils';
         storage: new ThrottlerStorageRedisService(configService.get('redis')),
       }),
     }),
-    PostgresModule,
     SkipTimesModule,
     RelationRulesModule,
   ],
