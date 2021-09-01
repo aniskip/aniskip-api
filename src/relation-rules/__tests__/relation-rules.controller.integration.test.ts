@@ -1,4 +1,4 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -34,7 +34,7 @@ describe('RelationRulesController', () => {
       request(app.getHttpServer())
         .get('/relation-rules/40028')
         .expect({
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: "Successfully found rules for animeId '40028'",
           found: true,
           rules: [
@@ -51,7 +51,7 @@ describe('RelationRulesController', () => {
             },
           ],
         })
-        .expect(200, done);
+        .expect(HttpStatus.OK, done);
     });
   });
 

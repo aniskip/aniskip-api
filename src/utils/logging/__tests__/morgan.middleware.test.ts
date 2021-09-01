@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { MorganTestModule } from '../../testing/morgan-test.module';
@@ -20,7 +20,7 @@ describe('MorganMiddleware', () => {
       request(app.getHttpServer())
         .get('/test')
         .expect('hello world')
-        .expect(200, done);
+        .expect(HttpStatus.OK, done);
     });
   });
 
