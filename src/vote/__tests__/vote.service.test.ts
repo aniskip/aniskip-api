@@ -1,31 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Pool } from 'pg';
-import { PostgresService } from '../../postgres';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../vote.service';
 
 describe('VoteService', () => {
   let votingService: VoteService;
-  let skipTimesRepository: SkipTimesRepository;
 
   beforeEach(async () => {
+    const skipTimesRepository = {
+      provide: SkipTimesRepository,
+      useValue: {
+        getAverageOfLastTenSkipTimesVotes: jest.fn((submitterId) => {
+          switch (submitterId) {
+            case 'e93e3787-3071-4d1f-833f-a78755702f6b':
+              return Promise.resolve(3.5);
+            default:
+              return Promise.resolve(0);
+          }
+        }),
+      },
+    };
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [Pool, PostgresService, SkipTimesRepository, VoteService],
+      providers: [skipTimesRepository, VoteService],
     }).compile();
 
     votingService = module.get<VoteService>(VoteService);
-    skipTimesRepository = module.get<SkipTimesRepository>(SkipTimesRepository);
-
-    jest
-      .spyOn(skipTimesRepository, 'getAverageOfLastTenSkipTimesVotes')
-      .mockImplementation((submitterId) => {
-        switch (submitterId) {
-          case 'e93e3787-3071-4d1f-833f-a78755702f6b':
-            return Promise.resolve(3.5);
-          default:
-            return Promise.resolve(0);
-        }
-      });
   });
 
   it('should be defined', () => {
