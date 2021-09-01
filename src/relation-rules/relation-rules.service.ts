@@ -62,14 +62,14 @@ export class RelationRulesService {
             case 'last_modified':
               this.lastModified = new Date(value);
               break;
-            default:
+            // no default
           }
           break;
         }
         case 'rules':
           this.parseRule(line.replace('- ', ''));
           break;
-        default:
+        // no default
       }
     });
   }
