@@ -6,7 +6,7 @@ describe('VoteService', () => {
   let votingService: VoteService;
 
   beforeEach(async () => {
-    const mockSkipTimesRepository = {
+    const mockSkipTimesRepositoryProvider = {
       provide: SkipTimesRepository,
       useValue: {
         getAverageOfLastTenSkipTimesVotes: jest.fn((submitterId) => {
@@ -21,7 +21,7 @@ describe('VoteService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [mockSkipTimesRepository, VoteService],
+      providers: [mockSkipTimesRepositoryProvider, VoteService],
     }).compile();
 
     votingService = module.get<VoteService>(VoteService);
