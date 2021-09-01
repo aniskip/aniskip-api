@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PostgresService } from '../postgres';
+import { Pool } from 'pg';
 import {
   DatabaseSkipTime,
   SkipTime,
@@ -10,7 +10,7 @@ import {
 
 @Injectable()
 export class SkipTimesRepository {
-  constructor(private database: PostgresService) {}
+  constructor(private database: Pool) {}
 
   /**
    * Upvotes a skip time and returns if it was successful.
