@@ -37,12 +37,12 @@ export class VoteService {
    * @param endTime End time of the skip interval.
    * @param episodeLength Length of the episode.
    */
-  autoVote = async (
+  async autoVote(
     startTime: number,
     endTime: number,
     episodeLength: number,
     submitterId: string
-  ): Promise<number> => {
+  ): Promise<number> {
     const episodeType = this.getEpisodeType(episodeLength);
     const intervalLength = endTime - startTime;
 
@@ -88,5 +88,5 @@ export class VoteService {
     }
 
     return 0;
-  };
+  }
 }

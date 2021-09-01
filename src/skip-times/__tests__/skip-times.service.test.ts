@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { Pool } from 'pg';
 import { SkipType } from '../skip-times.types';
-import { PostgresService } from '../../postgres';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../../vote';
 import { SkipTimesService } from '../skip-times.service';
@@ -12,14 +10,26 @@ describe('SkipTimesService', () => {
   let voteService: VoteService;
 
   beforeEach(async () => {
+    const mockSkipTimesRepository = {
+      provide: SkipTimesRepository,
+      useValue: {
+        upvoteSkipTime: jest.fn(),
+        downvoteSkipTime: jest.fn(),
+        createSkipTime: jest.fn(),
+        findSkipTimes: jest.fn(),
+        getAverageOfLastTenSkipTimesVotes: jest.fn(),
+      },
+    };
+
+    const mockVoteService = {
+      provide: VoteService,
+      useValue: {
+        autoVote: jest.fn(),
+      },
+    };
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        Pool,
-        PostgresService,
-        SkipTimesRepository,
-        VoteService,
-        SkipTimesService,
-      ],
+      providers: [mockSkipTimesRepository, mockVoteService, SkipTimesService],
     }).compile();
 
     skipTimesService = module.get<SkipTimesService>(SkipTimesService);
