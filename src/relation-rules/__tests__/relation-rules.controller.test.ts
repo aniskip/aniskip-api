@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getOptionsToken } from '@nestjs/throttler';
-import { ConfigModule } from '@nestjs/config';
-import { ThrottlerStorageProvider } from '@nestjs/throttler/dist/throttler.providers';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { RelationRulesService } from '../relation-rules.service';
 import { RelationRulesControllerV1 } from '../relation-rules.controller';
 
@@ -9,17 +7,20 @@ describe('RelationRulesController', () => {
   let relationRulesController: RelationRulesControllerV1;
 
   beforeEach(async () => {
+    const mockRelationRulesServiceProvider = {
+      provide: RelationRulesService,
+      useValue: {},
+    };
+
+    const mockThrottlerGuardProvider = {
+      provide: ThrottlerGuard,
+      useValue: { canActivate: jest.fn(() => true) },
+    };
+
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModule.forRoot({ load: [] })],
+      imports: [ThrottlerModule.forRoot()],
       controllers: [RelationRulesControllerV1],
-      providers: [
-        {
-          provide: getOptionsToken(),
-          useValue: {},
-        },
-        ThrottlerStorageProvider,
-        RelationRulesService,
-      ],
+      providers: [mockThrottlerGuardProvider, mockRelationRulesServiceProvider],
     }).compile();
 
     relationRulesController = module.get<RelationRulesControllerV1>(

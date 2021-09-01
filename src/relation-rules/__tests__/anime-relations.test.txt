@@ -1,0 +1,34 @@
+# Test comment
+
+::meta
+
+# Do not change this line.
+- version: 1.3.0
+
+# Update this date when you add, remove or modify a rule.
+- last_modified: 2021-07-09
+
+::rules
+
+# 11eyes -> ~: Momoiro Genmutan
+- 6682|4662|6682:13 -> 7739|5102|7739:1
+
+# Kyoukai no Kanata -> ~: Shinonome
+- 18153|7714|18153:0 -> 23385|8379|20779:1
+
+# Ajin -> ~ 2nd Season
+- 31580|11368|21341:14-26 -> 33253|12115|21799:1-13!
+
+# 3-gatsu no Lion -> ~ 2nd season
+- 31646|11380|21366:23-44 -> 35180|13401|98478:1-22
+
+# Kiratto Pri☆chan -> ~ Season 2
+- 37178|41141|101097:52-102 -> 38804|42114|108625:1-51
+# Kiratto Pri☆chan -> ~ Season 3
+- 37178|?|101097:103-? -> 40880|?|113990:1-?
+
+# Satsuriku no Tenshi -> ~ ONA
+- ?|13715|99629:13-16 -> ?|41963|104243:1-4
+
+# Ao Oni The Animation (Movie) -> ~
+- 33820|12478|21898:0 -> ~|~|~:1

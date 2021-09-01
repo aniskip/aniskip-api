@@ -6,7 +6,7 @@ import { Rule, SectionType } from './relation-rules.types';
 
 @Injectable()
 export class RelationRulesService {
-  rules: Record<number, Rule[]>;
+  private rules: Record<number, Rule[]>;
 
   version: string;
 
@@ -23,7 +23,7 @@ export class RelationRulesService {
   /**
    * Read and parse anime-relations rules.
    */
-  readRelations(): void {
+  private readRelations(): void {
     const animeRelationsFilePath =
       this.configService.get<RelationsConfig>('relations')?.filePath;
 
@@ -78,7 +78,7 @@ export class RelationRulesService {
    *
    * @param ruleString Rule as a string to parse.
    */
-  parseRule(ruleString: string): void {
+  private parseRule(ruleString: string): void {
     const idsPattern = /(\d+|[?~])\|(\d+|[?~])\|(\d+|[?~])/;
     const episodePattern = /(\d+|[?])(?:-(\d+|[?]))?/;
     const rulePattern = new RegExp(

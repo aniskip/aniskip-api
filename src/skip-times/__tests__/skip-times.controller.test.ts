@@ -84,6 +84,7 @@ describe('SkipTimesController', () => {
       body.voteType = voteType;
 
       const response = await skipTimesController.voteSkipTime(params, body);
+
       expect(response.message).toBeDefined();
       expect(response.statusCode).toBe(HttpStatus.CREATED);
     });
@@ -144,6 +145,7 @@ describe('SkipTimesController', () => {
       query.types = ['op', 'ed'];
 
       const response = await skipTimesController.getSkipTimes(params, query);
+
       expect(response.found).toBeTruthy();
       expect(response.message).toBeDefined();
       expect(response.results).toEqual(testSkipTimes);
@@ -188,6 +190,7 @@ describe('SkipTimesController', () => {
       body.submitterId = 'efb943b4-6869-4179-b3a6-81c5d97cf98b';
 
       const response = await skipTimesController.createSkipTime(params, body);
+
       expect(response.message).toBeDefined();
       expect(response.skipId).toBe(testSkipId);
       expect(response.statusCode).toBe(HttpStatus.CREATED);
