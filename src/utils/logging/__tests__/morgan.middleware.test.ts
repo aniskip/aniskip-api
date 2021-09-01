@@ -16,7 +16,7 @@ describe('MorganMiddleware', () => {
   });
 
   describe('GET /test', () => {
-    it('responds with hello world', (done) => {
+    it('should respond with hello world', (done) => {
       request(app.getHttpServer())
         .get('/test')
         .expect('hello world')

@@ -249,7 +249,7 @@ describe('SkipTimesService', () => {
       `);
     });
 
-    it('returns an opening skip time', async () => {
+    it('should return an opening skip time', async () => {
       const skipTime = await skipTimesRepository.findSkipTimes(1, 1, 'op');
 
       expect(skipTime).toEqual([
@@ -265,7 +265,7 @@ describe('SkipTimesService', () => {
       ]);
     });
 
-    it('returns an ending skip time', async () => {
+    it('should return an ending skip time', async () => {
       const skipTime = await skipTimesRepository.findSkipTimes(1, 1, 'ed');
 
       expect(skipTime).toEqual([
@@ -281,7 +281,7 @@ describe('SkipTimesService', () => {
       ]);
     });
 
-    it('returns no skip time', async () => {
+    it('should return no skip time', async () => {
       const skipTime = await skipTimesRepository.findSkipTimes(2, 1, 'ed');
 
       expect(skipTime).toEqual([]);

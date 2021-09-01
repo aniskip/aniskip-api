@@ -16,18 +16,18 @@ describe('MorganMiddleware', () => {
   });
 
   describe('GET /test/{animeId}/{episodeNumber}', () => {
-    it('responds with hello world', (done) => {
+    it('should respond with hello world', (done) => {
       request(app.getHttpServer())
         .post('/test/1/1')
         .expect('hello world')
         .expect(201, done);
     });
 
-    it('responds with rate limited', (done) => {
+    it('should respond with rate limited', (done) => {
       request(app.getHttpServer()).post('/test/1/1').expect(429, done);
     });
 
-    it('responds with hello world', (done) => {
+    it('should respond with hello world', (done) => {
       request(app.getHttpServer())
         .post('/test/2/1')
         .expect('hello world')

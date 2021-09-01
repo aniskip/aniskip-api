@@ -32,7 +32,7 @@ describe('VoteService', () => {
   });
 
   describe('autoVote', () => {
-    it("detects a bad skip time in a 'full' episode", async () => {
+    it("should detect a bad skip time in a 'full' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         0,
@@ -42,7 +42,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it("detects a bad skip time in a 'full' episode", async () => {
+    it("should detect a bad skip time in a 'full' episode", async () => {
       const votes = await votingService.autoVote(
         1,
         1.5,
@@ -52,7 +52,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it("detects a bad skip time in a 'full' episode", async () => {
+    it("should detect a bad skip time in a 'full' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         1000,
@@ -62,7 +62,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it("detects a bad skip time in a 'full' episode", async () => {
+    it("should detect a bad skip time in a 'full' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         1440,
@@ -72,7 +72,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it('detects a user with good reputation', async () => {
+    it('should detect a user with good reputation', async () => {
       const votes = await votingService.autoVote(
         130,
         210,
@@ -82,7 +82,7 @@ describe('VoteService', () => {
       expect(votes).toBe(1);
     });
 
-    it("detects a normal skip time in a 'full' episode", async () => {
+    it("should detect a normal skip time in a 'full' episode", async () => {
       const votes = await votingService.autoVote(
         130,
         210,
@@ -92,7 +92,7 @@ describe('VoteService', () => {
       expect(votes).toBe(0);
     });
 
-    it("detects a bad skip time in a 'short' episode", async () => {
+    it("should detect a bad skip time in a 'short' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         55,
@@ -102,7 +102,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it("detects a normal skip time in a 'short' episode", async () => {
+    it("should detect a normal skip time in a 'short' episode", async () => {
       const votes = await votingService.autoVote(
         30,
         55,
@@ -112,7 +112,7 @@ describe('VoteService', () => {
       expect(votes).toBe(0);
     });
 
-    it("detects a bad skip time in a 'half' episode", async () => {
+    it("should detect a bad skip time in a 'half' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         240,
@@ -122,7 +122,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it("detects a normal skip time in a 'half' episode", async () => {
+    it("should detect a normal skip time in a 'half' episode", async () => {
       const votes = await votingService.autoVote(
         100,
         160,
@@ -132,7 +132,7 @@ describe('VoteService', () => {
       expect(votes).toBe(0);
     });
 
-    it("detects a bad skip time in a 'movie' episode", async () => {
+    it("should detect a bad skip time in a 'movie' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         960,
@@ -142,7 +142,7 @@ describe('VoteService', () => {
       expect(votes).toBe(-10);
     });
 
-    it("detects a normal skip time in a 'movie' episode", async () => {
+    it("should detect a normal skip time in a 'movie' episode", async () => {
       const votes = await votingService.autoVote(
         0,
         420,

@@ -16,20 +16,20 @@ describe('MorganMiddleware', () => {
   });
 
   describe('GET /test/{skipId}', () => {
-    it('responds with hello world', (done) => {
+    it('should respond with hello world', (done) => {
       request(app.getHttpServer())
         .post('/test/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
         .expect('hello world')
         .expect(201, done);
     });
 
-    it('responds with rate limited', (done) => {
+    it('should respond with rate limited', (done) => {
       request(app.getHttpServer())
         .post('/test/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
         .expect(429, done);
     });
 
-    it('responds with hello world', (done) => {
+    it('should respond with hello world', (done) => {
       request(app.getHttpServer())
         .post('/test/aaaaaaaa-bbbb-cccc-dddd-ffffffffffff')
         .expect('hello world')
