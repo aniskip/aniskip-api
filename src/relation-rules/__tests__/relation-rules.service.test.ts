@@ -14,15 +14,6 @@ describe('RelationRulesService', () => {
         get: jest.fn(
           (): RelationsConfig => ({
             filePath: path.join(__dirname, 'anime-relations.test.txt'),
-            // filePath: path.join(
-            //   __dirname,
-            //   '..',
-            //   '..',
-            //   '..',
-            //   'deps',
-            //   'anime-relations',
-            //   'anime-relations.txt'
-            // ),
           })
         ),
       },
@@ -40,7 +31,7 @@ describe('RelationRulesService', () => {
     expect(relationRulesService).toBeDefined();
   });
 
-  it('reads no rules if file path is not defined', async () => {
+  it('should read no rules if file path is not defined', async () => {
     const mockConfigService = {
       provide: ConfigService,
       useValue: {
@@ -59,13 +50,13 @@ describe('RelationRulesService', () => {
   });
 
   describe('getRule', () => {
-    it('returns no rules', () => {
+    it('should return no rules', () => {
       const rules = relationRulesService.getRule(1);
 
       expect(rules).toEqual([]);
     });
 
-    it('returns a single episode rule', () => {
+    it('should return a single episode rule', () => {
       const rules = relationRulesService.getRule(6682);
 
       expect(rules).toEqual([
@@ -83,7 +74,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('returns a single episode rule with episode 0', () => {
+    it('should return a single episode rule with episode 0', () => {
       const rules = relationRulesService.getRule(18153);
 
       expect(rules).toEqual([
@@ -94,7 +85,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('returns a range rule', () => {
+    it('should return a range rule', () => {
       const rules = relationRulesService.getRule(31646);
 
       expect(rules).toEqual([
@@ -112,7 +103,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('returns a self redirecting rule', () => {
+    it('should return a self redirecting rule', () => {
       const rules = relationRulesService.getRule(31580);
 
       expect(rules).toEqual([
@@ -130,7 +121,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('returns a rule with an unknown ending range', () => {
+    it('should return a rule with an unknown ending range', () => {
       const rules = relationRulesService.getRule(37178);
 
       expect(rules).toEqual([
@@ -157,7 +148,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('returns a rule with from mal id is equal to to mal id', () => {
+    it('should return a rule with from mal id is equal to to mal id', () => {
       const rules = relationRulesService.getRule(33820);
 
       expect(rules).toEqual([
