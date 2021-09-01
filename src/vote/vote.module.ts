@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RepositoriesModule } from '../repositories';
+import { RepositoriesModule } from '../repositories/repositories.module';
 import { VoteService } from './vote.service';
 
 @Module({
