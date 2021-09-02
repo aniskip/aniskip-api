@@ -1,7 +1,7 @@
 #!/bin/bash
 
 main () {
-  if [ "$#" -ne 1 ] || [ "$1" != "prod" ] && [ "$1" != "prod-local" ] && [ "$1" != "dev" ] && [ "$1" != "test" ]; then
+  if [ "$#" -ne 1 ] || [ "$1" != "prod" ] && [ "$1" != "prod-local" ] && [ "$1" != "dev" ]; then
     echo "Usage: $0 TYPE"
     echo "Start the aniskip api using docker"
     echo
@@ -9,7 +9,6 @@ main () {
     echo "  prod: deploying for production"
     echo "  prod-local: start production build locally"
     echo "  dev: start development build"
-    echo "  test: run tests"
     return 1
   fi
 
@@ -25,10 +24,6 @@ main () {
       ;;
     "dev")
       docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml -f ./docker-compose.dev.yml up --build -d
-      ;;
-    "test")
-      docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml -f ./docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from api
-      docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml -f ./docker-compose.test.yml rm --force -v test_db
       ;;
   esac
 }

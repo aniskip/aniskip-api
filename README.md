@@ -6,7 +6,7 @@ API for Aniskip web browser extension
 
 ### API Documentation
 
-The documentation for the API can be found at [`https://api.aniskip.com/v1/api-docs`](https://api.aniskip.com/v1/api-docs)
+The documentation for the API can be found at [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/api-docs)
 
 ### Running the API
 
@@ -29,6 +29,7 @@ The built images for this project can be found on [Docker Hub](https://hub.docke
 1. Add TLS/SSL using a reverse proxy. You can use reverse proxy software like `traefik` or `NGINX`. You can easily create an `NGINX` config [here](https://www.digitalocean.com/community/tools/nginx)
 
 #### Running the API for development
+
 1. Clone the repo
    ```
    git clone https://github.com/lexesjan/typescript-aniskip-api
