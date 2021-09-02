@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import {
@@ -42,10 +35,6 @@ export class RelationRulesControllerV1 {
     const found = episodeRules.length !== 0;
     response.found = found;
     response.rules = episodeRules;
-
-    if (!found) {
-      throw new HttpException(response, HttpStatus.OK);
-    }
 
     return response;
   }
