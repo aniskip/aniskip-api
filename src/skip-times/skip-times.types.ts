@@ -10,6 +10,16 @@ export type SkipTime = {
   episodeLength: number;
 };
 
+export type SnakeCaseSkipTime = {
+  interval: {
+    start_time: number;
+    end_time: number;
+  };
+  skip_type: SkipType;
+  skip_id: string;
+  episode_length: number;
+};
+
 export type DatabaseSkipTime = {
   start_time: number;
   end_time: number;
