@@ -2,8 +2,8 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import {
-  PostSkipTimesThrottlerGuard,
-  PostVoteSkipTimesThrottlerGuard,
+  PostSkipTimesV2ThrottlerGuard,
+  PostVoteSkipTimesV1ThrottlerGuard,
 } from '../../utils';
 import {
   GetSkipTimesRequestParamsV2,
@@ -32,7 +32,7 @@ describe('SkipTimesControllerV2', () => {
     };
 
     const mockPostVoteSkipTimesThrottlerGuardProvider = {
-      provide: PostVoteSkipTimesThrottlerGuard,
+      provide: PostVoteSkipTimesV1ThrottlerGuard,
       useValue: { canActivate: jest.fn(() => true) },
     };
 
@@ -42,7 +42,7 @@ describe('SkipTimesControllerV2', () => {
     };
 
     const mockPostSkipTimesThrottlerGuardProvider = {
-      provide: PostSkipTimesThrottlerGuard,
+      provide: PostSkipTimesV2ThrottlerGuard,
       useValue: { canActivate: jest.fn(() => true) },
     };
 
