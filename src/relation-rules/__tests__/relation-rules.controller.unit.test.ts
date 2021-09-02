@@ -3,7 +3,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { RelationRulesService } from '../relation-rules.service';
 import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
-import { GetRelationRulesRequestParams } from '../models';
+import { GetRelationRulesRequestParamsV2 } from '../models';
 
 describe('RelationRulesController', () => {
   let relationRulesController: RelationRulesControllerV2;
@@ -57,7 +57,7 @@ describe('RelationRulesController', () => {
         .spyOn(relationRulesService, 'getRule')
         .mockImplementation(() => testRules);
 
-      const params = new GetRelationRulesRequestParams();
+      const params = new GetRelationRulesRequestParamsV2();
       params.animeId = 1;
 
       const response = relationRulesController.getRules(params);
@@ -71,7 +71,7 @@ describe('RelationRulesController', () => {
     it('should return no rules', () => {
       jest.spyOn(relationRulesService, 'getRule').mockImplementation(() => []);
 
-      const params = new GetRelationRulesRequestParams();
+      const params = new GetRelationRulesRequestParamsV2();
       params.animeId = 1;
 
       expect(() => relationRulesController.getRules(params)).toThrow(

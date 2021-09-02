@@ -1,1 +1,1 @@
-export * from './get-relation-rules';
+export * from './v2';

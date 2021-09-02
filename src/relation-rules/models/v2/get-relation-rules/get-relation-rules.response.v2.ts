@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Rule } from 'src/relation-rules/relation-rules.types';
 
-export class GetRelationRulesResponse {
+export class GetRelationRulesResponseV2 {
   @ApiProperty()
   statusCode!: number;
 

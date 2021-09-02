@@ -9,8 +9,8 @@ import {
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import {
-  GetRelationRulesRequestParams,
-  GetRelationRulesResponse,
+  GetRelationRulesRequestParamsV2,
+  GetRelationRulesResponseV2,
 } from './models';
 import { RelationRulesService } from './relation-rules.service';
 
@@ -30,15 +30,15 @@ export class RelationRulesControllerV2 {
     description: 'Retrieves anime episode number redirection rules',
   })
   @ApiOkResponse({
-    type: GetRelationRulesResponse,
+    type: GetRelationRulesResponseV2,
     description: 'Rules object',
   })
   getRules(
-    @Param() params: GetRelationRulesRequestParams
-  ): GetRelationRulesResponse {
+    @Param() params: GetRelationRulesRequestParamsV2
+  ): GetRelationRulesResponseV2 {
     const episodeRules = this.relationRulesService.getRule(params.animeId);
 
-    const response = new GetRelationRulesResponse();
+    const response = new GetRelationRulesResponseV2();
     const found = episodeRules.length !== 0;
     response.statusCode = found ? HttpStatus.OK : HttpStatus.NOT_FOUND;
     response.message = found
