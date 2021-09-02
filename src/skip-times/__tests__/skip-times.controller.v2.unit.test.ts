@@ -17,7 +17,7 @@ import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
 import { SkipTimesService } from '../skip-times.service';
 import { SkipTime } from '../skip-times.types';
 
-describe('SkipTimesController', () => {
+describe('SkipTimesControllerV2', () => {
   let skipTimesController: SkipTimesControllerV2;
   let skipTimesService: SkipTimesService;
 

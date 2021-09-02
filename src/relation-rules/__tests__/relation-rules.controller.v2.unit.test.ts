@@ -5,7 +5,7 @@ import { RelationRulesService } from '../relation-rules.service';
 import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
 import { GetRelationRulesRequestParamsV2 } from '../models';
 
-describe('RelationRulesController', () => {
+describe('RelationRulesControllerV2', () => {
   let relationRulesController: RelationRulesControllerV2;
   let relationRulesService: RelationRulesService;
 

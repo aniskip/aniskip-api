@@ -7,7 +7,7 @@ import { Config, config } from '../../config';
 import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
 import { RelationRulesService } from '../relation-rules.service';
 
-describe('RelationRulesController', () => {
+describe('RelationRulesControllerV2', () => {
   let app: INestApplication;
 
   beforeAll(async () => {

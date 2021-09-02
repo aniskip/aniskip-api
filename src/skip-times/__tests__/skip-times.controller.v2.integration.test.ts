@@ -10,7 +10,7 @@ import { SkipTimesService } from '../skip-times.service';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
 
-describe('SkipTimesController', () => {
+describe('SkipTimesControllerV2', () => {
   let app: INestApplication;
   let database: IMemoryDb;
   let databaseBackup: IBackup;
