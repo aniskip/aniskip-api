@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { HttpException } from '@nestjs/common';
 import { RelationRulesService } from '../relation-rules.service';
 import { RelationRulesControllerV1 } from '../relation-rules.controller.v1';
 import { GetRelationRulesRequestParamsV1 } from '../models';
@@ -72,9 +71,10 @@ describe('RelationRulesControllerV1', () => {
       const params = new GetRelationRulesRequestParamsV1();
       params.anime_id = 1;
 
-      expect(() => relationRulesController.getRules(params)).toThrow(
-        HttpException
-      );
+      const response = relationRulesController.getRules(params);
+
+      expect(response.found).toBeFalsy();
+      expect(response.rules).toEqual([]);
     });
   });
 });
