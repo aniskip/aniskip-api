@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
 import * as request from 'supertest';
-import { SkipTimesControllerV1 } from '../skip-times.controller';
+import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
 import { SkipTimesService } from '../skip-times.service';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
@@ -59,7 +59,7 @@ describe('SkipTimesController', () => {
 
     const module = await Test.createTestingModule({
       imports: [ThrottlerModule.forRoot()],
-      controllers: [SkipTimesControllerV1],
+      controllers: [SkipTimesControllerV2],
       providers: [
         mockPoolProvider,
         SkipTimesRepository,

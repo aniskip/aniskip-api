@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SkipTime } from '../../skip-times.types';
+import { SkipTime } from '../../../skip-times.types';
 
-export class GetSkipTimesResponse {
+export class GetSkipTimesResponseV2 {
   @ApiProperty()
   statusCode!: number;
 

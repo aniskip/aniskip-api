@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsIn } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { SkipType } from '../../skip-times.types';
-import { IsUnique } from '../../../utils';
+import { SkipType } from '../../../skip-times.types';
+import { IsUnique } from '../../../../utils';
 
-export class GetSkipTimesRequestQuery {
+export class GetSkipTimesRequestQueryV2 {
   @IsUnique()
   @IsArray()
   @IsIn(['op', 'ed'], { each: true })

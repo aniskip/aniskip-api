@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PostVoteResponse {
+export class PostVoteResponseV2 {
   @ApiProperty()
   statusCode!: number;
 

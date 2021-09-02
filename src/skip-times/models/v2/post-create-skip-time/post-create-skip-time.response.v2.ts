@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PostCreateSkipTimeResponse {
+export class PostCreateSkipTimeResponseV2 {
   @ApiProperty()
   statusCode!: number;
 

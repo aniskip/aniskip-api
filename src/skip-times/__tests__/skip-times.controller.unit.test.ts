@@ -6,19 +6,19 @@ import {
   PostVoteSkipTimesThrottlerGuard,
 } from '../../utils';
 import {
-  GetSkipTimesRequestParams,
-  GetSkipTimesRequestQuery,
-  PostCreateSkipTimeRequestBody,
-  PostCreateSkipTimeRequestParams,
-  PostVoteRequestBody,
-  PostVoteRequestParams,
+  GetSkipTimesRequestParamsV2,
+  GetSkipTimesRequestQueryV2,
+  PostCreateSkipTimeRequestBodyV2,
+  PostCreateSkipTimeRequestParamsV2,
+  PostVoteRequestBodyV2,
+  PostVoteRequestParamsV2,
 } from '../models';
-import { SkipTimesControllerV1 } from '../skip-times.controller';
+import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
 import { SkipTimesService } from '../skip-times.service';
 import { SkipTime } from '../skip-times.types';
 
 describe('SkipTimesController', () => {
-  let skipTimesController: SkipTimesControllerV1;
+  let skipTimesController: SkipTimesControllerV2;
   let skipTimesService: SkipTimesService;
 
   beforeEach(async () => {
@@ -48,7 +48,7 @@ describe('SkipTimesController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [ThrottlerModule.forRoot()],
-      controllers: [SkipTimesControllerV1],
+      controllers: [SkipTimesControllerV2],
       providers: [
         mockSkipTimesServiceProvider,
         mockPostVoteSkipTimesThrottlerGuardProvider,
@@ -57,8 +57,8 @@ describe('SkipTimesController', () => {
       ],
     }).compile();
 
-    skipTimesController = module.get<SkipTimesControllerV1>(
-      SkipTimesControllerV1
+    skipTimesController = module.get<SkipTimesControllerV2>(
+      SkipTimesControllerV2
     );
     skipTimesService = module.get<SkipTimesService>(SkipTimesService);
   });
@@ -77,10 +77,10 @@ describe('SkipTimesController', () => {
         .spyOn(skipTimesService, 'voteSkipTime')
         .mockImplementation(() => Promise.resolve(true));
 
-      const params = new PostVoteRequestParams();
+      const params = new PostVoteRequestParamsV2();
       params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-      const body = new PostVoteRequestBody();
+      const body = new PostVoteRequestBodyV2();
       body.voteType = voteType;
 
       const response = await skipTimesController.voteSkipTime(params, body);
@@ -98,10 +98,10 @@ describe('SkipTimesController', () => {
         .spyOn(skipTimesService, 'voteSkipTime')
         .mockImplementation(() => Promise.resolve(false));
 
-      const params = new PostVoteRequestParams();
+      const params = new PostVoteRequestParamsV2();
       params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-      const body = new PostVoteRequestBody();
+      const body = new PostVoteRequestBodyV2();
       body.voteType = voteType;
 
       await expect(
@@ -137,11 +137,11 @@ describe('SkipTimesController', () => {
         .spyOn(skipTimesService, 'findSkipTimes')
         .mockImplementation(() => Promise.resolve(testSkipTimes));
 
-      const params = new GetSkipTimesRequestParams();
+      const params = new GetSkipTimesRequestParamsV2();
       params.animeId = 40028;
       params.episodeNumber = 1;
 
-      const query = new GetSkipTimesRequestQuery();
+      const query = new GetSkipTimesRequestQueryV2();
       query.types = ['op', 'ed'];
 
       const response = await skipTimesController.getSkipTimes(params, query);
@@ -157,11 +157,11 @@ describe('SkipTimesController', () => {
         .spyOn(skipTimesService, 'findSkipTimes')
         .mockImplementation(() => Promise.resolve([]));
 
-      const params = new GetSkipTimesRequestParams();
+      const params = new GetSkipTimesRequestParamsV2();
       params.animeId = 40028;
       params.episodeNumber = 1;
 
-      const query = new GetSkipTimesRequestQuery();
+      const query = new GetSkipTimesRequestQueryV2();
       query.types = ['op', 'ed'];
 
       await expect(
@@ -178,11 +178,11 @@ describe('SkipTimesController', () => {
         .spyOn(skipTimesService, 'createSkipTime')
         .mockImplementation(() => Promise.resolve(testSkipId));
 
-      const params = new PostCreateSkipTimeRequestParams();
+      const params = new PostCreateSkipTimeRequestParamsV2();
       params.animeId = 40028;
       params.episodeNumber = 1;
 
-      const body = new PostCreateSkipTimeRequestBody();
+      const body = new PostCreateSkipTimeRequestBodyV2();
       body.startTime = 21.5;
       body.endTime = 112.25;
       body.skipType = 'op';
@@ -201,11 +201,11 @@ describe('SkipTimesController', () => {
         throw new Error();
       });
 
-      const params = new PostCreateSkipTimeRequestParams();
+      const params = new PostCreateSkipTimeRequestParamsV2();
       params.animeId = 40028;
       params.episodeNumber = 1;
 
-      const body = new PostCreateSkipTimeRequestBody();
+      const body = new PostCreateSkipTimeRequestBodyV2();
       body.startTime = 21.5;
       body.endTime = 112.25;
       body.skipType = 'op';

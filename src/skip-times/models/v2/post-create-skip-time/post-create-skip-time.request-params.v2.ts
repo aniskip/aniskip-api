@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsInt, IsNumber, Min } from 'class-validator';
 
-export class PostCreateSkipTimeRequestParams {
+export class PostCreateSkipTimeRequestParamsV2 {
   @IsInt()
   @Min(1)
   @Type(() => Number)

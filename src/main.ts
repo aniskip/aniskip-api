@@ -29,7 +29,7 @@ async function bootstrap(): Promise<void> {
     .addServer(server)
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('v1/api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(5000);
 }

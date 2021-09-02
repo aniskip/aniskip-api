@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID } from 'class-validator';
 
-export class PostVoteRequestParams {
+export class PostVoteRequestParamsV2 {
   @IsUUID()
   @ApiProperty({
     type: String,
