@@ -35,10 +35,10 @@ import { SkipTimesService } from './skip-times.service';
 
 @Controller({
   path: 'skip-times',
-  version: '1',
+  version: '2',
 })
 @ApiTags('skip-times')
-export class SkipTimesControllerV1 {
+export class SkipTimesControllerV2 {
   constructor(private skipTimesService: SkipTimesService) {}
 
   @UseGuards(PostVoteSkipTimesThrottlerGuard)

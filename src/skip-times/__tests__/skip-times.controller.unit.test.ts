@@ -13,12 +13,12 @@ import {
   PostVoteRequestBody,
   PostVoteRequestParams,
 } from '../models';
-import { SkipTimesControllerV1 } from '../skip-times.controller';
+import { SkipTimesControllerV2 } from '../skip-times.controller';
 import { SkipTimesService } from '../skip-times.service';
 import { SkipTime } from '../skip-times.types';
 
 describe('SkipTimesController', () => {
-  let skipTimesController: SkipTimesControllerV1;
+  let skipTimesController: SkipTimesControllerV2;
   let skipTimesService: SkipTimesService;
 
   beforeEach(async () => {
@@ -48,7 +48,7 @@ describe('SkipTimesController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [ThrottlerModule.forRoot()],
-      controllers: [SkipTimesControllerV1],
+      controllers: [SkipTimesControllerV2],
       providers: [
         mockSkipTimesServiceProvider,
         mockPostVoteSkipTimesThrottlerGuardProvider,
@@ -57,8 +57,8 @@ describe('SkipTimesController', () => {
       ],
     }).compile();
 
-    skipTimesController = module.get<SkipTimesControllerV1>(
-      SkipTimesControllerV1
+    skipTimesController = module.get<SkipTimesControllerV2>(
+      SkipTimesControllerV2
     );
     skipTimesService = module.get<SkipTimesService>(SkipTimesService);
   });

@@ -16,10 +16,10 @@ import { RelationRulesService } from './relation-rules.service';
 
 @Controller({
   path: 'relation-rules',
-  version: '1',
+  version: '2',
 })
 @ApiTags('relation-rules')
-export class RelationRulesControllerV1 {
+export class RelationRulesControllerV2 {
   constructor(private relationRulesService: RelationRulesService) {}
 
   @UseGuards(ThrottlerGuard)

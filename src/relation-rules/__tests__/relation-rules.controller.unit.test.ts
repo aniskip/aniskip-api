@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { RelationRulesService } from '../relation-rules.service';
-import { RelationRulesControllerV1 } from '../relation-rules.controller';
+import { RelationRulesControllerV2 } from '../relation-rules.controller';
 import { GetRelationRulesRequestParams } from '../models';
 
 describe('RelationRulesController', () => {
-  let relationRulesController: RelationRulesControllerV1;
+  let relationRulesController: RelationRulesControllerV2;
   let relationRulesService: RelationRulesService;
 
   beforeEach(async () => {
@@ -22,12 +22,12 @@ describe('RelationRulesController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       imports: [ThrottlerModule.forRoot()],
-      controllers: [RelationRulesControllerV1],
+      controllers: [RelationRulesControllerV2],
       providers: [mockThrottlerGuardProvider, mockRelationRulesServiceProvider],
     }).compile();
 
-    relationRulesController = module.get<RelationRulesControllerV1>(
-      RelationRulesControllerV1
+    relationRulesController = module.get<RelationRulesControllerV2>(
+      RelationRulesControllerV2
     );
     relationRulesService =
       module.get<RelationRulesService>(RelationRulesService);

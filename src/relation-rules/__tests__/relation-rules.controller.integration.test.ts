@@ -4,7 +4,7 @@ import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
 import * as request from 'supertest';
 import { Config, config } from '../../config';
-import { RelationRulesControllerV1 } from '../relation-rules.controller';
+import { RelationRulesControllerV2 } from '../relation-rules.controller';
 import { RelationRulesService } from '../relation-rules.service';
 
 describe('RelationRulesController', () => {
@@ -20,7 +20,7 @@ describe('RelationRulesController', () => {
         ConfigModule.forRoot({ load: [partialConfig] }),
         ThrottlerModule.forRoot(),
       ],
-      controllers: [RelationRulesControllerV1],
+      controllers: [RelationRulesControllerV2],
       providers: [RelationRulesService],
     }).compile();
 
