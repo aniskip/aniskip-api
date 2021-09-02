@@ -18,7 +18,7 @@ import {
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import {
   PostSkipTimesV2ThrottlerGuard,
-  PostVoteSkipTimesV1ThrottlerGuard,
+  PostVoteSkipTimesV2ThrottlerGuard,
 } from '../utils';
 import {
   GetSkipTimesRequestParamsV2,
@@ -41,7 +41,7 @@ import { SkipTimesService } from './skip-times.service';
 export class SkipTimesControllerV2 {
   constructor(private skipTimesService: SkipTimesService) {}
 
-  @UseGuards(PostVoteSkipTimesV1ThrottlerGuard)
+  @UseGuards(PostVoteSkipTimesV2ThrottlerGuard)
   // Maximum 4 times in 1 hour.
   @Throttle(4, 60 * 60)
   @Post('/vote/:skipId')
