@@ -19,27 +19,27 @@ export class GetSkipTimesResponseV2 {
         interval: {
           type: 'object',
           properties: {
-            start_time: {
+            startTime: {
               type: 'number',
               format: 'double',
               minimum: 0,
             },
-            end_time: {
+            endTime: {
               type: 'number',
               format: 'double',
               minimum: 0,
             },
           },
         },
-        skip_type: {
+        skipType: {
           type: 'string',
           enum: ['op', 'ed'],
         },
-        skip_id: {
+        skipId: {
           type: 'string',
           format: 'uuid',
         },
-        episode_length: {
+        episodeLength: {
           type: 'number',
           format: 'double',
           minimum: 0,
