@@ -11,7 +11,7 @@ import { RelationRulesService } from './relation-rules.service';
   path: 'rules',
   version: '1',
 })
-@ApiTags('rules')
+@ApiTags('relation-rules')
 export class RelationRulesControllerV1 {
   constructor(private relationRulesService: RelationRulesService) {}
 
