@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SnakeCaseSkipTime } from '..';
 import {
-  PostSkipTimesV2ThrottlerGuard,
+  PostSkipTimesV1ThrottlerGuard,
   PostVoteSkipTimesV1ThrottlerGuard,
 } from '../../utils';
 import {
@@ -43,7 +43,7 @@ describe('SkipTimesControllerV1', () => {
     };
 
     const mockPostSkipTimesThrottlerGuardProvider = {
-      provide: PostSkipTimesV2ThrottlerGuard,
+      provide: PostSkipTimesV1ThrottlerGuard,
       useValue: { canActivate: jest.fn(() => true) },
     };
 

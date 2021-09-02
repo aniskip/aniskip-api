@@ -12,24 +12,25 @@ describe('PostSkipTimesV1ThrottlerGuard', () => {
     }).compile();
 
     app = module.createNestApplication();
+    app.enableVersioning();
     await app.init();
   });
 
-  describe('GET /test/{animeId}/{episodeNumber}', () => {
+  describe('GET /v1/test/{anime_id}/{episode_number}', () => {
     it('should respond with hello world', (done) => {
       request(app.getHttpServer())
-        .post('/test/1/1')
+        .post('/v1/test/1/1')
         .expect('hello world')
         .expect(201, done);
     });
 
     it('should respond with rate limited', (done) => {
-      request(app.getHttpServer()).post('/test/1/1').expect(429, done);
+      request(app.getHttpServer()).post('/v1/test/1/1').expect(429, done);
     });
 
     it('should respond with hello world', (done) => {
       request(app.getHttpServer())
-        .post('/test/2/1')
+        .post('/v1/test/2/1')
         .expect('hello world')
         .expect(201, done);
     });

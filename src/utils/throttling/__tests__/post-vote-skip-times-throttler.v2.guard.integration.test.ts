@@ -12,26 +12,27 @@ describe('PostVoteSkipTimesV2ThrottlerGuard', () => {
     }).compile();
 
     app = module.createNestApplication();
+    app.enableVersioning();
     await app.init();
   });
 
-  describe('GET /test/{skipId}', () => {
+  describe('GET /v2/test/{skipId}', () => {
     it('should respond with hello world', (done) => {
       request(app.getHttpServer())
-        .post('/test/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
+        .post('/v2/test/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
         .expect('hello world')
         .expect(201, done);
     });
 
     it('should respond with rate limited', (done) => {
       request(app.getHttpServer())
-        .post('/test/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
+        .post('/v2/test/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee')
         .expect(429, done);
     });
 
     it('should respond with hello world', (done) => {
       request(app.getHttpServer())
-        .post('/test/aaaaaaaa-bbbb-cccc-dddd-ffffffffffff')
+        .post('/v2/test/aaaaaaaa-bbbb-cccc-dddd-ffffffffffff')
         .expect('hello world')
         .expect(201, done);
     });

@@ -17,8 +17,8 @@ import {
 } from '@nestjs/swagger';
 import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import {
-  PostSkipTimesV2ThrottlerGuard,
-  PostVoteSkipTimesV2ThrottlerGuard,
+  PostSkipTimesV1ThrottlerGuard,
+  PostVoteSkipTimesV1ThrottlerGuard,
 } from '../utils';
 import {
   GetSkipTimesRequestParamsV1,
@@ -41,7 +41,7 @@ import { SkipTimesService } from './skip-times.service';
 export class SkipTimesControllerV1 {
   constructor(private skipTimesService: SkipTimesService) {}
 
-  @UseGuards(PostVoteSkipTimesV2ThrottlerGuard)
+  @UseGuards(PostVoteSkipTimesV1ThrottlerGuard)
   // Maximum 4 times in 1 hour.
   @Throttle(4, 60 * 60)
   @Post('/vote/:skip_id')
@@ -109,7 +109,7 @@ export class SkipTimesControllerV1 {
     return response;
   }
 
-  @UseGuards(PostSkipTimesV2ThrottlerGuard)
+  @UseGuards(PostSkipTimesV1ThrottlerGuard)
   // Maximum 10 times in 1 day.
   @Throttle(10, 60 * 60 * 24)
   @Post('/:anime_id/:episode_number')
