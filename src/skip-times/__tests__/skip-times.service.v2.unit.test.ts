@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SkipType } from '../skip-times.types';
+import { SkipTypeV1 } from '../skip-times.types';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../../vote';
-import { SkipTimesService } from '../skip-times.service';
+import { SkipTimesServiceV2 } from '../skip-times.service.v2';
 
 describe('SkipTimesService', () => {
-  let skipTimesService: SkipTimesService;
+  let skipTimesService: SkipTimesServiceV2;
   let skipTimesRepository: SkipTimesRepository;
   let voteService: VoteService;
 
@@ -30,11 +30,11 @@ describe('SkipTimesService', () => {
       providers: [
         mockSkipTimesRepositoryProvider,
         mockVoteServiceProvider,
-        SkipTimesService,
+        SkipTimesServiceV2,
       ],
     }).compile();
 
-    skipTimesService = module.get<SkipTimesService>(SkipTimesService);
+    skipTimesService = module.get<SkipTimesServiceV2>(SkipTimesServiceV2);
     skipTimesRepository = module.get<SkipTimesRepository>(SkipTimesRepository);
     voteService = module.get<VoteService>(VoteService);
   });
@@ -84,7 +84,7 @@ describe('SkipTimesService', () => {
       const skipTime = {
         anime_id: 3,
         episode_number: 2,
-        skip_type: 'op' as SkipType,
+        skip_type: 'op' as SkipTypeV1,
         provider_name: 'ProviderName',
         start_time: 37.75,
         end_time: 128.1,
@@ -106,7 +106,7 @@ describe('SkipTimesService', () => {
             startTime: 208,
             endTime: 298.556,
           },
-          skipType: 'op' as SkipType,
+          skipType: 'op' as SkipTypeV1,
           skipId: 'c9dfd857-0351-4a90-b37e-582a44253910',
           episodeLength: 1435.122,
         },
@@ -115,7 +115,7 @@ describe('SkipTimesService', () => {
             startTime: 173.75,
             endTime: 269.39,
           },
-          skipType: 'op' as SkipType,
+          skipType: 'op' as SkipTypeV1,
           skipId: 'd468dafe-3e00-4a9c-8da3-e294141526eb',
           episodeLength: 1435.122,
         },
@@ -138,7 +138,7 @@ describe('SkipTimesService', () => {
             startTime: 208,
             endTime: 298.556,
           },
-          skipType: 'ed' as SkipType,
+          skipType: 'ed' as SkipTypeV1,
           skipId: 'c9dfd857-0351-4a90-b37e-582a44253910',
           episodeLength: 1435.122,
         },
@@ -147,7 +147,7 @@ describe('SkipTimesService', () => {
             startTime: 173.75,
             endTime: 269.39,
           },
-          skipType: 'op' as SkipType,
+          skipType: 'op' as SkipTypeV1,
           skipId: 'd468dafe-3e00-4a9c-8da3-e294141526eb',
           episodeLength: 1435.122,
         },
@@ -170,7 +170,7 @@ describe('SkipTimesService', () => {
             startTime: 208,
             endTime: 298.556,
           },
-          skipType: 'op' as SkipType,
+          skipType: 'op' as SkipTypeV1,
           skipId: 'c9dfd857-0351-4a90-b37e-582a44253910',
           episodeLength: 1435.122,
         },
@@ -179,7 +179,7 @@ describe('SkipTimesService', () => {
             startTime: 173.75,
             endTime: 269.39,
           },
-          skipType: 'ed' as SkipType,
+          skipType: 'ed' as SkipTypeV1,
           skipId: 'd468dafe-3e00-4a9c-8da3-e294141526eb',
           episodeLength: 1435.122,
         },

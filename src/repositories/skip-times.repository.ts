@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
 import {
-  DatabaseSkipTime,
-  SkipTime,
   CreateSkipTimesQueryResponse,
-  SkipType,
+  DatabaseSkipTime,
   GetAverageOfLastTenSkipTimesVotesQueryResponse,
+  SkipTimeV2,
+  SkipTypeV2,
 } from '../skip-times/skip-times.types';
 
 @Injectable()
@@ -95,8 +95,8 @@ export class SkipTimesRepository {
   async findSkipTimes(
     animeId: number,
     episodeNumber: number,
-    skipType: SkipType
-  ): Promise<SkipTime[]> {
+    skipType: SkipTypeV2
+  ): Promise<SkipTimeV2[]> {
     const { rows } = await this.database.query<DatabaseSkipTime>(
       `
       SELECT
@@ -119,7 +119,7 @@ export class SkipTimesRepository {
       [animeId, episodeNumber, skipType]
     );
 
-    const skipTimes: SkipTime[] = rows.map((row) => ({
+    const skipTimes: SkipTimeV2[] = rows.map((row) => ({
       interval: {
         startTime: row.start_time,
         endTime: row.end_time,

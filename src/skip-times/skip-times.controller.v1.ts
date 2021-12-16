@@ -31,7 +31,7 @@ import {
   PostVoteRequestParamsV1,
   PostVoteResponseV1,
 } from './models';
-import { SkipTimesService } from './skip-times.service';
+import { SkipTimesServiceV1 } from './skip-times.service.v1';
 
 @Controller({
   path: 'skip-times',
@@ -39,7 +39,7 @@ import { SkipTimesService } from './skip-times.service';
 })
 @ApiTags('skip-times')
 export class SkipTimesControllerV1 {
-  constructor(private skipTimesService: SkipTimesService) {}
+  constructor(private skipTimesService: SkipTimesServiceV1) {}
 
   @UseGuards(PostVoteSkipTimesV1ThrottlerGuard)
   // Maximum 4 times in 1 hour.
@@ -96,15 +96,7 @@ export class SkipTimesControllerV1 {
 
     const response = new GetSkipTimesResponseV1();
     response.found = skipTimes.length !== 0;
-    response.results = skipTimes.map((skipTime) => ({
-      interval: {
-        start_time: skipTime.interval.startTime,
-        end_time: skipTime.interval.endTime,
-      },
-      episode_length: skipTime.episodeLength,
-      skip_id: skipTime.skipId,
-      skip_type: skipTime.skipType,
-    }));
+    response.results = skipTimes;
 
     return response;
   }

@@ -14,16 +14,16 @@ import {
   PostVoteRequestParamsV2,
 } from '../models';
 import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
-import { SkipTimesService } from '../skip-times.service';
-import { SkipTime } from '../skip-times.types';
+import { SkipTimesServiceV2 } from '../skip-times.service.v2';
+import { SkipTimeV2 } from '../skip-times.types';
 
 describe('SkipTimesControllerV2', () => {
   let skipTimesController: SkipTimesControllerV2;
-  let skipTimesService: SkipTimesService;
+  let skipTimesService: SkipTimesServiceV2;
 
   beforeEach(async () => {
     const mockSkipTimesServiceProvider = {
-      provide: SkipTimesService,
+      provide: SkipTimesServiceV2,
       useValue: {
         voteSkipTime: jest.fn(),
         createSkipTime: jest.fn(),
@@ -60,7 +60,7 @@ describe('SkipTimesControllerV2', () => {
     skipTimesController = module.get<SkipTimesControllerV2>(
       SkipTimesControllerV2
     );
-    skipTimesService = module.get<SkipTimesService>(SkipTimesService);
+    skipTimesService = module.get<SkipTimesServiceV2>(SkipTimesServiceV2);
   });
 
   it('should be defined', () => {
@@ -112,7 +112,7 @@ describe('SkipTimesControllerV2', () => {
 
   describe('getSkipTimes', () => {
     it('should return skip times', async () => {
-      const testSkipTimes: SkipTime[] = [
+      const testSkipTimes: SkipTimeV2[] = [
         {
           interval: {
             startTime: 21.5,

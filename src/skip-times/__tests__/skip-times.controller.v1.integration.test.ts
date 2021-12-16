@@ -6,7 +6,7 @@ import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
 import * as request from 'supertest';
 import { SkipTimesControllerV1 } from '../skip-times.controller.v1';
-import { SkipTimesService } from '../skip-times.service';
+import { SkipTimesServiceV1 } from '../skip-times.service.v1';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
 
@@ -46,6 +46,20 @@ describe('SkipTimesControllerV1', () => {
         CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
+
+      ${/* migration 1 */ ''}
+
+      ALTER TABLE skip_times
+        DROP CONSTRAINT check_type;
+
+      ALTER TABLE skip_times
+        ADD CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed', 'mixed-op', 'mixed-ed', 'recap'));
+
+      ALTER TABLE skip_times
+        ALTER COLUMN skip_type TYPE VARCHAR(32) SET NOT NULL;
+
+      ALTER TABLE skip_times
+        ALTER COLUMN skip_type SET NOT NULL;
     `);
 
     databaseBackup = database.backup();
@@ -64,7 +78,7 @@ describe('SkipTimesControllerV1', () => {
         mockPoolProvider,
         SkipTimesRepository,
         VoteService,
-        SkipTimesService,
+        SkipTimesServiceV1,
       ],
     }).compile();
 

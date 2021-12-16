@@ -1,7 +1,7 @@
 import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { SnakeCaseSkipTime } from '..';
+import { SkipTimeV1 } from '..';
 import {
   PostSkipTimesV1ThrottlerGuard,
   PostVoteSkipTimesV1ThrottlerGuard,
@@ -15,16 +15,15 @@ import {
   PostVoteRequestParamsV1,
 } from '../models';
 import { SkipTimesControllerV1 } from '../skip-times.controller.v1';
-import { SkipTimesService } from '../skip-times.service';
-import { SkipTime } from '../skip-times.types';
+import { SkipTimesServiceV1 } from '../skip-times.service.v1';
 
 describe('SkipTimesControllerV1', () => {
   let skipTimesController: SkipTimesControllerV1;
-  let skipTimesService: SkipTimesService;
+  let skipTimesService: SkipTimesServiceV1;
 
   beforeEach(async () => {
     const mockSkipTimesServiceProvider = {
-      provide: SkipTimesService,
+      provide: SkipTimesServiceV1,
       useValue: {
         voteSkipTime: jest.fn(),
         createSkipTime: jest.fn(),
@@ -61,7 +60,7 @@ describe('SkipTimesControllerV1', () => {
     skipTimesController = module.get<SkipTimesControllerV1>(
       SkipTimesControllerV1
     );
-    skipTimesService = module.get<SkipTimesService>(SkipTimesService);
+    skipTimesService = module.get<SkipTimesServiceV1>(SkipTimesServiceV1);
   });
 
   it('should be defined', () => {
@@ -112,28 +111,7 @@ describe('SkipTimesControllerV1', () => {
 
   describe('getSkipTimes', () => {
     it('should return skip times', async () => {
-      const testSkipTimes: SkipTime[] = [
-        {
-          interval: {
-            startTime: 21.5,
-            endTime: 112.25,
-          },
-          skipType: 'op',
-          skipId: '6d1c118e-0484-4b92-82df-896efdcba26e',
-          episodeLength: 1445.17,
-        },
-        {
-          interval: {
-            startTime: 1349.5,
-            endTime: 1440.485,
-          },
-          skipType: 'ed',
-          skipId: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
-          episodeLength: 1445.1238,
-        },
-      ];
-
-      const snakeCaseTestSkipTimes: SnakeCaseSkipTime[] = [
+      const testSkipTimesV1: SkipTimeV1[] = [
         {
           interval: {
             start_time: 21.5,
@@ -156,7 +134,7 @@ describe('SkipTimesControllerV1', () => {
 
       jest
         .spyOn(skipTimesService, 'findSkipTimes')
-        .mockImplementation(() => Promise.resolve(testSkipTimes));
+        .mockImplementation(() => Promise.resolve(testSkipTimesV1));
 
       const params = new GetSkipTimesRequestParamsV1();
       params.anime_id = 40028;
@@ -168,7 +146,7 @@ describe('SkipTimesControllerV1', () => {
       const response = await skipTimesController.getSkipTimes(params, query);
 
       expect(response.found).toBeTruthy();
-      expect(response.results).toEqual(snakeCaseTestSkipTimes);
+      expect(response.results).toEqual(testSkipTimesV1);
     });
 
     it('should return success if no skip times found', async () => {
