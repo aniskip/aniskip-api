@@ -1,6 +1,6 @@
-export const SkipTypesV1 = ['op', 'ed'] as const;
+export const SKIP_TYPES_V1 = ['op', 'ed'] as const;
 
-export type SkipTypeV1 = typeof SkipTypesV1[number];
+export type SkipTypeV1 = typeof SKIP_TYPES_V1[number];
 
 export type SkipTimeV1 = {
   interval: {
@@ -12,14 +12,14 @@ export type SkipTimeV1 = {
   episode_length: number;
 };
 
-export const SkipTypesV2 = [
-  ...SkipTypesV1,
+export const SKIP_TYPES_V2 = [
+  ...SKIP_TYPES_V1,
   'mixed-op',
   'mixed-ed',
   'recap',
 ] as const;
 
-export type SkipTypeV2 = typeof SkipTypesV2[number];
+export type SkipTypeV2 = typeof SKIP_TYPES_V2[number];
 
 export type SkipTimeV2 = {
   interval: {
