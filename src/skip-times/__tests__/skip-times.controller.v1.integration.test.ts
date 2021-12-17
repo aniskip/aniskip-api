@@ -31,7 +31,7 @@ describe('SkipTimesControllerV1', () => {
         anime_id integer NOT NULL,
         episode_number real NOT NULL,
         provider_name varchar(64) NOT NULL,
-        skip_type char(2) NOT NULL,
+        skip_type varchar(32) NOT NULL,
         votes integer NOT NULL DEFAULT 0,
         start_time real NOT NULL,
         end_time real NOT NULL,
@@ -39,27 +39,13 @@ describe('SkipTimesControllerV1', () => {
         submit_date timestamp NOT NULL DEFAULT NOW() ::timestamp,
         submitter_id uuid NOT NULL,
         PRIMARY KEY (skip_id),
-        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed')),
+        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed', 'mixed-op', 'mixed-ed', 'recap')),
         CONSTRAINT check_anime_length CHECK (episode_length >= 0),
         CONSTRAINT check_start_time CHECK (start_time >= 0),
         CONSTRAINT check_anime_id CHECK (anime_id >= 0),
         CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
-
-      ${/* migration 1 */ ''}
-
-      ALTER TABLE skip_times
-        DROP CONSTRAINT check_type;
-
-      ALTER TABLE skip_times
-        ADD CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed', 'mixed-op', 'mixed-ed', 'recap'));
-
-      ALTER TABLE skip_times
-        ALTER COLUMN skip_type TYPE VARCHAR(32) SET NOT NULL;
-
-      ALTER TABLE skip_times
-        ALTER COLUMN skip_type SET NOT NULL;
     `);
 
     databaseBackup = database.backup();

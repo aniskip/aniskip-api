@@ -131,6 +131,33 @@ describe('SkipTimesControllerV2', () => {
           skipId: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
           episodeLength: 1445.1238,
         },
+        {
+          interval: {
+            startTime: 133.481,
+            endTime: 221.531,
+          },
+          skipType: 'mixed-op',
+          skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+          episodeLength: 1426.9255,
+        },
+        {
+          interval: {
+            startTime: 1327.88,
+            endTime: 1419.13,
+          },
+          skipType: 'mixed-ed',
+          skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+          episodeLength: 1427.1191,
+        },
+        {
+          interval: {
+            startTime: 130.857,
+            endTime: 251.607,
+          },
+          skipType: 'recap',
+          skipId: '14abd949-ad03-4e2a-9a98-4a7dee59f8ab',
+          episodeLength: 1430.721,
+        },
       ];
 
       jest
@@ -142,7 +169,7 @@ describe('SkipTimesControllerV2', () => {
       params.episodeNumber = 1;
 
       const query = new GetSkipTimesRequestQueryV2();
-      query.types = ['op', 'ed'];
+      query.types = ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'];
 
       const response = await skipTimesController.getSkipTimes(params, query);
 

@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsIn, IsNumber, IsString, IsUUID, Min } from 'class-validator';
-import { SkipTypeV1, SKIP_TYPES_V1 } from '../../../skip-times.types';
+import { SkipTypeV1, SKIP_TYPES_V2 } from '../../../skip-times.types';
 
 export class PostCreateSkipTimeRequestBodyV2 {
-  @IsIn(SKIP_TYPES_V1)
-  @ApiProperty({ type: String, enum: SKIP_TYPES_V1 })
+  @IsIn(SKIP_TYPES_V2)
+  @ApiProperty({ type: String, enum: SKIP_TYPES_V2 })
   skipType!: SkipTypeV1;
 
   @IsString()
