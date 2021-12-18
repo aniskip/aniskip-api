@@ -68,25 +68,25 @@ describe('SkipTimesControllerV2', () => {
   });
 
   describe('voteSkipTime', () => {
-    it.each([{ voteType: 'upvote' }, { voteType: 'downvote' }])(
-      'should $voteType a skip time',
-      async ({ voteType }) => {
-        jest
-          .spyOn(skipTimesService, 'voteSkipTime')
-          .mockImplementation(() => Promise.resolve(true));
+    it.each<{ voteType: VoteType }>([
+      { voteType: 'upvote' },
+      { voteType: 'downvote' },
+    ])('should $voteType a skip time', async ({ voteType }) => {
+      jest
+        .spyOn(skipTimesService, 'voteSkipTime')
+        .mockImplementation(() => Promise.resolve(true));
 
-        const params = new PostVoteRequestParamsV2();
-        params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
+      const params = new PostVoteRequestParamsV2();
+      params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-        const body = new PostVoteRequestBodyV2();
-        body.voteType = voteType as VoteType;
+      const body = new PostVoteRequestBodyV2();
+      body.voteType = voteType;
 
-        const response = await skipTimesController.voteSkipTime(params, body);
+      const response = await skipTimesController.voteSkipTime(params, body);
 
-        expect(response.message).toBeDefined();
-        expect(response.statusCode).toBe(HttpStatus.CREATED);
-      }
-    );
+      expect(response.message).toBeDefined();
+      expect(response.statusCode).toBe(HttpStatus.CREATED);
+    });
 
     it.each`
       voteType
