@@ -88,11 +88,10 @@ describe('SkipTimesControllerV2', () => {
       expect(response.statusCode).toBe(HttpStatus.CREATED);
     });
 
-    it.each`
-      voteType
-      ${'upvote'}
-      ${'downvote'}
-    `('should throw if $voteType fails', async ({ voteType }) => {
+    it.each<{ voteType: VoteType }>([
+      { voteType: 'upvote' },
+      { voteType: 'downvote' },
+    ])('should throw if $voteType fails', async ({ voteType }) => {
       jest
         .spyOn(skipTimesService, 'voteSkipTime')
         .mockImplementation(() => Promise.resolve(false));

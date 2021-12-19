@@ -1,7 +1,7 @@
 import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { SkipTimeV1 } from '..';
+import { SkipTimeV1, VoteType } from '../skip-times.types';
 import {
   PostSkipTimesV1ThrottlerGuard,
   PostVoteSkipTimesV1ThrottlerGuard,
@@ -68,11 +68,10 @@ describe('SkipTimesControllerV1', () => {
   });
 
   describe('voteSkipTime', () => {
-    it.each`
-      voteType
-      ${'upvote'}
-      ${'downvote'}
-    `('should $voteType a skip time', async ({ voteType }) => {
+    it.each<{ voteType: VoteType }>([
+      { voteType: 'upvote' },
+      { voteType: 'downvote' },
+    ])('should $voteType a skip time', async ({ voteType }) => {
       jest
         .spyOn(skipTimesService, 'voteSkipTime')
         .mockImplementation(() => Promise.resolve(true));
@@ -88,11 +87,10 @@ describe('SkipTimesControllerV1', () => {
       expect(response.message).toBeDefined();
     });
 
-    it.each`
-      voteType
-      ${'upvote'}
-      ${'downvote'}
-    `('should throw if $voteType fails', async ({ voteType }) => {
+    it.each<{ voteType: VoteType }>([
+      { voteType: 'upvote' },
+      { voteType: 'downvote' },
+    ])('should throw if $voteType fails', async ({ voteType }) => {
       jest
         .spyOn(skipTimesService, 'voteSkipTime')
         .mockImplementation(() => Promise.resolve(false));
