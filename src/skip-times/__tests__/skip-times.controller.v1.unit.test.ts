@@ -68,43 +68,43 @@ describe('SkipTimesControllerV1', () => {
   });
 
   describe('voteSkipTime', () => {
-    it.each<{ voteType: VoteType }>([
-      { voteType: 'upvote' },
-      { voteType: 'downvote' },
-    ])('should $voteType a skip time', async ({ voteType }) => {
-      jest
-        .spyOn(skipTimesService, 'voteSkipTime')
-        .mockImplementation(() => Promise.resolve(true));
+    it.each<VoteType>(['upvote', 'downvote'])(
+      'should $voteType a skip time',
+      async (voteType) => {
+        jest
+          .spyOn(skipTimesService, 'voteSkipTime')
+          .mockImplementation(() => Promise.resolve(true));
 
-      const params = new PostVoteRequestParamsV1();
-      params.skip_id = 'c9dfd857-0351-4a90-b37e-582a44253910';
+        const params = new PostVoteRequestParamsV1();
+        params.skip_id = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-      const body = new PostVoteRequestBodyV1();
-      body.vote_type = voteType;
+        const body = new PostVoteRequestBodyV1();
+        body.vote_type = voteType;
 
-      const response = await skipTimesController.voteSkipTime(params, body);
+        const response = await skipTimesController.voteSkipTime(params, body);
 
-      expect(response.message).toBeDefined();
-    });
+        expect(response.message).toBeDefined();
+      }
+    );
 
-    it.each<{ voteType: VoteType }>([
-      { voteType: 'upvote' },
-      { voteType: 'downvote' },
-    ])('should throw if $voteType fails', async ({ voteType }) => {
-      jest
-        .spyOn(skipTimesService, 'voteSkipTime')
-        .mockImplementation(() => Promise.resolve(false));
+    it.each<VoteType>(['upvote', 'downvote'])(
+      'should throw if $voteType fails',
+      async (voteType) => {
+        jest
+          .spyOn(skipTimesService, 'voteSkipTime')
+          .mockImplementation(() => Promise.resolve(false));
 
-      const params = new PostVoteRequestParamsV1();
-      params.skip_id = 'c9dfd857-0351-4a90-b37e-582a44253910';
+        const params = new PostVoteRequestParamsV1();
+        params.skip_id = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-      const body = new PostVoteRequestBodyV1();
-      body.vote_type = voteType;
+        const body = new PostVoteRequestBodyV1();
+        body.vote_type = voteType;
 
-      await expect(
-        skipTimesController.voteSkipTime(params, body)
-      ).rejects.toThrow(HttpException);
-    });
+        await expect(
+          skipTimesController.voteSkipTime(params, body)
+        ).rejects.toThrow(HttpException);
+      }
+    );
   });
 
   describe('getSkipTimes', () => {
