@@ -43,7 +43,7 @@ describe('SkipTimesControllerV2', () => {
         CONSTRAINT check_anime_length CHECK (episode_length >= 0),
         CONSTRAINT check_start_time CHECK (start_time >= 0),
         CONSTRAINT check_anime_id CHECK (anime_id >= 0),
-        CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
+        CONSTRAINT check_episode_number CHECK (episode_number >= 0),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
     `);
@@ -127,11 +127,11 @@ describe('SkipTimesControllerV2', () => {
 
     it('should respond with an episode number bad request', (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/0')
+        .get('/skip-times/1/-1')
         .query({ types: 'op' })
         .expect({
           statusCode: HttpStatus.BAD_REQUEST,
-          message: ['episodeNumber must not be less than 0.5'],
+          message: ['episodeNumber must not be less than 0'],
           error: 'Bad Request',
         })
         .expect(HttpStatus.BAD_REQUEST, done);

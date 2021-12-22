@@ -15,12 +15,12 @@ export class PostCreateSkipTimeRequestParamsV2 {
   animeId!: number;
 
   @IsNumber()
-  @Min(0.5)
+  @Min(0)
   @Type(() => Number)
   @ApiProperty({
-    type: 'number',
+    type: Number,
     format: 'double',
-    minimum: 0.5,
+    minimum: 0,
     description: 'Episode number of the anime to to create a new skip time for',
   })
   episodeNumber!: number;

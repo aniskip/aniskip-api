@@ -43,7 +43,7 @@ describe('SkipTimesControllerV1', () => {
         CONSTRAINT check_anime_length CHECK (episode_length >= 0),
         CONSTRAINT check_start_time CHECK (start_time >= 0),
         CONSTRAINT check_anime_id CHECK (anime_id >= 0),
-        CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
+        CONSTRAINT check_episode_number CHECK (episode_number >= 0),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
     `);
