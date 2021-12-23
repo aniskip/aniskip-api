@@ -93,7 +93,8 @@ export class SkipTimesControllerV2 {
     const skipTimes = await this.skipTimesService.findSkipTimes(
       params.animeId,
       params.episodeNumber,
-      query.types
+      query.types,
+      query.episodeLength
     );
 
     const response = new GetSkipTimesResponseV2();

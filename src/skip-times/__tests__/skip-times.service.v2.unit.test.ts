@@ -126,7 +126,12 @@ describe('SkipTimesService', () => {
         .mockReturnValueOnce(Promise.resolve([testSkipTimes[0]]))
         .mockReturnValueOnce(Promise.resolve([testSkipTimes[1]]));
 
-      const skipTimes = await skipTimesService.findSkipTimes(40028, 1, ['op']);
+      const skipTimes = await skipTimesService.findSkipTimes(
+        40028,
+        1,
+        ['op'],
+        1435.122
+      );
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
     });
@@ -158,7 +163,12 @@ describe('SkipTimesService', () => {
         .mockReturnValueOnce(Promise.resolve([testSkipTimes[0]]))
         .mockReturnValueOnce(Promise.resolve([testSkipTimes[1]]));
 
-      const skipTimes = await skipTimesService.findSkipTimes(40028, 1, ['ed']);
+      const skipTimes = await skipTimesService.findSkipTimes(
+        40028,
+        1,
+        ['ed'],
+        1435.122
+      );
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
     });
@@ -190,10 +200,12 @@ describe('SkipTimesService', () => {
         .mockReturnValueOnce(Promise.resolve([testSkipTimes[0]]))
         .mockReturnValueOnce(Promise.resolve([testSkipTimes[1]]));
 
-      const skipTimes = await skipTimesService.findSkipTimes(40028, 1, [
-        'op',
-        'ed',
-      ]);
+      const skipTimes = await skipTimesService.findSkipTimes(
+        40028,
+        1,
+        ['op', 'ed'],
+        1435.122
+      );
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
     });
@@ -203,10 +215,12 @@ describe('SkipTimesService', () => {
         .spyOn(skipTimesRepository, 'findSkipTimes')
         .mockReturnValue(Promise.resolve([]));
 
-      const skipTimes = await skipTimesService.findSkipTimes(40028, 1, [
-        'op',
-        'ed',
-      ]);
+      const skipTimes = await skipTimesService.findSkipTimes(
+        40028,
+        1,
+        ['op', 'ed'],
+        1435.122
+      );
 
       expect(skipTimes).toEqual([]);
     });

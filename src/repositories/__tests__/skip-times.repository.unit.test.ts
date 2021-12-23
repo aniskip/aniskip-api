@@ -20,6 +20,13 @@ describe('SkipTimesService', () => {
       impure: true,
     });
 
+    database.public.registerFunction({
+      name: 'abs',
+      args: [DataType.float],
+      returns: DataType.float,
+      implementation: Math.abs,
+    });
+
     database.public.none(`
       CREATE TABLE skip_times (
         skip_id uuid UNIQUE NOT NULL DEFAULT gen_random_uuid (),

@@ -25,6 +25,13 @@ describe('SkipTimesControllerV2', () => {
       impure: true,
     });
 
+    database.public.registerFunction({
+      name: 'abs',
+      args: [DataType.float],
+      returns: DataType.float,
+      implementation: Math.abs,
+    });
+
     database.public.none(`
       CREATE TABLE skip_times (
         skip_id uuid UNIQUE NOT NULL DEFAULT gen_random_uuid (),
@@ -111,24 +118,29 @@ describe('SkipTimesControllerV2', () => {
 
       database.public.none(`
         INSERT INTO skip_times
-          VALUES ('6b7753de-3636-4cc6-8254-a370c87637e9', 1, 1, 'ProviderName', 'mixed-op', 0, 133.481, 221.531, 1426.9255, '2021-12-17 00:51:27.211617', '73496141-2098-456c-b10e-b86524c80762');
+          VALUES ('6b7753de-3636-4cc6-8254-a370c87637e9', 1, 1, 'ProviderName', 'mixed-op', 0, 133.481, 221.531, 1445.1238, '2021-12-17 00:51:27.211617', '73496141-2098-456c-b10e-b86524c80762');
       `);
 
       database.public.none(`
         INSERT INTO skip_times
-          VALUES ('ae1399ee-998a-4aeb-9789-4f5d62868aff', 1, 1, 'ProviderName', 'mixed-ed', 0, 1327.88, 1419.13, 1427.1191, '2021-12-17 01:22:30.821168', '73496141-2098-456c-b10e-b86524c80762');
+          VALUES ('ae1399ee-998a-4aeb-9789-4f5d62868aff', 1, 1, 'ProviderName', 'mixed-ed', 0, 1327.88, 1419.13, 1445.1238, '2021-12-17 01:22:30.821168', '73496141-2098-456c-b10e-b86524c80762');
       `);
 
       database.public.none(`
         INSERT INTO skip_times
-          VALUES ('14abd949-ad03-4e2a-9a98-4a7dee59f8ab', 1, 1, 'ProviderName', 'recap', 0, 130.857, 251.607, 1430.721, '2021-12-17 01:24:57.285574', '73496141-2098-456c-b10e-b86524c80762');
+          VALUES ('14abd949-ad03-4e2a-9a98-4a7dee59f8ab', 1, 1, 'ProviderName', 'recap', 0, 130.857, 251.607, 1445.1238, '2021-12-17 01:24:57.285574', '73496141-2098-456c-b10e-b86524c80762');
+      `);
+
+      database.public.none(`
+        INSERT INTO skip_times
+          VALUES ('14abd949-ad03-4e2a-9a98-3a7dee59f8ab', 1, 1, 'ProviderName', 'op', 0, 130.857, 251.607, 1000, '2021-12-17 01:24:57.285574', '73496141-2098-456c-b10e-b86524c80762');
       `);
     });
 
     it('should respond with an episode number bad request', (done) => {
       request(app.getHttpServer())
         .get('/skip-times/1/-1')
-        .query({ types: 'op' })
+        .query({ types: 'op', episodeLength: 0 })
         .expect({
           statusCode: HttpStatus.BAD_REQUEST,
           message: ['episodeNumber must not be less than 0'],
@@ -140,7 +152,10 @@ describe('SkipTimesControllerV2', () => {
     it('should respond with an opening, ending, mixed opening, mixed ending and recap', (done) => {
       request(app.getHttpServer())
         .get('/skip-times/1/1')
-        .query({ types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'] })
+        .query({
+          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          episodeLength: 1445.17,
+        })
         .expect({
           found: true,
           results: [
@@ -169,7 +184,7 @@ describe('SkipTimesControllerV2', () => {
               },
               skipType: 'mixed-op',
               skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
-              episodeLength: 1426.9255,
+              episodeLength: 1445.1238,
             },
             {
               interval: {
@@ -178,7 +193,7 @@ describe('SkipTimesControllerV2', () => {
               },
               skipType: 'mixed-ed',
               skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
-              episodeLength: 1427.1191,
+              episodeLength: 1445.1238,
             },
             {
               interval: {
@@ -187,7 +202,84 @@ describe('SkipTimesControllerV2', () => {
               },
               skipType: 'recap',
               skipId: '14abd949-ad03-4e2a-9a98-4a7dee59f8ab',
-              episodeLength: 1430.721,
+              episodeLength: 1445.1238,
+            },
+          ],
+          message: 'Successfully found skip times',
+          statusCode: HttpStatus.OK,
+        })
+        .expect(HttpStatus.OK, done);
+    });
+
+    it('should respond with an opening filtered by episode length', (done) => {
+      request(app.getHttpServer())
+        .get('/skip-times/1/1')
+        .query({
+          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          episodeLength: 1004,
+        })
+        .expect({
+          found: true,
+          results: [
+            {
+              interval: {
+                startTime: 130.857,
+                endTime: 251.607,
+              },
+              skipType: 'op',
+              skipId: '14abd949-ad03-4e2a-9a98-3a7dee59f8ab',
+              episodeLength: 1000,
+            },
+          ],
+          message: 'Successfully found skip times',
+          statusCode: HttpStatus.OK,
+        })
+        .expect(HttpStatus.OK, done);
+    });
+
+    it('should respond with no skip times due to the episode length filter', (done) => {
+      request(app.getHttpServer())
+        .get('/skip-times/1/1')
+        .query({
+          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          episodeLength: 100,
+        })
+        .expect({
+          found: false,
+          results: [],
+          message: 'No skip times found',
+          statusCode: HttpStatus.NOT_FOUND,
+        })
+        .expect(HttpStatus.NOT_FOUND, done);
+    });
+
+    it('should respond with mixed-op and mixed-ed with no episode length filter', (done) => {
+      request(app.getHttpServer())
+        .get('/skip-times/1/1')
+        .query({
+          types: ['mixed-op', 'mixed-ed'],
+          episodeLength: 0,
+        })
+        .expect({
+          found: true,
+          results: [
+            {
+              interval: {
+                startTime: 133.481,
+                endTime: 221.531,
+              },
+              skipType: 'mixed-op',
+              skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+              episodeLength: 1445.1238,
+            },
+            {
+              interval: {
+                startTime: 1327.88,
+                endTime: 1419.13,
+              },
+              skipType: 'mixed-ed',
+              skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+              episodeLength: 1445.1238,
             },
           ],
           message: 'Successfully found skip times',

@@ -68,11 +68,13 @@ export class SkipTimesServiceV2 {
    * @param animeId MAL id filter.
    * @param episodeNumber Episode number filter.
    * @param skipTypes Skip types to filter, should be unique.
+   * @param episodeLength Approximate episode length to search for. If the input is 0, it will return all episodes.
    */
   async findSkipTimes(
     animeId: number,
     episodeNumber: number,
-    skipTypes: SkipTypeV2[]
+    skipTypes: SkipTypeV2[],
+    episodeLength: number
   ): Promise<SkipTimeV2[]> {
     const result: SkipTimeV2[] = (
       await Promise.all(
@@ -80,7 +82,8 @@ export class SkipTimesServiceV2 {
           const skipTimes = await this.skipTimesRepository.findSkipTimes(
             animeId,
             episodeNumber,
-            skipType
+            skipType,
+            episodeLength
           );
 
           if (skipTimes.length === 0) {
