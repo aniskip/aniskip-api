@@ -6,7 +6,7 @@ import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
 import * as request from 'supertest';
 import { SkipTimesControllerV1 } from '../skip-times.controller.v1';
-import { SkipTimesService } from '../skip-times.service';
+import { SkipTimesServiceV1 } from '../skip-times.service.v1';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
 
@@ -25,13 +25,20 @@ describe('SkipTimesControllerV1', () => {
       impure: true,
     });
 
+    database.public.registerFunction({
+      name: 'abs',
+      args: [DataType.float],
+      returns: DataType.float,
+      implementation: Math.abs,
+    });
+
     database.public.none(`
       CREATE TABLE skip_times (
         skip_id uuid UNIQUE NOT NULL DEFAULT gen_random_uuid (),
         anime_id integer NOT NULL,
         episode_number real NOT NULL,
         provider_name varchar(64) NOT NULL,
-        skip_type char(2) NOT NULL,
+        skip_type varchar(32) NOT NULL,
         votes integer NOT NULL DEFAULT 0,
         start_time real NOT NULL,
         end_time real NOT NULL,
@@ -39,11 +46,11 @@ describe('SkipTimesControllerV1', () => {
         submit_date timestamp NOT NULL DEFAULT NOW() ::timestamp,
         submitter_id uuid NOT NULL,
         PRIMARY KEY (skip_id),
-        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed')),
+        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed', 'mixed-op', 'mixed-ed', 'recap')),
         CONSTRAINT check_anime_length CHECK (episode_length >= 0),
         CONSTRAINT check_start_time CHECK (start_time >= 0),
         CONSTRAINT check_anime_id CHECK (anime_id >= 0),
-        CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
+        CONSTRAINT check_episode_number CHECK (episode_number >= 0),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
     `);
@@ -64,7 +71,7 @@ describe('SkipTimesControllerV1', () => {
         mockPoolProvider,
         SkipTimesRepository,
         VoteService,
-        SkipTimesService,
+        SkipTimesServiceV1,
       ],
     }).compile();
 

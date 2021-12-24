@@ -15,12 +15,12 @@ export class GetSkipTimesRequestParamsV2 {
   animeId!: number;
 
   @IsNumber()
-  @Min(0.5)
+  @Min(0)
   @Type(() => Number)
   @ApiProperty({
     type: Number,
     format: 'double',
-    minimum: 0.5,
+    minimum: 0,
     description: 'Episode number to get',
   })
   episodeNumber!: number;

@@ -64,7 +64,7 @@ export class VoteService {
         break;
       case 'full':
         // 3 minutes.
-        if (intervalLength > 60 * 4) {
+        if (intervalLength > 60 * 3) {
           return -10;
         }
         break;

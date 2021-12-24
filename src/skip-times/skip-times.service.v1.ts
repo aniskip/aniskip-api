@@ -3,13 +3,13 @@ import { VoteService } from '../vote';
 import { SkipTimesRepository } from '../repositories';
 import {
   DatabaseSkipTime,
-  SkipTime,
-  SkipType,
+  SkipTimeV1,
+  SkipTypeV1,
   VoteType,
 } from './skip-times.types';
 
 @Injectable()
-export class SkipTimesService {
+export class SkipTimesServiceV1 {
   constructor(
     private skipTimesRepository: SkipTimesRepository,
     private voteService: VoteService
@@ -72,9 +72,9 @@ export class SkipTimesService {
   async findSkipTimes(
     animeId: number,
     episodeNumber: number,
-    skipTypes: SkipType[]
-  ): Promise<SkipTime[]> {
-    const result: SkipTime[] = (
+    skipTypes: SkipTypeV1[]
+  ): Promise<SkipTimeV1[]> {
+    const result: SkipTimeV1[] = (
       await Promise.all(
         skipTypes.map(async (skipType) => {
           const skipTimes = await this.skipTimesRepository.findSkipTimes(
@@ -87,10 +87,21 @@ export class SkipTimesService {
             return null;
           }
 
-          return skipTimes[0];
+          const [skipTimeV2] = skipTimes;
+          const skipTimeV1: SkipTimeV1 = {
+            interval: {
+              start_time: skipTimeV2.interval.startTime,
+              end_time: skipTimeV2.interval.endTime,
+            },
+            skip_type: skipTimeV2.skipType as SkipTypeV1,
+            skip_id: skipTimeV2.skipId,
+            episode_length: skipTimeV2.episodeLength,
+          };
+
+          return skipTimeV1;
         })
       )
-    ).filter((skipTime): skipTime is SkipTime => skipTime !== null);
+    ).filter((skipTime): skipTime is SkipTimeV1 => skipTime !== null);
 
     return result;
   }

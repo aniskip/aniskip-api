@@ -6,9 +6,9 @@ import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
 import * as request from 'supertest';
 import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
-import { SkipTimesService } from '../skip-times.service';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
+import { SkipTimesServiceV2 } from '../skip-times.service.v2';
 
 describe('SkipTimesControllerV2', () => {
   let app: INestApplication;
@@ -25,13 +25,20 @@ describe('SkipTimesControllerV2', () => {
       impure: true,
     });
 
+    database.public.registerFunction({
+      name: 'abs',
+      args: [DataType.float],
+      returns: DataType.float,
+      implementation: Math.abs,
+    });
+
     database.public.none(`
       CREATE TABLE skip_times (
         skip_id uuid UNIQUE NOT NULL DEFAULT gen_random_uuid (),
         anime_id integer NOT NULL,
         episode_number real NOT NULL,
         provider_name varchar(64) NOT NULL,
-        skip_type char(2) NOT NULL,
+        skip_type varchar(32) NOT NULL,
         votes integer NOT NULL DEFAULT 0,
         start_time real NOT NULL,
         end_time real NOT NULL,
@@ -39,11 +46,11 @@ describe('SkipTimesControllerV2', () => {
         submit_date timestamp NOT NULL DEFAULT NOW() ::timestamp,
         submitter_id uuid NOT NULL,
         PRIMARY KEY (skip_id),
-        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed')),
+        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed', 'mixed-op', 'mixed-ed', 'recap')),
         CONSTRAINT check_anime_length CHECK (episode_length >= 0),
         CONSTRAINT check_start_time CHECK (start_time >= 0),
         CONSTRAINT check_anime_id CHECK (anime_id >= 0),
-        CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
+        CONSTRAINT check_episode_number CHECK (episode_number >= 0),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
     `);
@@ -64,7 +71,7 @@ describe('SkipTimesControllerV2', () => {
         mockPoolProvider,
         SkipTimesRepository,
         VoteService,
-        SkipTimesService,
+        SkipTimesServiceV2,
       ],
     }).compile();
 
@@ -108,24 +115,47 @@ describe('SkipTimesControllerV2', () => {
         INSERT INTO skip_times
           VALUES ('23ee993a-fdf5-44eb-b4f9-cb79c7935033', 1, 1, 'ProviderName', 'ed', 10000, 1349.5, 1440.485, 1445.1238, '2021-02-19 01:48:41.338418', 'e93e3787-3071-4d1f-833f-a78755702f6b');
       `);
+
+      database.public.none(`
+        INSERT INTO skip_times
+          VALUES ('6b7753de-3636-4cc6-8254-a370c87637e9', 1, 1, 'ProviderName', 'mixed-op', 0, 133.481, 221.531, 1445.1238, '2021-12-17 00:51:27.211617', '73496141-2098-456c-b10e-b86524c80762');
+      `);
+
+      database.public.none(`
+        INSERT INTO skip_times
+          VALUES ('ae1399ee-998a-4aeb-9789-4f5d62868aff', 1, 1, 'ProviderName', 'mixed-ed', 0, 1327.88, 1419.13, 1445.1238, '2021-12-17 01:22:30.821168', '73496141-2098-456c-b10e-b86524c80762');
+      `);
+
+      database.public.none(`
+        INSERT INTO skip_times
+          VALUES ('14abd949-ad03-4e2a-9a98-4a7dee59f8ab', 1, 1, 'ProviderName', 'recap', 0, 130.857, 251.607, 1445.1238, '2021-12-17 01:24:57.285574', '73496141-2098-456c-b10e-b86524c80762');
+      `);
+
+      database.public.none(`
+        INSERT INTO skip_times
+          VALUES ('14abd949-ad03-4e2a-9a98-3a7dee59f8ab', 1, 1, 'ProviderName', 'op', 0, 130.857, 251.607, 1000, '2021-12-17 01:24:57.285574', '73496141-2098-456c-b10e-b86524c80762');
+      `);
     });
 
     it('should respond with an episode number bad request', (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/0')
-        .query({ types: 'op' })
+        .get('/skip-times/1/-1')
+        .query({ types: 'op', episodeLength: 0 })
         .expect({
           statusCode: HttpStatus.BAD_REQUEST,
-          message: ['episodeNumber must not be less than 0.5'],
+          message: ['episodeNumber must not be less than 0'],
           error: 'Bad Request',
         })
         .expect(HttpStatus.BAD_REQUEST, done);
     });
 
-    it('should respond with an opening and ending', (done) => {
+    it('should respond with an opening, ending, mixed opening, mixed ending and recap', (done) => {
       request(app.getHttpServer())
         .get('/skip-times/1/1')
-        .query({ types: ['op', 'ed'] })
+        .query({
+          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          episodeLength: 1445.17,
+        })
         .expect({
           found: true,
           results: [
@@ -147,6 +177,110 @@ describe('SkipTimesControllerV2', () => {
               skipId: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
               episodeLength: 1445.1238,
             },
+            {
+              interval: {
+                startTime: 133.481,
+                endTime: 221.531,
+              },
+              skipType: 'mixed-op',
+              skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+              episodeLength: 1445.1238,
+            },
+            {
+              interval: {
+                startTime: 1327.88,
+                endTime: 1419.13,
+              },
+              skipType: 'mixed-ed',
+              skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+              episodeLength: 1445.1238,
+            },
+            {
+              interval: {
+                startTime: 130.857,
+                endTime: 251.607,
+              },
+              skipType: 'recap',
+              skipId: '14abd949-ad03-4e2a-9a98-4a7dee59f8ab',
+              episodeLength: 1445.1238,
+            },
+          ],
+          message: 'Successfully found skip times',
+          statusCode: HttpStatus.OK,
+        })
+        .expect(HttpStatus.OK, done);
+    });
+
+    it('should respond with an opening filtered by episode length', (done) => {
+      request(app.getHttpServer())
+        .get('/skip-times/1/1')
+        .query({
+          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          episodeLength: 1004,
+        })
+        .expect({
+          found: true,
+          results: [
+            {
+              interval: {
+                startTime: 130.857,
+                endTime: 251.607,
+              },
+              skipType: 'op',
+              skipId: '14abd949-ad03-4e2a-9a98-3a7dee59f8ab',
+              episodeLength: 1000,
+            },
+          ],
+          message: 'Successfully found skip times',
+          statusCode: HttpStatus.OK,
+        })
+        .expect(HttpStatus.OK, done);
+    });
+
+    it('should respond with no skip times due to the episode length filter', (done) => {
+      request(app.getHttpServer())
+        .get('/skip-times/1/1')
+        .query({
+          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          episodeLength: 100,
+        })
+        .expect({
+          found: false,
+          results: [],
+          message: 'No skip times found',
+          statusCode: HttpStatus.NOT_FOUND,
+        })
+        .expect(HttpStatus.NOT_FOUND, done);
+    });
+
+    it('should respond with mixed-op and mixed-ed with no episode length filter', (done) => {
+      request(app.getHttpServer())
+        .get('/skip-times/1/1')
+        .query({
+          types: ['mixed-op', 'mixed-ed'],
+          episodeLength: 0,
+        })
+        .expect({
+          found: true,
+          results: [
+            {
+              interval: {
+                startTime: 133.481,
+                endTime: 221.531,
+              },
+              skipType: 'mixed-op',
+              skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+              episodeLength: 1445.1238,
+            },
+            {
+              interval: {
+                startTime: 1327.88,
+                endTime: 1419.13,
+              },
+              skipType: 'mixed-ed',
+              skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+              episodeLength: 1445.1238,
+            },
           ],
           message: 'Successfully found skip times',
           statusCode: HttpStatus.OK,
@@ -160,17 +294,51 @@ describe('SkipTimesControllerV2', () => {
       databaseBackup.restore();
     });
 
-    it('should create a skip time', (done) => {
+    it.each([
+      {
+        skipType: 'op',
+        providerName: 'ProviderName',
+        startTime: 37.75,
+        endTime: 128.1,
+        episodeLength: 1440.05,
+        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      },
+      {
+        skipType: 'ed',
+        providerName: 'ProviderName',
+        startTime: 37.75,
+        endTime: 128.1,
+        episodeLength: 1440.05,
+        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      },
+      {
+        skipType: 'mixed-op',
+        providerName: 'ProviderName',
+        startTime: 37.75,
+        endTime: 128.1,
+        episodeLength: 1440.05,
+        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      },
+      {
+        skipType: 'mixed-ed',
+        providerName: 'ProviderName',
+        startTime: 37.75,
+        endTime: 128.1,
+        episodeLength: 1440.05,
+        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      },
+      {
+        skipType: 'recap',
+        providerName: 'ProviderName',
+        startTime: 37.75,
+        endTime: 128.1,
+        episodeLength: 1440.05,
+        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      },
+    ])('should create a skip time', (data, done) => {
       request(app.getHttpServer())
         .post('/skip-times/3/2')
-        .send({
-          skipType: 'op',
-          providerName: 'ProviderName',
-          startTime: 37.75,
-          endTime: 128.1,
-          episodeLength: 1440.05,
-          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
-        })
+        .send(data)
         .expect((res) => {
           const { body } = res;
           expect(body.message).toBe('Successfully created a skip time');
@@ -178,6 +346,45 @@ describe('SkipTimesControllerV2', () => {
           expect(body.statusCode).toBe(HttpStatus.CREATED);
         })
         .expect(HttpStatus.CREATED, done);
+    });
+
+    it.each([
+      {
+        data: {
+          skipType: 'wrong',
+          providerName: 'ProviderName',
+          startTime: 37.75,
+          endTime: 128.1,
+          episodeLength: 1440.05,
+          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        },
+        errorMessage: [
+          'skipType must be one of the following values: op, ed, mixed-op, mixed-ed, recap',
+        ],
+      },
+      {
+        data: {
+          skipType: 'op',
+          providerName: 'ProviderName',
+          startTime: 37.75,
+          endTime: 128.1,
+          episodeLength: -1,
+          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        },
+        errorMessage: ['episodeLength must not be less than 0'],
+      },
+    ])('should not create a skip time', ({ data, errorMessage }, done) => {
+      request(app.getHttpServer())
+        .post('/skip-times/3/2')
+        .send(data)
+        .expect((res) => {
+          const { body } = res;
+          expect(body.statusCode).toBe(HttpStatus.BAD_REQUEST);
+          expect(body.message).toEqual(errorMessage);
+          expect(body.error).toBe('Bad Request');
+          expect(body.skipId).toBeUndefined();
+        })
+        .expect(HttpStatus.BAD_REQUEST, done);
     });
   });
 

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { SnakeCaseSkipTime } from '../../../skip-times.types';
+import { SkipTimeV1, SKIP_TYPES_V1 } from '../../../skip-times.types';
 
 export class GetSkipTimesResponseV1 {
   @ApiProperty()
@@ -27,7 +27,7 @@ export class GetSkipTimesResponseV1 {
         },
         skip_type: {
           type: 'string',
-          enum: ['op', 'ed'],
+          enum: [...SKIP_TYPES_V1],
         },
         skip_id: {
           type: 'string',
@@ -41,5 +41,5 @@ export class GetSkipTimesResponseV1 {
       },
     },
   })
-  results!: SnakeCaseSkipTime[];
+  results!: SkipTimeV1[];
 }

@@ -31,7 +31,7 @@ import {
   PostVoteRequestParamsV2,
   PostVoteResponseV2,
 } from './models';
-import { SkipTimesService } from './skip-times.service';
+import { SkipTimesServiceV2 } from './skip-times.service.v2';
 
 @Controller({
   path: 'skip-times',
@@ -39,7 +39,7 @@ import { SkipTimesService } from './skip-times.service';
 })
 @ApiTags('skip-times')
 export class SkipTimesControllerV2 {
-  constructor(private skipTimesService: SkipTimesService) {}
+  constructor(private skipTimesService: SkipTimesServiceV2) {}
 
   @UseGuards(PostVoteSkipTimesV2ThrottlerGuard)
   // Maximum 4 times in 1 hour.
@@ -93,7 +93,8 @@ export class SkipTimesControllerV2 {
     const skipTimes = await this.skipTimesService.findSkipTimes(
       params.animeId,
       params.episodeNumber,
-      query.types
+      query.types,
+      query.episodeLength
     );
 
     const response = new GetSkipTimesResponseV2();

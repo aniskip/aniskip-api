@@ -14,16 +14,16 @@ import {
   PostVoteRequestParamsV2,
 } from '../models';
 import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
-import { SkipTimesService } from '../skip-times.service';
-import { SkipTime } from '../skip-times.types';
+import { SkipTimesServiceV2 } from '../skip-times.service.v2';
+import { SkipTimeV2, VoteType } from '../skip-times.types';
 
 describe('SkipTimesControllerV2', () => {
   let skipTimesController: SkipTimesControllerV2;
-  let skipTimesService: SkipTimesService;
+  let skipTimesService: SkipTimesServiceV2;
 
   beforeEach(async () => {
     const mockSkipTimesServiceProvider = {
-      provide: SkipTimesService,
+      provide: SkipTimesServiceV2,
       useValue: {
         voteSkipTime: jest.fn(),
         createSkipTime: jest.fn(),
@@ -60,7 +60,7 @@ describe('SkipTimesControllerV2', () => {
     skipTimesController = module.get<SkipTimesControllerV2>(
       SkipTimesControllerV2
     );
-    skipTimesService = module.get<SkipTimesService>(SkipTimesService);
+    skipTimesService = module.get<SkipTimesServiceV2>(SkipTimesServiceV2);
   });
 
   it('should be defined', () => {
@@ -68,51 +68,49 @@ describe('SkipTimesControllerV2', () => {
   });
 
   describe('voteSkipTime', () => {
-    it.each`
-      voteType
-      ${'upvote'}
-      ${'downvote'}
-    `('should $voteType a skip time', async ({ voteType }) => {
-      jest
-        .spyOn(skipTimesService, 'voteSkipTime')
-        .mockImplementation(() => Promise.resolve(true));
+    it.each<VoteType>(['upvote', 'downvote'])(
+      'should $voteType a skip time',
+      async (voteType) => {
+        jest
+          .spyOn(skipTimesService, 'voteSkipTime')
+          .mockImplementation(() => Promise.resolve(true));
 
-      const params = new PostVoteRequestParamsV2();
-      params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
+        const params = new PostVoteRequestParamsV2();
+        params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-      const body = new PostVoteRequestBodyV2();
-      body.voteType = voteType;
+        const body = new PostVoteRequestBodyV2();
+        body.voteType = voteType;
 
-      const response = await skipTimesController.voteSkipTime(params, body);
+        const response = await skipTimesController.voteSkipTime(params, body);
 
-      expect(response.message).toBeDefined();
-      expect(response.statusCode).toBe(HttpStatus.CREATED);
-    });
+        expect(response.message).toBeDefined();
+        expect(response.statusCode).toBe(HttpStatus.CREATED);
+      }
+    );
 
-    it.each`
-      voteType
-      ${'upvote'}
-      ${'downvote'}
-    `('should throw if $voteType fails', async ({ voteType }) => {
-      jest
-        .spyOn(skipTimesService, 'voteSkipTime')
-        .mockImplementation(() => Promise.resolve(false));
+    it.each<VoteType>(['upvote', 'downvote'])(
+      'should throw if $voteType fails',
+      async (voteType) => {
+        jest
+          .spyOn(skipTimesService, 'voteSkipTime')
+          .mockImplementation(() => Promise.resolve(false));
 
-      const params = new PostVoteRequestParamsV2();
-      params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
+        const params = new PostVoteRequestParamsV2();
+        params.skipId = 'c9dfd857-0351-4a90-b37e-582a44253910';
 
-      const body = new PostVoteRequestBodyV2();
-      body.voteType = voteType;
+        const body = new PostVoteRequestBodyV2();
+        body.voteType = voteType;
 
-      await expect(
-        skipTimesController.voteSkipTime(params, body)
-      ).rejects.toThrow(HttpException);
-    });
+        await expect(
+          skipTimesController.voteSkipTime(params, body)
+        ).rejects.toThrow(HttpException);
+      }
+    );
   });
 
   describe('getSkipTimes', () => {
     it('should return skip times', async () => {
-      const testSkipTimes: SkipTime[] = [
+      const testSkipTimes: SkipTimeV2[] = [
         {
           interval: {
             startTime: 21.5,
@@ -131,6 +129,33 @@ describe('SkipTimesControllerV2', () => {
           skipId: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
           episodeLength: 1445.1238,
         },
+        {
+          interval: {
+            startTime: 133.481,
+            endTime: 221.531,
+          },
+          skipType: 'mixed-op',
+          skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+          episodeLength: 1426.9255,
+        },
+        {
+          interval: {
+            startTime: 1327.88,
+            endTime: 1419.13,
+          },
+          skipType: 'mixed-ed',
+          skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+          episodeLength: 1427.1191,
+        },
+        {
+          interval: {
+            startTime: 130.857,
+            endTime: 251.607,
+          },
+          skipType: 'recap',
+          skipId: '14abd949-ad03-4e2a-9a98-4a7dee59f8ab',
+          episodeLength: 1430.721,
+        },
       ];
 
       jest
@@ -142,7 +167,7 @@ describe('SkipTimesControllerV2', () => {
       params.episodeNumber = 1;
 
       const query = new GetSkipTimesRequestQueryV2();
-      query.types = ['op', 'ed'];
+      query.types = ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'];
 
       const response = await skipTimesController.getSkipTimes(params, query);
 

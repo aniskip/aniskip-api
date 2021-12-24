@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
 import {
-  DatabaseSkipTime,
-  SkipTime,
   CreateSkipTimesQueryResponse,
-  SkipType,
+  DatabaseSkipTime,
   GetAverageOfLastTenSkipTimesVotesQueryResponse,
+  SkipTimeV2,
+  SkipTypeV2,
 } from '../skip-times/skip-times.types';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class SkipTimesRepository {
       SET
         votes = votes + 1
       WHERE
-        skip_id = $1
+        skip_id = $1::uuid
       `,
       [skipId]
     );
@@ -46,7 +46,7 @@ export class SkipTimesRepository {
       SET
         votes = votes - 1
       WHERE
-        skip_id = $1
+        skip_id = $1::uuid
       `,
       [skipId]
     );
@@ -95,8 +95,9 @@ export class SkipTimesRepository {
   async findSkipTimes(
     animeId: number,
     episodeNumber: number,
-    skipType: SkipType
-  ): Promise<SkipTime[]> {
+    skipType: SkipTypeV2,
+    episodeLength?: number
+  ): Promise<SkipTimeV2[]> {
     const { rows } = await this.database.query<DatabaseSkipTime>(
       `
       SELECT
@@ -108,18 +109,19 @@ export class SkipTimesRepository {
       FROM
         skip_times
       WHERE
-        anime_id = $1
-        AND episode_number = $2
-        AND skip_type = $3
+        anime_id = $1::integer
+        AND episode_number = $2::real
+        AND skip_type = $3::varchar
         AND votes > -2
+        AND ($4::real = 0 OR ABS(episode_length - $4::real) <= 5)
       ORDER BY
         votes DESC
       LIMIT 10
       `,
-      [animeId, episodeNumber, skipType]
+      [animeId, episodeNumber, skipType, episodeLength ?? 0]
     );
 
-    const skipTimes: SkipTime[] = rows.map((row) => ({
+    const skipTimes: SkipTimeV2[] = rows.map((row) => ({
       interval: {
         startTime: row.start_time,
         endTime: row.end_time,
@@ -151,7 +153,7 @@ export class SkipTimesRepository {
           FROM
             skip_times
           WHERE
-            submitter_id = $1
+            submitter_id = $1::uuid
           LIMIT 10) AS t
         `,
         [submitterId]

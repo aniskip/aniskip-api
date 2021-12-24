@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Pool } from 'pg';
 import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
-import { DatabaseSkipTime, SkipType } from '../../skip-times';
+import { DatabaseSkipTime, SkipTypeV1 } from '../../skip-times';
 import { SkipTimesRepository } from '../skip-times.repository';
 
 describe('SkipTimesService', () => {
@@ -20,13 +20,20 @@ describe('SkipTimesService', () => {
       impure: true,
     });
 
+    database.public.registerFunction({
+      name: 'abs',
+      args: [DataType.float],
+      returns: DataType.float,
+      implementation: Math.abs,
+    });
+
     database.public.none(`
       CREATE TABLE skip_times (
         skip_id uuid UNIQUE NOT NULL DEFAULT gen_random_uuid (),
         anime_id integer NOT NULL,
         episode_number real NOT NULL,
         provider_name varchar(64) NOT NULL,
-        skip_type char(2) NOT NULL,
+        skip_type varchar(32) NOT NULL,
         votes integer NOT NULL DEFAULT 0,
         start_time real NOT NULL,
         end_time real NOT NULL,
@@ -34,11 +41,11 @@ describe('SkipTimesService', () => {
         submit_date timestamp NOT NULL DEFAULT NOW() ::timestamp,
         submitter_id uuid NOT NULL,
         PRIMARY KEY (skip_id),
-        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed')),
+        CONSTRAINT check_type CHECK (skip_type IN ('op', 'ed', 'mixed-op', 'mixed-ed', 'recap')),
         CONSTRAINT check_anime_length CHECK (episode_length >= 0),
         CONSTRAINT check_start_time CHECK (start_time >= 0),
         CONSTRAINT check_anime_id CHECK (anime_id >= 0),
-        CONSTRAINT check_episode_number CHECK (episode_number >= 0.5),
+        CONSTRAINT check_episode_number CHECK (episode_number >= 0),
         CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
       );
     `);
@@ -126,7 +133,7 @@ describe('SkipTimesService', () => {
       episode_length: 1440.05,
       episode_number: 2,
       provider_name: 'ProviderName',
-      skip_type: 'op' as SkipType,
+      skip_type: 'op' as SkipTypeV1,
       start_time: 37.75,
       submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
       votes: 0,
@@ -165,7 +172,7 @@ describe('SkipTimesService', () => {
       const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
         {
           ...testSkipTime,
-          episode_number: 0,
+          episode_number: -1,
         };
 
       await expect(
@@ -173,11 +180,11 @@ describe('SkipTimesService', () => {
       ).rejects.toThrow();
     });
 
-    it('should throw skip type constraint violation', async () => {
+    it.skip('should throw skip type constraint violation', async () => {
       const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
         {
           ...testSkipTime,
-          skip_type: 'wrong' as SkipType,
+          skip_type: 'wrong' as SkipTypeV1,
         };
 
       await expect(
