@@ -10,6 +10,8 @@ on:
       - main
     paths:
       - .github/workflows/ci.yml
+      - sql_scripts/**
+      - docker/**
       - src/**
   pull_request:
     branches:
