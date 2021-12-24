@@ -10,6 +10,8 @@ on:
       - main
     paths:
       - .github/workflows/ci.yml
+      - sql_scripts/**
+      - docker/**
       - src/**
   pull_request:
     branches:
@@ -32,3 +34,13 @@ jobs:
       - run: yarn install
       - run: yarn lint
       - run: yarn test
+
+      # test docker build
+      - name: Docker pull latest images
+        working-directory: ./docker
+        run: docker-compose pull
+
+      - name: Docker build
+        working-directory: ./docker
+        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
+
