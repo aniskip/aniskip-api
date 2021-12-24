@@ -33,12 +33,12 @@ jobs:
       - run: yarn lint
       - run: yarn test
 
-      # run docker build
-      - run: cd ./docker
-
+      # test docker build
       - name: Docker pull latest images
+        working-directory: ./docker
         run: docker-compose pull
 
       - name: Docker build
+        working-directory: ./docker
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
 
