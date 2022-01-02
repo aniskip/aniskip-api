@@ -1,6 +1,7 @@
 {
   "extends": ["config:base"],
   "bumpVersion": "patch",
+  "labels": ["automated update"],
   "packageRules": [
     {
       "matchPackagePatterns": ["*"],
