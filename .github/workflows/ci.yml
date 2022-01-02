@@ -13,6 +13,8 @@ on:
       - sql_scripts/**
       - docker/**
       - src/**
+      - package.json
+      - yarn.lock
   pull_request:
     branches:
       - main
@@ -43,4 +45,3 @@ jobs:
       - name: Docker build
         working-directory: ./docker
         run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
-

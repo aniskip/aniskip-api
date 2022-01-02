@@ -1,0 +1,13 @@
+{
+  "extends": ["config:base"],
+  "bumpVersion": "patch",
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "rangeStrategy": "bump"
+    }
+  ],
+  "git-submodules": {
+    "enabled": true
+  }
+}
