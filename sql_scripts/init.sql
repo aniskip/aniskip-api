@@ -1,4 +1,4 @@
--- v1.1.0
+-- v1.1.1
 CREATE DATABASE db;
 
 \c db;
