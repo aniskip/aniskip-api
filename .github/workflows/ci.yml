@@ -23,7 +23,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  continuous-integration:
+  continuous-integration-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,6 +36,15 @@ jobs:
       - run: yarn install
       - run: yarn lint
       - run: yarn test
+
+  continuous-integration-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo and submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       # test docker build
       - name: Docker pull latest images
