@@ -15,7 +15,7 @@
     "dev": "cross-env NODE_ENV=development nodemon --exec 'yarn ts-node' --legacy-watch src/main.ts",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "start": "cross-env NODE_ENV=production node dist/src/main.js",
-    "test": "jest --coverage --maxWorkers=25%"
+    "test": "jest --coverage --maxWorkers=25% --testPathIgnorePatterns=\"/node_modules/|/dist/\""
   },
   "dependencies": {
     "@nestjs/common": "^8.2.4",
