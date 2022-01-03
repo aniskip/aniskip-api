@@ -35,6 +35,7 @@ jobs:
       # run tests
       - run: yarn install
       - run: yarn lint
+      - run: yarn build
       - run: yarn test
 
   continuous-integration-docker:
