@@ -2,7 +2,7 @@ import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
-import * as request from 'supertest';
+import request from 'supertest';
 import { Config, config } from '../../config';
 import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
 import { RelationRulesService } from '../relation-rules.service';
