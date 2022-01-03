@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import { Config } from './config.types';
 
 export const config = (): Config => ({

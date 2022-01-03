@@ -4,7 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { Pool } from 'pg';
 import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
-import * as request from 'supertest';
+import request from 'supertest';
 import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';

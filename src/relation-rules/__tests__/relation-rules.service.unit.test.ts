@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import * as path from 'path';
+import path from 'path';
 import { RelationsConfig } from '../../config';
 import { RelationRulesService } from '../relation-rules.service';
 

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import request from 'supertest';
 import { PostVoteSkipTimesThrottlerGuardTestModule } from '../../testing/post-vote-skip-times-throttler-guard-test.module';
 
 describe('PostVoteSkipTimesV1ThrottlerGuard', () => {
