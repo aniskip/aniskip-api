@@ -76,6 +76,6 @@ jobs:
             cd ${{ env.REPO_PATH }}/docker
             git checkout main
             git pull --recurse-submodules
-            ./stop.sh
             docker-compose pull
+            ./stop.sh
             ./start.sh prod
