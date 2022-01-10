@@ -37,16 +37,11 @@ describe('RelationRulesControllerV1', () => {
           found: true,
           rules: [
             {
-              from: {
-                start: 60,
-                end: 75,
-              },
-              to: {
-                malId: 40028,
-                start: 1,
-                end: 16,
-              },
+              from: { start: 60, end: 75 },
+              to: { malId: 40028, start: 1, end: 16 },
             },
+            { from: { start: 17 }, to: { malId: 48583, start: 1 } },
+            { from: { start: 76 }, to: { malId: 48583, start: 1 } },
           ],
         })
         .expect(HttpStatus.OK, done);

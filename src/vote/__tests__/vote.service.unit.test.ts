@@ -32,6 +32,16 @@ describe('VoteService', () => {
   });
 
   describe('autoVote', () => {
+    it('should detect a user with good reputation', async () => {
+      const votes = await votingService.autoVote(
+        130,
+        210,
+        1440,
+        'e93e3787-3071-4d1f-833f-a78755702f6b'
+      );
+      expect(votes).toBe(1);
+    });
+
     it("should detect a bad skip time in a 'full' episode", async () => {
       const votes = await votingService.autoVote(
         0,
@@ -70,16 +80,6 @@ describe('VoteService', () => {
         '17ca2744-c222-4856-bc75-450498b1699e'
       );
       expect(votes).toBe(-10);
-    });
-
-    it('should detect a user with good reputation', async () => {
-      const votes = await votingService.autoVote(
-        130,
-        210,
-        1440,
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
-      );
-      expect(votes).toBe(1);
     });
 
     it("should detect a normal skip time in a 'full' episode", async () => {
@@ -148,6 +148,127 @@ describe('VoteService', () => {
         420,
         5400,
         '17ca2744-c222-4856-bc75-450498b1699e'
+      );
+      expect(votes).toBe(0);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'full' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        0,
+        1440,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'full' episode", async () => {
+      const votes = await votingService.autoVote(
+        1,
+        1.5,
+        1440,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'full' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        1000,
+        1440,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'full' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        1440,
+        1440,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a normal 'recap' skip time in a 'full' episode", async () => {
+      const votes = await votingService.autoVote(
+        130,
+        370,
+        1440,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(0);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'short' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        55,
+        118,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a normal 'recap' skip time in a 'short' episode", async () => {
+      const votes = await votingService.autoVote(
+        30,
+        55,
+        119,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(0);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'half' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        240,
+        719,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a normal 'recap' skip time in a 'half' episode", async () => {
+      const votes = await votingService.autoVote(
+        100,
+        220,
+        719,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(0);
+    });
+
+    it("should detect a bad 'recap' skip time in a 'movie' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        960,
+        5400,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
+      );
+      expect(votes).toBe(-10);
+    });
+
+    it("should detect a normal 'recap' skip time in a 'movie' episode", async () => {
+      const votes = await votingService.autoVote(
+        0,
+        720,
+        5400,
+        '17ca2744-c222-4856-bc75-450498b1699e',
+        'recap'
       );
       expect(votes).toBe(0);
     });

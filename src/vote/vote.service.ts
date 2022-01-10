@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SkipTimesRepository } from '../repositories';
 import { EpisodeType } from './vote.types';
+import { SkipTypeV2 } from '../skip-times/skip-times.types';
 
 @Injectable()
 export class VoteService {
@@ -41,7 +42,8 @@ export class VoteService {
     startTime: number,
     endTime: number,
     episodeLength: number,
-    submitterId: string
+    submitterId: string,
+    skipType?: SkipTypeV2
   ): Promise<number> {
     const episodeType = this.getEpisodeType(episodeLength);
     const intervalLength = endTime - startTime;
@@ -50,31 +52,74 @@ export class VoteService {
       return -10;
     }
 
-    switch (episodeType) {
-      case 'short':
-        if (intervalLength > 40) {
-          return -10;
+    switch (skipType) {
+      case 'recap': {
+        switch (episodeType) {
+          case 'short': {
+            // 40 seconds.
+            if (intervalLength > 40) {
+              return -10;
+            }
+            break;
+          }
+          case 'half': {
+            // 3 minutes.
+            if (intervalLength > 60 * 3) {
+              return -10;
+            }
+            break;
+          }
+          case 'full': {
+            // 6 minutes.
+            if (intervalLength > 60 * 6) {
+              return -10;
+            }
+            break;
+          }
+          case 'movie': {
+            // 12 minutes.
+            if (intervalLength > 60 * 12) {
+              return -10;
+            }
+            break;
+          }
+          // no default
         }
         break;
-      case 'half':
-        // 2 minutes.
-        if (intervalLength > 60 * 2) {
-          return -10;
+      }
+      default: {
+        switch (episodeType) {
+          case 'short': {
+            // 40 seconds.
+            if (intervalLength > 40) {
+              return -10;
+            }
+            break;
+          }
+          case 'half': {
+            // 2 minutes.
+            if (intervalLength > 60 * 2) {
+              return -10;
+            }
+            break;
+          }
+          case 'full': {
+            // 3 minutes.
+            if (intervalLength > 60 * 3) {
+              return -10;
+            }
+            break;
+          }
+          case 'movie': {
+            // 8 minutes.
+            if (intervalLength > 60 * 8) {
+              return -10;
+            }
+            break;
+          }
+          // no default
         }
-        break;
-      case 'full':
-        // 3 minutes.
-        if (intervalLength > 60 * 3) {
-          return -10;
-        }
-        break;
-      case 'movie':
-        // 8 minutes.
-        if (intervalLength > 60 * 8) {
-          return -10;
-        }
-        break;
-      // no default
+      }
     }
 
     const averageVotes =
