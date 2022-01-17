@@ -7526,9 +7526,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-mem@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "pg-mem@npm:2.2.0"
+"pg-mem@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "pg-mem@npm:2.2.1"
   dependencies:
     "@mikro-orm/core": ^4.5.3
     "@mikro-orm/postgresql": ^4.5.3
@@ -7554,7 +7554,7 @@ __metadata:
       optional: true
     typeorm:
       optional: true
-  checksum: 2fff3295b39e4e93735cb7f389806e9874cbe6dfd22fd5d0b678c4c475c548a9fb6ed2d02d5e3f864a53023a9cf5eb0486cb4f490bfe2c464efe1eef607e8b59
+  checksum: ca679d272ccbe359e9c98ad19311866571ba098a905d5bd16e6be9e8725b00c78580f5787ae291cd13f3a44233332ec917f01dbd83a39b316a70ea7577525fb1
   languageName: node
   linkType: hard
 
@@ -9331,7 +9331,7 @@ __metadata:
     nestjs-throttler-storage-redis: ^0.1.18
     nodemon: ^2.0.15
     pg: ^8.7.1
-    pg-mem: ^2.2.0
+    pg-mem: ^2.2.1
     prettier: ^2.5.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
