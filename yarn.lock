@@ -8162,12 +8162,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.5.2":
-  version: 7.5.2
-  resolution: "rxjs@npm:7.5.2"
+"rxjs@npm:^7.5.3":
+  version: 7.5.3
+  resolution: "rxjs@npm:7.5.3"
   dependencies:
     tslib: ^2.1.0
-  checksum: daf1fe7289de500b25d822fd96cde3c138c7902e8bf0e6aa12a3e70847a5cabeeb4d677f10e19387e1db44b12c5b1be0ff5c79b8cd63ed6ce891d765e566cf4d
+  checksum: 0e1f45ef20e45aee940dddb8158a489616b0574eff493f790092f8021dc215c65440b8332498edd42a59e37d10c900493d6a598a260a491eb9faefdd0d876f7b
   languageName: node
   linkType: hard
 
@@ -9213,7 +9213,7 @@ __metadata:
     prettier: ^2.5.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.2
+    rxjs: ^7.5.3
     supertest: ^6.2.2
     swagger-ui-express: ^4.3.0
     ts-jest: ^27.1.3
