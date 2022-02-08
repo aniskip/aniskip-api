@@ -1482,12 +1482,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/md5@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "@types/md5@npm:2.3.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: d508f4dd0663beba1660e5b3796480137690096f5683a0a7dfd2e4afa3a5d906e1f04f5a3bf02355f35ee2e64f4067adf349f4f67ccb15da50e1372b848b8579
+"@types/md5@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "@types/md5@npm:2.3.2"
+  checksum: ce59779c5aa9bcafe6e089f7a0be2f25fb4661d437809dd7e895e13e9369855aeee8521a0a954bb38468cd8ed2d7c84d5dbb3ba37544f5a11c8a199e5a8561b6
   languageName: node
   linkType: hard
 
@@ -9138,7 +9136,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/ioredis": ^4.28.8
     "@types/jest": ^27.4.0
-    "@types/md5": ^2.3.1
+    "@types/md5": ^2.3.2
     "@types/morgan": ^1.9.3
     "@types/node": ^17.0.2
     "@types/pg": ^8.6.4
