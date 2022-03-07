@@ -1519,14 +1519,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg@npm:^8.6.4":
-  version: 8.6.4
-  resolution: "@types/pg@npm:8.6.4"
+"@types/pg@npm:^8.6.5":
+  version: 8.6.5
+  resolution: "@types/pg@npm:8.6.5"
   dependencies:
     "@types/node": "*"
     pg-protocol: "*"
     pg-types: ^2.2.0
-  checksum: cebc40d6f034ff5651a8415e38aeacf86925d6a7eebfd3d20a7db9e7935b0a376a81ecdfffcbeb54425344ecc9a5a8886955bcbb3501226521209900d7a57aef
+  checksum: 49ef858d95e84a6c1be193d367996581c991cf383d8628449507cc4ce67ef43b75acb18a0f9f49f870594cdec3501ddf4d2ac3fbe0dcdaab35c295c038d47199
   languageName: node
   linkType: hard
 
@@ -9161,7 +9161,7 @@ __metadata:
     "@types/md5": ^2.3.2
     "@types/morgan": ^1.9.3
     "@types/node": ^17.0.2
-    "@types/pg": ^8.6.4
+    "@types/pg": ^8.6.5
     "@types/supertest": ^2.0.11
     "@types/uuid": ^8.3.4
     "@typescript-eslint/eslint-plugin": ^5.13.0
