@@ -1142,9 +1142,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/swagger@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@nestjs/swagger@npm:5.2.0"
+"@nestjs/swagger@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "@nestjs/swagger@npm:5.2.1"
   dependencies:
     "@nestjs/mapped-types": 1.0.1
     lodash: 4.17.21
@@ -1160,7 +1160,7 @@ __metadata:
       optional: true
     swagger-ui-express:
       optional: true
-  checksum: a8ec859b1100df67727a586b201749cc04bb481444dd4baad4bd7e07f60ed14b406d7c9fb88f569c3b4257e180b2699cca055dc1c7a4783675f003b090aa35f9
+  checksum: 70e204c6068a0aebcd5c3486599e83cfc34e6d1823a580e1d1ed60f80f01c50ed2be9765b76d171b28eaf3b1f7f237f388c1daf86041634a3289e84c7219af5d
   languageName: node
   linkType: hard
 
@@ -9147,7 +9147,7 @@ __metadata:
     "@nestjs/config": ^2.0.0
     "@nestjs/core": ^8.4.2
     "@nestjs/platform-express": ^8.4.2
-    "@nestjs/swagger": ^5.2.0
+    "@nestjs/swagger": ^5.2.1
     "@nestjs/testing": ^8.4.2
     "@nestjs/throttler": ^2.0.1
     "@types/express": ^4.17.13
