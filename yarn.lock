@@ -6984,16 +6984,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nestjs-throttler-storage-redis@npm:^0.1.18":
-  version: 0.1.18
-  resolution: "nestjs-throttler-storage-redis@npm:0.1.18"
+"nestjs-throttler-storage-redis@npm:^0.1.19":
+  version: 0.1.19
+  resolution: "nestjs-throttler-storage-redis@npm:0.1.19"
   peerDependencies:
     "@nestjs/common": ^7 || ^8
     "@nestjs/core": ^7 || ^8
     "@nestjs/throttler": ^2.0.0
-    ioredis: ^4.27.6
+    ioredis: ^5.0.4
     reflect-metadata: ^0.1.13
-  checksum: 263d84b34eecca2adc6fcf653ad1c940eb9d70608a4ed3036a7a57c23a06aa93ded6af52aebaff6150e54b17188c06bd13c35f11e6733d7e2d4addfd83936aee
+  checksum: 0ce6fcfa90b57897e19e4ea3979c2f13328743527db1c6f01b2597568d961a033eca7df8441ac27e74bee3afe601fbfd20f2c02c57f8ef5324abf1b428d45023
   languageName: node
   linkType: hard
 
@@ -9436,7 +9436,7 @@ __metadata:
     jest: ^27.5.1
     md5: ^2.3.0
     morgan: ^1.10.0
-    nestjs-throttler-storage-redis: ^0.1.18
+    nestjs-throttler-storage-redis: ^0.1.19
     nodemon: ^2.0.16
     pg: ^8.7.3
     pg-mem: ^2.3.5
