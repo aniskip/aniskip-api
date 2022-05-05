@@ -7450,9 +7450,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-mem@npm:^2.3.6":
-  version: 2.3.6
-  resolution: "pg-mem@npm:2.3.6"
+"pg-mem@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "pg-mem@npm:2.4.1"
   dependencies:
     "@mikro-orm/core": ^4.5.3
     "@mikro-orm/postgresql": ^4.5.3
@@ -7462,7 +7462,7 @@ __metadata:
     lru-cache: ^6.0.0
     moment: ^2.27.0
     object-hash: ^2.0.3
-    pgsql-ast-parser: ^10.0.3
+    pgsql-ast-parser: ^10.0.5
   peerDependencies:
     knex: ">=0.20"
     pg-promise: ">=10.8.7"
@@ -7479,7 +7479,7 @@ __metadata:
       optional: true
     typeorm:
       optional: true
-  checksum: 68021d855da9f26f927b10cd4bd348e423b6b3019143f0160110038e35d2057a8f24def203484f9159780c7f725e68df47cc7ed0e440f565a30f81112b2cf1c3
+  checksum: 4f3af2cf83d300a0fbda62e4a7982cb166b2f9b4cc9689ab7ff3f2c33bdf5a1a3305d0e1c0d85496d15aaf70d55aa5afca09d68bd08f6d0bc0ba925bab327a3a
   languageName: node
   linkType: hard
 
@@ -7570,13 +7570,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pgsql-ast-parser@npm:^10.0.3":
-  version: 10.0.3
-  resolution: "pgsql-ast-parser@npm:10.0.3"
+"pgsql-ast-parser@npm:^10.0.5":
+  version: 10.0.5
+  resolution: "pgsql-ast-parser@npm:10.0.5"
   dependencies:
     moo: ^0.5.1
     nearley: ^2.19.5
-  checksum: 82fa89f3c399d530480371fe84aec6f7b7ceb60df4e0f68ad60030b32d0803df0f623337e72f5fe4b50d81817a47955a94ddeed45f59039a8bb11530b39a7617
+  checksum: cb491daa74665123325a6b0abfb1b0570de63b96f308295dc2646b49537e02d38327eebd0ff62a40336cc65846492a633f02dc49814d95c86f3d55c626a9a5db
   languageName: node
   linkType: hard
 
@@ -9256,7 +9256,7 @@ __metadata:
     nestjs-throttler-storage-redis: ^0.1.19
     nodemon: ^2.0.16
     pg: ^8.7.3
-    pg-mem: ^2.3.6
+    pg-mem: ^2.4.1
     prettier: ^2.6.2
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
