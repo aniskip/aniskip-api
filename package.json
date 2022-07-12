@@ -1,6 +1,6 @@
 {
   "name": "typescript-aniskip-api",
-  "version": "2.0.188",
+  "version": "2.0.189",
   "description": "Provides the opening and ending skip times for the Aniskip extension",
   "repository": "https://github.com/lexesjan/typescript-aniskip-api",
   "contributors": [
@@ -23,7 +23,7 @@
     "@nestjs/core": "^8.4.7",
     "@nestjs/platform-express": "^8.4.7",
     "@nestjs/swagger": "^5.2.1",
-    "@nestjs/throttler": "^2.0.1",
+    "@nestjs/throttler": "^3.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "express": "^4.18.1",
