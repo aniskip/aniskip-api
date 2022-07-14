@@ -8522,9 +8522,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.8.2":
-  version: 10.8.2
-  resolution: "ts-node@npm:10.8.2"
+"ts-node@npm:^10.9.0":
+  version: 10.9.0
+  resolution: "ts-node@npm:10.9.0"
   dependencies:
     "@cspotcode/source-map-support": ^0.8.0
     "@tsconfig/node10": ^1.0.7
@@ -8556,7 +8556,7 @@ __metadata:
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: 1eede939beed9f4db35bcc88d78ef803815b99dcdbed1ecac728d861d74dc694918a7f0f437aa08d026193743a31e7e00e2ee34f875f909b5879981c1808e2a7
+  checksum: 2d75769e595a2ee1b7382c0d9a1cd5fbff14245b3022c3701f52146e148d91c495d71f0e2ba810e92482a36b88efb5e8c487d1fbeeb7fa75dd509c1e98894029
   languageName: node
   linkType: hard
 
@@ -8702,7 +8702,7 @@ __metadata:
     supertest: ^6.2.4
     swagger-ui-express: ^4.5.0
     ts-jest: ^28.0.5
-    ts-node: ^10.8.2
+    ts-node: ^10.9.0
     typescript: ^4.7.4
     uuid: ^8.3.2
   languageName: unknown
