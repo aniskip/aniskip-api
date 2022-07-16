@@ -4737,9 +4737,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "ioredis@npm:5.2.0"
+"ioredis@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "ioredis@npm:5.2.1"
   dependencies:
     "@ioredis/commands": ^1.1.1
     cluster-key-slot: ^1.1.0
@@ -4750,7 +4750,7 @@ __metadata:
     redis-errors: ^1.2.0
     redis-parser: ^3.0.0
     standard-as-callback: ^2.1.0
-  checksum: 37189fcd4bd834d66aabb28a754d97da9147a6162c16bd971647750dbb81cbe7d93f4c07a623efdc0fdcb61bca243678b864229ddbcc2b8692755d7be40a2227
+  checksum: cd744f4d8b9ca54aecd4020eb245e318818a83aeb4edf0b8d52175e60644cbfa161cb4dc35438a4b0e90db904d3f886e9be2a3d40a616705a603e63aa8c74407
   languageName: node
   linkType: hard
 
@@ -8688,7 +8688,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     express: ^4.18.1
     helmet: ^5.1.0
-    ioredis: ^5.2.0
+    ioredis: ^5.2.1
     jest: ^28.1.3
     md5: ^2.3.0
     morgan: ^1.10.0
