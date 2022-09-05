@@ -1319,9 +1319,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/swagger@npm:^6.1.1":
-  version: 6.1.1
-  resolution: "@nestjs/swagger@npm:6.1.1"
+"@nestjs/swagger@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@nestjs/swagger@npm:6.1.2"
   dependencies:
     "@nestjs/mapped-types": 1.1.0
     js-yaml: 4.1.0
@@ -1336,7 +1336,7 @@ __metadata:
   peerDependenciesMeta:
     "@fastify/static":
       optional: true
-  checksum: 7dd9720a9e385da6f36ea122d25d9e37ee5f1f36fef56f95c7819229b76ae69a77edca4b00bdfff2c4acb19aa99bddbf7a2f91ae447554cc0b1bb1f242ab3d47
+  checksum: 1acfddac35f3c41298da30c865e1bd61a979c6d3fdba3056f71474f65aca51d001c5eff8775615d3459ee41e578ffbb577ee529409f4f7baaf9466b8e12626de
   languageName: node
   linkType: hard
 
@@ -8809,7 +8809,7 @@ __metadata:
     "@nestjs/config": ^2.2.0
     "@nestjs/core": ^9.0.11
     "@nestjs/platform-express": ^9.0.11
-    "@nestjs/swagger": ^6.1.1
+    "@nestjs/swagger": ^6.1.2
     "@nestjs/testing": ^9.0.11
     "@nestjs/throttler": ^3.0.0
     "@types/express": ^4.17.13
