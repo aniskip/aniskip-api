@@ -1,5 +1,5 @@
 # Install dev dependencies stage
-FROM node:18-alpine as install-dev
+FROM node:19-alpine as install-dev
 
 WORKDIR /usr/src/app
 
@@ -9,7 +9,7 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
 # Build stage
-FROM node:18-alpine as build
+FROM node:19-alpine as build
 
 WORKDIR /usr/src/app
 
@@ -21,7 +21,7 @@ COPY --from=install-dev /usr/src/app/node_modules ./node_modules
 RUN yarn build
 
 # Install prod dependencies stage
-FROM node:18-alpine as install-prod
+FROM node:19-alpine as install-prod
 
 WORKDIR /usr/src/app
 
@@ -31,7 +31,7 @@ COPY --from=install-dev /usr/src/app/.yarn ./.yarn
 RUN yarn workspaces focus --production
 
 # Run stage
-FROM node:18-alpine
+FROM node:19-alpine
 
 WORKDIR /usr/src/app
 
