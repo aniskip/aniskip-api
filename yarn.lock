@@ -8141,12 +8141,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "rimraf@npm:4.0.5"
+"rimraf@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "rimraf@npm:4.0.6"
   bin:
     rimraf: dist/cjs/src/bin.js
-  checksum: e99139d6460d4460125288565698ff43f5cb8734feda83694187a029b21bdd6e63c063a1cb899ae8deaccc4345fbb69fa45e655329b2fb93f21ad809da1948eb
+  checksum: 5352c855295f6b45a9ee40f72bb68dd19d974ca858defd6dc2409720391b74f0fd50b7aeb3d524ba820b1b5b3e07215d2098e838c2ed9ca00fc83a433427168f
   languageName: node
   linkType: hard
 
@@ -9204,7 +9204,7 @@ __metadata:
     pg-mem: ^2.6.4
     prettier: ^2.8.1
     reflect-metadata: ^0.1.13
-    rimraf: ^4.0.5
+    rimraf: ^4.0.6
     rxjs: ^7.8.0
     supertest: ^6.3.3
     swagger-ui-express: ^4.6.0
