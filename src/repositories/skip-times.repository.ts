@@ -113,7 +113,7 @@ export class SkipTimesRepository {
         AND episode_number = $2::real
         AND skip_type = $3::varchar
         AND votes > -2
-        AND ($4::real = 0 OR ABS(episode_length - $4::real) <= 5)
+        AND ($4::real = 0 OR ABS(episode_length - $4::real) <= 20)
       ORDER BY
         votes DESC
       LIMIT 10
