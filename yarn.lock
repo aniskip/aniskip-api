@@ -7637,7 +7637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-mem@npm:^2.6.10":
+"pg-mem@npm:^2.6.12":
   version: 2.6.12
   resolution: "pg-mem@npm:2.6.12"
   dependencies:
@@ -9334,7 +9334,7 @@ __metadata:
     nestjs-throttler-storage-redis: ^0.2.2
     nodemon: ^2.0.22
     pg: ^8.10.0
-    pg-mem: ^2.6.10
+    pg-mem: ^2.6.12
     prettier: ^2.8.1
     reflect-metadata: ^0.1.13
     rimraf: ^4.4.0
