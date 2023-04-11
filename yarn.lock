@@ -4885,10 +4885,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:^6.1.4":
-  version: 6.1.4
-  resolution: "helmet@npm:6.1.4"
-  checksum: 3f6f47d3ababd717c7fa749509f439f4262e1df9a3c7d2ba4fecaf1fc5c0092d150f621f839b68f737c4e38a7bdd990d5dacc860af0b07c070b9bf13ff8e18ba
+"helmet@npm:^6.1.5":
+  version: 6.1.5
+  resolution: "helmet@npm:6.1.5"
+  checksum: 58cc8f8715e2c486f3c7a58f89fcda3c9e83ab427bfe16d8486d8be53a681afc291f9900b9e60e5d42c63c25ece3da864a33cdd621a12f5a67cbc9046cff393d
   languageName: node
   linkType: hard
 
@@ -9326,7 +9326,7 @@ __metadata:
     eslint-plugin-jsx-a11y: ^6.7.1
     eslint-plugin-prettier: ^4.2.1
     express: ^4.18.2
-    helmet: ^6.1.4
+    helmet: ^6.1.5
     ioredis: ^5.3.1
     jest: ^29.5.0
     md5: ^2.3.0
