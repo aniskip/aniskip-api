@@ -1,6 +1,6 @@
 export const SKIP_TYPES_V1 = ['op', 'ed'] as const;
 
-export type SkipTypeV1 = typeof SKIP_TYPES_V1[number];
+export type SkipTypeV1 = (typeof SKIP_TYPES_V1)[number];
 
 export type SkipTimeV1 = {
   interval: {
@@ -19,7 +19,7 @@ export const SKIP_TYPES_V2 = [
   'recap',
 ] as const;
 
-export type SkipTypeV2 = typeof SKIP_TYPES_V2[number];
+export type SkipTypeV2 = (typeof SKIP_TYPES_V2)[number];
 
 export type SkipTimeV2 = {
   interval: {
