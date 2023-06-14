@@ -1260,11 +1260,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/config@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "@nestjs/config@npm:2.3.2"
+"@nestjs/config@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "@nestjs/config@npm:2.3.3"
   dependencies:
-    dotenv: 16.0.3
+    dotenv: 16.1.4
     dotenv-expand: 10.0.0
     lodash: 4.17.21
     uuid: 9.0.0
@@ -1272,7 +1272,7 @@ __metadata:
     "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0
     reflect-metadata: ^0.1.13
     rxjs: ^6.0.0 || ^7.2.0
-  checksum: 400167392400c06889d51a0c79a6173760231cbff7e0437d56922a76bf3bd494230072e4b5e4cdb52ec15df571797d9a1f61581237b3230477922d470718dd24
+  checksum: bf5f06910827d07f1e2db6ce054dae2176f940f4a72d49543721009513c687190e3777dd1286dbcb0567ab0b7b6a2c8f5fe41eace8212f143c399b7244fda6be
   languageName: node
   linkType: hard
 
@@ -3456,10 +3456,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.3":
-  version: 16.0.3
-  resolution: "dotenv@npm:16.0.3"
-  checksum: afcf03f373d7a6d62c7e9afea6328e62851d627a4e73f2e12d0a8deae1cd375892004f3021883f8aec85932cd2834b091f568ced92b4774625b321db83b827f8
+"dotenv@npm:16.1.4":
+  version: 16.1.4
+  resolution: "dotenv@npm:16.1.4"
+  checksum: c1b2e13df4d374a6a29e134c56c7b040ba20500677fe8b9939ea654f3b3badb9aaa0b172e40e4dfa1233a4177dbb8fb79d84cc79a50ac9c9641fe2ad98c14876
   languageName: node
   linkType: hard
 
@@ -9474,7 +9474,7 @@ __metadata:
   resolution: "typescript-aniskip-api@workspace:."
   dependencies:
     "@nestjs/common": ^9.4.2
-    "@nestjs/config": ^2.3.2
+    "@nestjs/config": ^2.3.3
     "@nestjs/core": ^9.4.2
     "@nestjs/platform-express": ^9.4.2
     "@nestjs/swagger": ^6.3.0
