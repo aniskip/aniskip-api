@@ -1,6 +1,6 @@
 {
   "name": "typescript-aniskip-api",
-  "version": "2.0.532",
+  "version": "2.0.533",
   "description": "Provides the opening and ending skip times for the Aniskip extension",
   "repository": "https://github.com/lexesjan/typescript-aniskip-api",
   "contributors": [
@@ -55,7 +55,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^8.9.0",
     "eslint-import-resolver-node": "^0.3.7",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
