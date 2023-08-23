@@ -1718,10 +1718,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.5.2":
-  version: 20.5.2
-  resolution: "@types/node@npm:20.5.2"
-  checksum: 46d032bb9a1db687693f6351702572d2f1e12face32caf8182323413918de27d4ac16cc2b15ff6b891651313e602da18edbdd095d16d2b5a26588c2edffca892
+"@types/node@npm:^20.5.3":
+  version: 20.5.3
+  resolution: "@types/node@npm:20.5.3"
+  checksum: fe67a0fd7402218bdf91523a2b1c2e41d619f7294b1a471e0a778b8bc7bb3fcf291aed12041bcbe9622d50a3d1295a9adea0e7e19bb9386a246bf66071404721
   languageName: node
   linkType: hard
 
@@ -9737,7 +9737,7 @@ __metadata:
     "@types/jest": ^29.5.4
     "@types/md5": ^2.3.2
     "@types/morgan": ^1.9.4
-    "@types/node": ^20.5.2
+    "@types/node": ^20.5.3
     "@types/pg": ^8.10.2
     "@types/supertest": ^2.0.12
     "@types/uuid": ^9.0.2
