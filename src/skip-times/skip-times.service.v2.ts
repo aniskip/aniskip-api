@@ -29,9 +29,8 @@ export class SkipTimesServiceV2 {
         voteSuccessful = await this.skipTimesRepository.upvoteSkipTime(skipId);
         break;
       case 'downvote':
-        voteSuccessful = await this.skipTimesRepository.downvoteSkipTime(
-          skipId
-        );
+        voteSuccessful =
+          await this.skipTimesRepository.downvoteSkipTime(skipId);
         break;
       // no default
     }
