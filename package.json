@@ -71,5 +71,5 @@
     "typescript": "^5.2.2",
     "uuid": "^9.0.1"
   },
-  "packageManager": "yarn@3.6.3"
+  "packageManager": "yarn@3.7.0"
 }
