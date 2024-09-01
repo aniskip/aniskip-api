@@ -1367,16 +1367,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/throttler@npm:^4.2.1":
-  version: 4.2.1
-  resolution: "@nestjs/throttler@npm:4.2.1"
+"@nestjs/throttler@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@nestjs/throttler@npm:5.1.1"
   dependencies:
     md5: ^2.2.1
   peerDependencies:
     "@nestjs/common": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
     "@nestjs/core": ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-    reflect-metadata: ^0.1.13
-  checksum: 28b1b1b3ff0623e67ecd51f237bb4a8c22c39134baa5556918a83771c9ebae9b095d0953f3e0e6ba46cc5f7279e4c9cd5c357cbdc00eccffe0e295dc180bcd76
+    reflect-metadata: ^0.1.13 || ^0.2.0
+  checksum: 50a8ad2a9d3b7b75c4784cfef8a03cf94a7be82e4591ea769f94bf1116d43b4fd2b0ce412b2f13b41222f02164b59ca1234c0c4f56c9f46d35e82145b0bf2fd5
   languageName: node
   linkType: hard
 
@@ -9977,7 +9977,7 @@ __metadata:
     "@nestjs/platform-express": ^9.4.3
     "@nestjs/swagger": ^6.3.0
     "@nestjs/testing": ^9.4.3
-    "@nestjs/throttler": ^4.2.1
+    "@nestjs/throttler": ^5.1.1
     "@types/express": ^4.17.17
     "@types/ioredis": ^5.0.0
     "@types/jest": ^29.5.5
