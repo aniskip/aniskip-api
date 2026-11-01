@@ -42,6 +42,8 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
    bun run dev
    ```
 
+   The docs are at http://localhost:5100/docs.
+
 ### Commands
 
 | Command                 | What it does                                  |
