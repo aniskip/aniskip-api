@@ -1,9 +1,5 @@
 name: CI
 
-env:
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: password
-
 on:
   push:
     branches:
@@ -22,36 +18,46 @@ on:
   # add manual trigger
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   continuous-integration-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repo and submodules
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
+      # Match the Node version used by the Docker images.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+
       # run tests
-      - run: yarn install
+      - run: yarn install --immutable
       - run: yarn lint
       - run: yarn build
       - run: yarn test
 
   continuous-integration-docker:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repo and submodules
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           submodules: recursive
 
       # test docker build
       - name: Docker pull latest images
         working-directory: ./docker
-        run: docker-compose pull
+        run: docker compose pull
 
       - name: Docker build
         working-directory: ./docker
-        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
+        run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
