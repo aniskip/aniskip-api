@@ -1,6 +1,7 @@
 #!/bin/bash
 # Loads the public dataset (anonymised skip times, refreshed weekly from
-# production) into the local dev database. Run after `bun run services:up`.
+# production) into the local dev database. `bun run db:seed` starts the
+# services first.
 # Pass --force to replace existing rows.
 set -euo pipefail
 
