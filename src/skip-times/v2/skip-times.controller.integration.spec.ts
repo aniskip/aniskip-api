@@ -1,11 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import {
-  HttpStatus,
-  type INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
+import { HttpStatus, type INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { minutes, ThrottlerModule } from '@nestjs/throttler';
+import { ZodValidationPipe } from 'nestjs-zod';
 import { Pool } from 'pg';
 import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import request from 'supertest';
@@ -13,6 +10,12 @@ import { SkipTimesRepository } from '../skip-times.repository';
 import { SkipTimesService } from '../skip-times.service';
 import { VoteService } from '../voting/vote.service';
 import { SkipTimesControllerV2 } from './skip-times.controller';
+
+/** The validation errors of a 400 response, as `path: message`. */
+const validationErrors = (body: {
+  errors: { path: (string | number)[]; message: string }[];
+}): string[] =>
+  body.errors.map((issue) => `${issue.path.join('.')}: ${issue.message}`);
 
 describe('SkipTimesControllerV2', () => {
   let app: INestApplication;
@@ -80,7 +83,7 @@ describe('SkipTimesControllerV2', () => {
     }).compile();
 
     app = module.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    app.useGlobalPipes(new ZodValidationPipe());
     await app.init();
   });
 
@@ -145,10 +148,11 @@ describe('SkipTimesControllerV2', () => {
       request(app.getHttpServer())
         .get('/skip-times/1/-1')
         .query({ types: 'op', episodeLength: 0 })
-        .expect({
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: ['episodeNumber must not be less than 0'],
-          error: 'Bad Request',
+        .expect(({ body }) => {
+          expect(body.message).toBe('Validation failed');
+          expect(validationErrors(body)).toEqual([
+            'episodeNumber: Too small: expected number to be >=0',
+          ]);
         })
         .expect(HttpStatus.BAD_REQUEST, done);
     });
@@ -363,7 +367,7 @@ describe('SkipTimesControllerV2', () => {
           submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
         },
         errorMessage: [
-          'skipType must be one of the following values: op, ed, mixed-op, mixed-ed, recap',
+          'skipType: Invalid option: expected one of "op"|"ed"|"mixed-op"|"mixed-ed"|"recap"',
         ],
       },
       {
@@ -375,7 +379,45 @@ describe('SkipTimesControllerV2', () => {
           episodeLength: -1,
           submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
         },
-        errorMessage: ['episodeLength must not be less than 0'],
+        errorMessage: [
+          'episodeLength: Too small: expected number to be >=0',
+          'endTime: must not be after episodeLength',
+        ],
+      },
+      {
+        data: {
+          skipType: 'op',
+          providerName: 'P'.repeat(65),
+          startTime: 37.75,
+          endTime: 128.1,
+          episodeLength: 1440.05,
+          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        },
+        errorMessage: [
+          'providerName: Too big: expected string to have <=64 characters',
+        ],
+      },
+      {
+        data: {
+          skipType: 'op',
+          providerName: 'ProviderName',
+          startTime: 128.1,
+          endTime: 37.75,
+          episodeLength: 1440.05,
+          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        },
+        errorMessage: ['endTime: must be after startTime'],
+      },
+      {
+        data: {
+          skipType: 'op',
+          providerName: 'ProviderName',
+          startTime: 37.75,
+          endTime: 1500,
+          episodeLength: 1440.05,
+          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        },
+        errorMessage: ['endTime: must not be after episodeLength'],
       },
     ])('should not create a skip time', ({ data, errorMessage }, done) => {
       request(app.getHttpServer())
@@ -384,8 +426,8 @@ describe('SkipTimesControllerV2', () => {
         .expect((res) => {
           const { body } = res;
           expect(body.statusCode).toBe(HttpStatus.BAD_REQUEST);
-          expect(body.message).toEqual(errorMessage);
-          expect(body.error).toBe('Bad Request');
+          expect(body.message).toBe('Validation failed');
+          expect(validationErrors(body)).toEqual([...errorMessage]);
           expect(body.skipId).toBeUndefined();
         })
         .expect(HttpStatus.BAD_REQUEST, done);
