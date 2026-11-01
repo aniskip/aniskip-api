@@ -1,7 +1,8 @@
+import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { SkipTimeV1, VoteType } from '../skip-times.types';
+import type { SkipTimeV1, VoteType } from '../skip-times.types';
 import {
   PostSkipTimesV1ThrottlerGuard,
   PostVoteSkipTimesV1ThrottlerGuard,

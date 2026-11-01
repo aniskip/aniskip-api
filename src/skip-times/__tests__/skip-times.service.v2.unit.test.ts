@@ -1,5 +1,6 @@
+import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SkipTypeV1 } from '../skip-times.types';
+import type { SkipTypeV1 } from '../skip-times.types';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../../vote';
 import { SkipTimesServiceV2 } from '../skip-times.service.v2';

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'bun:test';
 import { Validator } from 'class-validator';
 import { IsUnique } from '../validators';
 
