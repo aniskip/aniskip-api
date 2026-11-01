@@ -17,6 +17,8 @@ on:
   pull_request:
     branches:
       - main
+  # Runs the required checks on the merge queue's temporary branch.
+  merge_group:
 
   # add manual trigger
   workflow_dispatch:
