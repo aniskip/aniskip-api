@@ -32,7 +32,7 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
    cp .env.example .env
    ```
 
-1. Optionally, load real data: anonymised skip times from the [public dataset](https://github.com/aniskip/sanitize_db_dump), refreshed weekly from production. This starts Postgres and Redis if they aren't running:
+1. Optionally, load real data: anonymised skip times from the [public dataset](https://github.com/aniskip/sanitize-db-dump), refreshed weekly from production. This starts Postgres and Redis if they aren't running:
 
    ```sh
    bun run db:seed

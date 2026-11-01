@@ -7,7 +7,7 @@ set -euo pipefail
 
 cd "${BASH_SOURCE%/*}/.."
 
-DATASET_URL=https://raw.githubusercontent.com/aniskip/sanitize_db_dump/main/skip_times_public.csv
+DATASET_URL=https://raw.githubusercontent.com/aniskip/sanitize-db-dump/main/skip_times_public.csv
 
 psql() {
   docker compose -f docker/docker-compose.dev.yml exec -T db \
