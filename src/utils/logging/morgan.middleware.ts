@@ -1,5 +1,5 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Injectable, Logger, type NestMiddleware } from '@nestjs/common';
+import type { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class MorganMiddleware implements NestMiddleware {
         stream: {
           write: (str) => this.logger.log(str.trimEnd()),
         },
-      }
+      },
     )(req, res, next);
   }
 }

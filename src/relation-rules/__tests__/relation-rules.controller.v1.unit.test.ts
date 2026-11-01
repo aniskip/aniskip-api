@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { RelationRulesService } from '../relation-rules.service';
-import { RelationRulesControllerV1 } from '../relation-rules.controller.v1';
 import { GetRelationRulesRequestParamsV1 } from '../models';
+import { RelationRulesControllerV1 } from '../relation-rules.controller.v1';
+import { RelationRulesService } from '../relation-rules.service';
 
 describe('RelationRulesControllerV1', () => {
   let relationRulesController: RelationRulesControllerV1;
@@ -27,7 +27,7 @@ describe('RelationRulesControllerV1', () => {
     }).compile();
 
     relationRulesController = module.get<RelationRulesControllerV1>(
-      RelationRulesControllerV1
+      RelationRulesControllerV1,
     );
     relationRulesService =
       module.get<RelationRulesService>(RelationRulesService);

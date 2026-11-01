@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { RelationRulesService } from '../relation-rules.service';
-import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
 import { GetRelationRulesRequestParamsV2 } from '../models';
+import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
+import { RelationRulesService } from '../relation-rules.service';
 
 describe('RelationRulesControllerV2', () => {
   let relationRulesController: RelationRulesControllerV2;
@@ -28,7 +28,7 @@ describe('RelationRulesControllerV2', () => {
     }).compile();
 
     relationRulesController = module.get<RelationRulesControllerV2>(
-      RelationRulesControllerV2
+      RelationRulesControllerV2,
     );
     relationRulesService =
       module.get<RelationRulesService>(RelationRulesService);
@@ -76,7 +76,7 @@ describe('RelationRulesControllerV2', () => {
       params.animeId = 1;
 
       expect(() => relationRulesController.getRules(params)).toThrow(
-        HttpException
+        HttpException,
       );
     });
   });

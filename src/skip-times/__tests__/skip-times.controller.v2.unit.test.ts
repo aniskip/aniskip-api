@@ -59,7 +59,7 @@ describe('SkipTimesControllerV2', () => {
     }).compile();
 
     skipTimesController = module.get<SkipTimesControllerV2>(
-      SkipTimesControllerV2
+      SkipTimesControllerV2,
     );
     skipTimesService = module.get<SkipTimesServiceV2>(SkipTimesServiceV2);
   });
@@ -86,7 +86,7 @@ describe('SkipTimesControllerV2', () => {
 
         expect(response.message).toBeDefined();
         expect(response.statusCode).toBe(HttpStatus.CREATED);
-      }
+      },
     );
 
     it.each<VoteType>(['upvote', 'downvote'])(
@@ -103,9 +103,9 @@ describe('SkipTimesControllerV2', () => {
         body.voteType = voteType;
 
         await expect(
-          skipTimesController.voteSkipTime(params, body)
+          skipTimesController.voteSkipTime(params, body),
         ).rejects.toThrow(HttpException);
-      }
+      },
     );
   });
 
@@ -191,7 +191,7 @@ describe('SkipTimesControllerV2', () => {
       query.types = ['op', 'ed'];
 
       await expect(
-        skipTimesController.getSkipTimes(params, query)
+        skipTimesController.getSkipTimes(params, query),
       ).rejects.toThrow(HttpException);
     });
   });
@@ -239,7 +239,7 @@ describe('SkipTimesControllerV2', () => {
       body.submitterId = 'efb943b4-6869-4179-b3a6-81c5d97cf98b';
 
       await expect(
-        skipTimesController.createSkipTime(params, body)
+        skipTimesController.createSkipTime(params, body),
       ).rejects.toThrow(HttpException);
     });
   });

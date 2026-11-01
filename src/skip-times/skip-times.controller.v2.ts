@@ -52,11 +52,11 @@ export class SkipTimesControllerV2 {
   })
   async voteSkipTime(
     @Param() params: PostVoteRequestParamsV2,
-    @Body() body: PostVoteRequestBodyV2
+    @Body() body: PostVoteRequestBodyV2,
   ): Promise<PostVoteResponseV2> {
     const isSuccess = await this.skipTimesService.voteSkipTime(
       body.voteType,
-      params.skipId
+      params.skipId,
     );
 
     if (!isSuccess) {
@@ -88,13 +88,13 @@ export class SkipTimesControllerV2 {
   })
   async getSkipTimes(
     @Param() params: GetSkipTimesRequestParamsV2,
-    @Query() query: GetSkipTimesRequestQueryV2
+    @Query() query: GetSkipTimesRequestQueryV2,
   ): Promise<GetSkipTimesResponseV2> {
     const skipTimes = await this.skipTimesService.findSkipTimes(
       params.animeId,
       params.episodeNumber,
       query.types,
-      query.episodeLength
+      query.episodeLength,
     );
 
     const response = new GetSkipTimesResponseV2();
@@ -126,7 +126,7 @@ export class SkipTimesControllerV2 {
   })
   async createSkipTime(
     @Param() params: PostCreateSkipTimeRequestParamsV2,
-    @Body() body: PostCreateSkipTimeRequestBodyV2
+    @Body() body: PostCreateSkipTimeRequestBodyV2,
   ): Promise<PostCreateSkipTimeResponseV2> {
     const skipTime = {
       anime_id: params.animeId,
@@ -139,11 +139,14 @@ export class SkipTimesControllerV2 {
       submitter_id: body.submitterId,
     };
 
-    let skipId;
+    let skipId: string;
     try {
       skipId = await this.skipTimesService.createSkipTime(skipTime);
-    } catch (error: any) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    } catch (error) {
+      throw new HttpException(
+        error instanceof Error ? error.message : String(error),
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const response = new PostCreateSkipTimeResponseV2();

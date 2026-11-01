@@ -1,10 +1,9 @@
-version: '3.9'
 services:
   api:
     image: lexesjan/aniskip-api
     restart: always
     ports:
-      - '5000:5000'
+      - "5000:5000"
     networks:
       - network
     environment:

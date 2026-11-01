@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
+import path from 'node:path';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import path from 'path';
 import type { RelationsConfig } from '../../config';
 import { RelationRulesService } from '../relation-rules.service';
 
@@ -12,9 +12,11 @@ describe('RelationRulesService', () => {
     const mockConfigService = {
       provide: ConfigService,
       useValue: {
-        get: jest.fn((): RelationsConfig => ({
-          filePath: path.join(__dirname, 'anime-relations.test.txt'),
-        })),
+        get: jest.fn(
+          (): RelationsConfig => ({
+            filePath: path.join(__dirname, 'anime-relations.test.txt'),
+          }),
+        ),
       },
     };
 

@@ -27,7 +27,7 @@ export class SkipTimesRepository {
       WHERE
         skip_id = $1::uuid
       `,
-      [skipId]
+      [skipId],
     );
 
     return (rowCount ?? 0) > 0;
@@ -48,7 +48,7 @@ export class SkipTimesRepository {
       WHERE
         skip_id = $1::uuid
       `,
-      [skipId]
+      [skipId],
     );
 
     return (rowCount ?? 0) > 0;
@@ -60,7 +60,7 @@ export class SkipTimesRepository {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'>
+    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'>,
   ): Promise<string> {
     const { rows } = await this.database.query<CreateSkipTimesQueryResponse>(
       `
@@ -79,10 +79,15 @@ export class SkipTimesRepository {
         skipTime.end_time,
         skipTime.episode_length,
         skipTime.submitter_id,
-      ]
+      ],
     );
 
-    return rows[0].skip_id;
+    const [row] = rows;
+    if (!row) {
+      throw new Error('Inserting the skip time returned no row');
+    }
+
+    return row.skip_id;
   }
 
   /**
@@ -96,7 +101,7 @@ export class SkipTimesRepository {
     animeId: number,
     episodeNumber: number,
     skipType: SkipTypeV2,
-    episodeLength?: number
+    episodeLength?: number,
   ): Promise<SkipTimeV2[]> {
     const { rows } = await this.database.query<DatabaseSkipTime>(
       `
@@ -118,7 +123,7 @@ export class SkipTimesRepository {
         votes DESC
       LIMIT 10
       `,
-      [animeId, episodeNumber, skipType, episodeLength ?? 0]
+      [animeId, episodeNumber, skipType, episodeLength ?? 0],
     );
 
     const skipTimes: SkipTimeV2[] = rows.map((row) => ({
@@ -140,7 +145,7 @@ export class SkipTimesRepository {
    * @param submitterId ID of the submitter to check.
    */
   async getAverageOfLastTenSkipTimesVotes(
-    submitterId: string
+    submitterId: string,
   ): Promise<number> {
     const { rows } =
       await this.database.query<GetAverageOfLastTenSkipTimesVotesQueryResponse>(
@@ -158,9 +163,9 @@ export class SkipTimesRepository {
             submit_date DESC
           LIMIT 10) AS t
         `,
-        [submitterId]
+        [submitterId],
       );
 
-    return rows[0].avg ?? 0;
+    return rows[0]?.avg ?? 0;
   }
 }

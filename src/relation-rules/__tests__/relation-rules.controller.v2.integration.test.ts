@@ -1,5 +1,9 @@
 import { afterAll, beforeAll, describe, it } from 'bun:test';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  HttpStatus,
+  type INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';

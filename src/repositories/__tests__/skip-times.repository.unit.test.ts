@@ -1,7 +1,7 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Pool } from 'pg';
-import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
+import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
 import type { DatabaseSkipTime, SkipTypeV1 } from '../../skip-times';
 import { SkipTimesRepository } from '../skip-times.repository';
@@ -85,7 +85,7 @@ describe('SkipTimesService', () => {
 
     it('should upvote a skip time', async () => {
       const isSuccessful = await skipTimesRepository.upvoteSkipTime(
-        'c9dfd857-0351-4a90-b37e-582a44253910'
+        'c9dfd857-0351-4a90-b37e-582a44253910',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -93,7 +93,7 @@ describe('SkipTimesService', () => {
 
     it('should not upvote successfully', async () => {
       const isSuccessful = await skipTimesRepository.upvoteSkipTime(
-        'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
+        'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
       );
 
       expect(isSuccessful).toBeFalsy();
@@ -112,7 +112,7 @@ describe('SkipTimesService', () => {
 
     it('should downvote a skip time', async () => {
       const isSuccessful = await skipTimesRepository.downvoteSkipTime(
-        'c9dfd857-0351-4a90-b37e-582a44253910'
+        'c9dfd857-0351-4a90-b37e-582a44253910',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -120,7 +120,7 @@ describe('SkipTimesService', () => {
 
     it('should not downvote successfully', async () => {
       const isSuccessful = await skipTimesRepository.downvoteSkipTime(
-        'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
+        'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
       );
 
       expect(isSuccessful).toBeFalsy();
@@ -177,7 +177,7 @@ describe('SkipTimesService', () => {
         };
 
       await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime)
+        skipTimesRepository.createSkipTime(invalidSkipTime),
       ).rejects.toThrow();
     });
 
@@ -189,7 +189,7 @@ describe('SkipTimesService', () => {
         };
 
       await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime)
+        skipTimesRepository.createSkipTime(invalidSkipTime),
       ).rejects.toThrow();
     });
 
@@ -201,7 +201,7 @@ describe('SkipTimesService', () => {
         };
 
       await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime)
+        skipTimesRepository.createSkipTime(invalidSkipTime),
       ).rejects.toThrow();
     });
 
@@ -213,7 +213,7 @@ describe('SkipTimesService', () => {
         };
 
       await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime)
+        skipTimesRepository.createSkipTime(invalidSkipTime),
       ).rejects.toThrow();
     });
 
@@ -225,7 +225,7 @@ describe('SkipTimesService', () => {
         };
 
       await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime)
+        skipTimesRepository.createSkipTime(invalidSkipTime),
       ).rejects.toThrow();
     });
 
@@ -237,7 +237,7 @@ describe('SkipTimesService', () => {
         };
 
       await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime)
+        skipTimesRepository.createSkipTime(invalidSkipTime),
       ).rejects.toThrow();
     });
   });
@@ -314,7 +314,7 @@ describe('SkipTimesService', () => {
 
       const average =
         await skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
-          'e93e3787-3071-4d1f-833f-a78755702f6b'
+          'e93e3787-3071-4d1f-833f-a78755702f6b',
         );
 
       expect(average).toBe(3.5);
@@ -323,7 +323,7 @@ describe('SkipTimesService', () => {
     it('should return zero from a user with zero submitted skip times', async () => {
       const average =
         await skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
-          'e93e3787-3071-4d1f-833f-a78755702f6b'
+          'e93e3787-3071-4d1f-833f-a78755702f6b',
         );
 
       expect(average).toBe(0);

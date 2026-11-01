@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { SkipTypeV1 } from '../skip-times.types';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../../vote';
 import { SkipTimesServiceV1 } from '../skip-times.service.v1';
+import type { SkipTypeV1 } from '../skip-times.types';
 
 describe('SkipTimesService', () => {
   let skipTimesService: SkipTimesServiceV1;
@@ -52,7 +52,7 @@ describe('SkipTimesService', () => {
 
       const isSuccessful = await skipTimesService.voteSkipTime(
         'upvote',
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -65,7 +65,7 @@ describe('SkipTimesService', () => {
 
       const isSuccessful = await skipTimesService.voteSkipTime(
         'downvote',
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -131,13 +131,17 @@ describe('SkipTimesService', () => {
           skip_type: testSkipTime.skipType,
           skip_id: testSkipTime.skipId,
           episode_length: testSkipTime.episodeLength,
-        })
+        }),
       );
 
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[0]]))
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[1]]));
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(0, 1)),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(1, 2)),
+        );
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, ['op']);
 
@@ -175,13 +179,17 @@ describe('SkipTimesService', () => {
           skip_type: testSkipTime.skipType,
           skip_id: testSkipTime.skipId,
           episode_length: testSkipTime.episodeLength,
-        })
+        }),
       );
 
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[0]]))
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[1]]));
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(0, 1)),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(1, 2)),
+        );
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, ['ed']);
 
@@ -219,13 +227,17 @@ describe('SkipTimesService', () => {
           skip_type: testSkipTime.skipType,
           skip_id: testSkipTime.skipId,
           episode_length: testSkipTime.episodeLength,
-        })
+        }),
       );
 
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[0]]))
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[1]]));
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(0, 1)),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(1, 2)),
+        );
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, [
         'op',

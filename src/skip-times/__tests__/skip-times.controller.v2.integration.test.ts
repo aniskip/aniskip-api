@@ -1,14 +1,18 @@
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  HttpStatus,
+  type INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { Pool } from 'pg';
-import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
-import { v4 as uuidv4 } from 'uuid';
+import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import request from 'supertest';
-import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
+import { v4 as uuidv4 } from 'uuid';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
+import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
 import { SkipTimesServiceV2 } from '../skip-times.service.v2';
 
 describe('SkipTimesControllerV2', () => {

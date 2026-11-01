@@ -27,7 +27,7 @@ export class RelationRulesControllerV1 {
     description: 'Rules object',
   })
   getRules(
-    @Param() params: GetRelationRulesRequestParamsV1
+    @Param() params: GetRelationRulesRequestParamsV1,
   ): GetRelationRulesResponseV1 {
     const episodeRules = this.relationRulesService.getRule(params.anime_id);
 

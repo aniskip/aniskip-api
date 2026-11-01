@@ -12,7 +12,7 @@ import type {
 export class SkipTimesServiceV2 {
   constructor(
     private skipTimesRepository: SkipTimesRepository,
-    private voteService: VoteService
+    private voteService: VoteService,
   ) {}
 
   /**
@@ -44,14 +44,14 @@ export class SkipTimesServiceV2 {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date' | 'votes'>
+    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date' | 'votes'>,
   ): Promise<string> {
     const votes = await this.voteService.autoVote(
       skipTime.start_time,
       skipTime.end_time,
       skipTime.episode_length,
       skipTime.submitter_id,
-      skipTime.skip_type
+      skipTime.skip_type,
     );
 
     const skipTimeWithVotes = {
@@ -74,7 +74,7 @@ export class SkipTimesServiceV2 {
     animeId: number,
     episodeNumber: number,
     skipTypes: SkipTypeV2[],
-    episodeLength: number
+    episodeLength: number,
   ): Promise<SkipTimeV2[]> {
     const result: SkipTimeV2[] = (
       await Promise.all(
@@ -83,7 +83,7 @@ export class SkipTimesServiceV2 {
             animeId,
             episodeNumber,
             skipType,
-            episodeLength
+            episodeLength,
           );
 
           if (skipTimes.length === 0) {
@@ -91,7 +91,7 @@ export class SkipTimesServiceV2 {
           }
 
           return skipTimes[0];
-        })
+        }),
       )
     ).filter((skipTime): skipTime is SkipTimeV2 => skipTime !== null);
 

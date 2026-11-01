@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { VoteService } from '../vote';
 import { SkipTimesRepository } from '../repositories';
+import { VoteService } from '../vote';
 import type {
   DatabaseSkipTime,
   SkipTimeV1,
@@ -12,7 +12,7 @@ import type {
 export class SkipTimesServiceV1 {
   constructor(
     private skipTimesRepository: SkipTimesRepository,
-    private voteService: VoteService
+    private voteService: VoteService,
   ) {}
 
   /**
@@ -44,13 +44,13 @@ export class SkipTimesServiceV1 {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date' | 'votes'>
+    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date' | 'votes'>,
   ): Promise<string> {
     const votes = await this.voteService.autoVote(
       skipTime.start_time,
       skipTime.end_time,
       skipTime.episode_length,
-      skipTime.submitter_id
+      skipTime.submitter_id,
     );
 
     const skipTimeWithVotes = {
@@ -71,7 +71,7 @@ export class SkipTimesServiceV1 {
   async findSkipTimes(
     animeId: number,
     episodeNumber: number,
-    skipTypes: SkipTypeV1[]
+    skipTypes: SkipTypeV1[],
   ): Promise<SkipTimeV1[]> {
     const result: SkipTimeV1[] = (
       await Promise.all(
@@ -79,14 +79,14 @@ export class SkipTimesServiceV1 {
           const skipTimes = await this.skipTimesRepository.findSkipTimes(
             animeId,
             episodeNumber,
-            skipType
+            skipType,
           );
 
-          if (skipTimes.length === 0) {
+          const [skipTimeV2] = skipTimes;
+          if (!skipTimeV2) {
             return null;
           }
 
-          const [skipTimeV2] = skipTimes;
           const skipTimeV1: SkipTimeV1 = {
             interval: {
               start_time: skipTimeV2.interval.startTime,
@@ -98,7 +98,7 @@ export class SkipTimesServiceV1 {
           };
 
           return skipTimeV1;
-        })
+        }),
       )
     ).filter((skipTime): skipTime is SkipTimeV1 => skipTime !== null);
 

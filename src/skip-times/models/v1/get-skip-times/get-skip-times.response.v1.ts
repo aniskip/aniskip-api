@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { type SkipTimeV1, SKIP_TYPES_V1 } from '../../../skip-times.types';
+import { SKIP_TYPES_V1, type SkipTimeV1 } from '../../../skip-times.types';
 
 export class GetSkipTimesResponseV1 {
   @ApiProperty()

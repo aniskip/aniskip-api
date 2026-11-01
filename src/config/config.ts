@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import type { Config } from './config.types';
 
 export const config = (): Config => ({
@@ -23,7 +23,7 @@ export const config = (): Config => ({
       '..',
       'deps',
       'anime-relations',
-      'anime-relations.txt'
+      'anime-relations.txt',
     ),
   },
 });
