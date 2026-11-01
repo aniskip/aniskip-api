@@ -75,7 +75,7 @@ CI runs Biome (`bun run check:ci`), type checks, tests and a Docker build on eve
 Images are published on [Docker Hub](https://hub.docker.com/u/lexesjan).
 
 1. Clone this repository. The compose file mounts the migrations from [`db/migrations`](db/migrations).
-1. Create `docker/.env`, based on [`docker/.env_example`](docker/.env_example).
+1. Create `docker/.env`, based on [`docker/.env.example`](docker/.env.example).
 1. Start the containers from the `docker` folder. Pending migrations are applied before the API starts:
 
    ```sh
