@@ -13,6 +13,9 @@ async function bootstrap(): Promise<void> {
   app.enableVersioning();
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
+  // Express 5 defaults to the simple parser, which doesn't turn `types[]=op`
+  // into an array.
+  app.set('query parser', 'extended');
   app.enableCors({ origin: '*' });
   app.use(helmet());
 

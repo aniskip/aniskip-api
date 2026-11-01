@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { minutes, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { GetRelationRulesRequestParamsV2 } from '../models';
 import { RelationRulesControllerV2 } from '../relation-rules.controller.v2';
 import { RelationRulesService } from '../relation-rules.service';
@@ -22,7 +22,7 @@ describe('RelationRulesControllerV2', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ThrottlerModule.forRoot()],
+      imports: [ThrottlerModule.forRoot([{ ttl: minutes(1), limit: 120 }])],
       controllers: [RelationRulesControllerV2],
       providers: [mockThrottlerGuardProvider, mockRelationRulesServiceProvider],
     }).compile();

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { minutes, ThrottlerModule } from '@nestjs/throttler';
 import request from 'supertest';
 import type { Config } from '../../config';
 import { RelationRulesControllerV1 } from '../relation-rules.controller.v1';
@@ -25,7 +25,7 @@ describe('RelationRulesControllerV1', () => {
     const module = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({ load: [partialConfig] }),
-        ThrottlerModule.forRoot(),
+        ThrottlerModule.forRoot([{ ttl: minutes(1), limit: 120 }]),
       ],
       controllers: [RelationRulesControllerV1],
       providers: [RelationRulesService],
