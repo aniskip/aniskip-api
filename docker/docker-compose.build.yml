@@ -1,0 +1,9 @@
+# Adds a build section for the API image, for CI and CD, or for running the
+# production stack from source (`./start.sh prod-local`):
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml build
+# Kept out of docker-compose.yml so the server only ever pulls images.
+services:
+  api:
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ".."

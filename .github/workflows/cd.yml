@@ -91,23 +91,16 @@ jobs:
         run: docker compose pull
 
       - name: Docker build
-        run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
-
-      - name: Determine db tag by version
-        run: echo "DB_TAG=$(grep -oP '(\d+\.){2}\d+' ../sql_scripts/init.sql)" >> $GITHUB_ENV
+        run: docker compose -f ./docker-compose.yml -f ./docker-compose.build.yml build
 
       - name: Docker tag
-        run: |
-          docker tag "$DOCKER_USERNAME/aniskip-database:latest" "$DOCKER_USERNAME/aniskip-database:$DB_TAG"
-          docker tag "$DOCKER_USERNAME/aniskip-api:latest" "$DOCKER_USERNAME/aniskip-api:$VERSION"
+        run: docker tag "$DOCKER_USERNAME/aniskip-api:latest" "$DOCKER_USERNAME/aniskip-api:$VERSION"
 
       - name: Docker push with tag
-        run: |
-          docker push "$DOCKER_USERNAME/aniskip-database:$DB_TAG"
-          docker push "$DOCKER_USERNAME/aniskip-api:$VERSION"
+        run: docker push "$DOCKER_USERNAME/aniskip-api:$VERSION"
 
       - name: Docker push with latest tag
-        run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
+        run: docker compose -f ./docker-compose.yml -f ./docker-compose.build.yml push
 
       # The server has no public SSH port: connect through the Cloudflare Tunnel,
       # authenticating to Cloudflare Access with a service token.

@@ -53,4 +53,12 @@ jobs:
 
       - name: Docker build
         working-directory: ./docker
-        run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
+        run: docker compose -f ./docker-compose.yml -f ./docker-compose.build.yml build
+
+      # Apply every migration to a fresh database, as the migrate service does
+      # in production.
+      - name: Apply database migrations
+        working-directory: ./docker
+        env:
+          POSTGRES_PASSWORD: ci
+        run: docker compose run --rm migrate
