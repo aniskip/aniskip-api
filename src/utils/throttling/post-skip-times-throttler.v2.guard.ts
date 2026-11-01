@@ -1,6 +1,6 @@
+import { createHash } from 'node:crypto';
 import type { ExecutionContext } from '@nestjs/common';
 import { ThrottlerGuard } from '@nestjs/throttler';
-import md5 from 'md5';
 
 export class PostSkipTimesV2ThrottlerGuard extends ThrottlerGuard {
   override generateKey(context: ExecutionContext, suffix: string): string {
@@ -9,6 +9,6 @@ export class PostSkipTimesV2ThrottlerGuard extends ThrottlerGuard {
       req.params.animeId
     }-${req.params.episodeNumber}`;
 
-    return md5(`${prefix}-${suffix}`);
+    return createHash('md5').update(`${prefix}-${suffix}`).digest('hex');
   }
 }
