@@ -1,6 +1,6 @@
+import fs from 'node:fs';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import fs from 'fs';
 import type { RelationsConfig } from '../config';
 import type { Rule, SectionType } from './relation-rules.types';
 
@@ -52,8 +52,7 @@ export class RelationRulesService {
             break;
           }
 
-          const label = matches[1];
-          const value = matches[2];
+          const [, label = '', value = ''] = matches;
           switch (label) {
             case 'version':
               this.version = value;
@@ -94,7 +93,7 @@ export class RelationRulesService {
       firstIndex: number,
       secondIndex: number,
     ): { start: number; end?: number } => {
-      const start = parseInt(matches[firstIndex], 10);
+      const start = parseInt(matches[firstIndex] ?? '', 10);
       let end: number | null;
 
       if (matches[secondIndex]) {
@@ -102,7 +101,7 @@ export class RelationRulesService {
           // Unknown range end (airing series).
           end = null;
         } else {
-          end = parseInt(matches[secondIndex], 10);
+          end = parseInt(matches[secondIndex] ?? '', 10);
         }
       } else {
         // Singular episode.
@@ -112,13 +111,14 @@ export class RelationRulesService {
       return { start, ...(end !== null && { end }) };
     };
 
-    const fromMalId = parseInt(matches[1], 10);
+    const fromMalId = parseInt(matches[1] ?? '', 10);
     if (!fromMalId) {
       return;
     }
 
     let rules = this.rules[fromMalId] || [];
-    const toMalId = matches[6] === '~' ? fromMalId : parseInt(matches[6], 10);
+    const toMalId =
+      matches[6] === '~' ? fromMalId : parseInt(matches[6] ?? '', 10);
     const from = getRange(4, 5);
     const toRange = getRange(9, 10);
     const to = { malId: toMalId, ...toRange };

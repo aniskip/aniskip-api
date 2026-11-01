@@ -82,11 +82,11 @@ export class SkipTimesServiceV1 {
             skipType,
           );
 
-          if (skipTimes.length === 0) {
+          const [skipTimeV2] = skipTimes;
+          if (!skipTimeV2) {
             return null;
           }
 
-          const [skipTimeV2] = skipTimes;
           const skipTimeV1: SkipTimeV1 = {
             interval: {
               start_time: skipTimeV2.interval.startTime,

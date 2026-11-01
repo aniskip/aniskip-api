@@ -8,43 +8,43 @@ describe('IsUnique', () => {
   it('should return false for a null array', async () => {
     class MyClass {
       @IsUnique()
-      arr: any[] = null!;
+      arr: unknown[] | null = null;
     }
 
     const model = new MyClass();
     const errors = await validator.validate(model);
 
     expect(errors.length).toBe(1);
-    expect(errors[0].target).toBe(model);
-    expect(errors[0].property).toBe('arr');
-    expect(errors[0].constraints).toEqual({
+    expect(errors[0]?.target).toBe(model);
+    expect(errors[0]?.property).toBe('arr');
+    expect(errors[0]?.constraints).toEqual({
       IsUnique: 'each value in the array must be unique',
     });
-    expect(errors[0].value).toBeNull();
+    expect(errors[0]?.value).toBeNull();
   });
 
   it('should return false for an undefined array', async () => {
     class MyClass {
       @IsUnique()
-      arr!: any[];
+      arr?: unknown[];
     }
 
     const model = new MyClass();
     const errors = await validator.validate(model);
 
     expect(errors.length).toBe(1);
-    expect(errors[0].target).toBe(model);
-    expect(errors[0].property).toBe('arr');
-    expect(errors[0].constraints).toEqual({
+    expect(errors[0]?.target).toBe(model);
+    expect(errors[0]?.property).toBe('arr');
+    expect(errors[0]?.constraints).toEqual({
       IsUnique: 'each value in the array must be unique',
     });
-    expect(errors[0].value).toBeUndefined();
+    expect(errors[0]?.value).toBeUndefined();
   });
 
   it('should return true for an empty array', async () => {
     class MyClass {
       @IsUnique()
-      arr: any[] = [];
+      arr: unknown[] = [];
     }
 
     const model = new MyClass();
@@ -57,18 +57,18 @@ describe('IsUnique', () => {
     const arr = [1, 1];
     class MyClass {
       @IsUnique()
-      arr: any[] = arr;
+      arr: unknown[] = arr;
     }
 
     const model = new MyClass();
     const errors = await validator.validate(model);
 
     expect(errors.length).toBe(1);
-    expect(errors[0].target).toBe(model);
-    expect(errors[0].property).toBe('arr');
-    expect(errors[0].constraints).toEqual({
+    expect(errors[0]?.target).toBe(model);
+    expect(errors[0]?.property).toBe('arr');
+    expect(errors[0]?.constraints).toEqual({
       IsUnique: 'each value in the array must be unique',
     });
-    expect(errors[0].value).toEqual(arr);
+    expect(errors[0]?.value).toEqual(arr);
   });
 });

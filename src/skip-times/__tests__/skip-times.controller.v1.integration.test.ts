@@ -1,9 +1,13 @@
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  HttpStatus,
+  type INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { Pool } from 'pg';
-import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
+import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import request from 'supertest';
 import { v4 as uuidv4 } from 'uuid';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';

@@ -136,8 +136,12 @@ describe('SkipTimesService', () => {
 
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[0]]))
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[1]]));
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(0, 1)),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(1, 2)),
+        );
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, ['op']);
 
@@ -180,8 +184,12 @@ describe('SkipTimesService', () => {
 
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[0]]))
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[1]]));
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(0, 1)),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(1, 2)),
+        );
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, ['ed']);
 
@@ -224,8 +232,12 @@ describe('SkipTimesService', () => {
 
       jest
         .spyOn(skipTimesRepository, 'findSkipTimes')
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[0]]))
-        .mockReturnValueOnce(Promise.resolve([testSkipTimesCamelCase[1]]));
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(0, 1)),
+        )
+        .mockReturnValueOnce(
+          Promise.resolve(testSkipTimesCamelCase.slice(1, 2)),
+        );
 
       const skipTimes = await skipTimesService.findSkipTimes(40028, 1, [
         'op',

@@ -1,4 +1,4 @@
-import { registerDecorator, ValidationOptions } from 'class-validator';
+import { registerDecorator, type ValidationOptions } from 'class-validator';
 
 /**
  * Checks if each value in an array is unique.
@@ -7,7 +7,7 @@ import { registerDecorator, ValidationOptions } from 'class-validator';
  */
 export const IsUnique =
   (validationOptions?: ValidationOptions) =>
-  (object: Object, propertyName: string): void =>
+  (object: object, propertyName: string): void =>
     registerDecorator({
       name: 'IsUnique',
       target: object.constructor,
@@ -17,7 +17,7 @@ export const IsUnique =
         ...validationOptions,
       },
       validator: {
-        validate: (items: any[]): boolean => {
+        validate: (items: unknown[]): boolean => {
           if (!items) {
             return false;
           }

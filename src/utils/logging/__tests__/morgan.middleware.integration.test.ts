@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, it } from 'bun:test';
-import { HttpStatus, INestApplication } from '@nestjs/common';
+import { HttpStatus, type INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { MorganTestModule } from '../../testing/morgan-test.module';

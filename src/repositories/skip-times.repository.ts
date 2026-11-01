@@ -82,7 +82,12 @@ export class SkipTimesRepository {
       ],
     );
 
-    return rows[0].skip_id;
+    const [row] = rows;
+    if (!row) {
+      throw new Error('Inserting the skip time returned no row');
+    }
+
+    return row.skip_id;
   }
 
   /**
@@ -161,6 +166,6 @@ export class SkipTimesRepository {
         [submitterId],
       );
 
-    return rows[0].avg ?? 0;
+    return rows[0]?.avg ?? 0;
   }
 }

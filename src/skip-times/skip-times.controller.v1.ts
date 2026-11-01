@@ -128,11 +128,14 @@ export class SkipTimesControllerV1 {
       submitter_id: body.submitter_id,
     };
 
-    let skipId;
+    let skipId: string;
     try {
       skipId = await this.skipTimesService.createSkipTime(skipTime);
-    } catch (error: any) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    } catch (error) {
+      throw new HttpException(
+        error instanceof Error ? error.message : String(error),
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const response = new PostCreateSkipTimeResponseV1();
