@@ -13,10 +13,7 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data
 
-  # dbmate on the compose network, run by the `bun run db:*` scripts. The
-  # profile keeps `up` from starting it.
   migrate:
-    # Keep in step with docker-compose.yml.
     image: ghcr.io/amacneil/dbmate:2.37.0
     profiles:
       - tools

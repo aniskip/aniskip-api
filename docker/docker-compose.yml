@@ -28,14 +28,10 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data
 
-  # Applies pending migrations from ../db/migrations, then exits. The API
-  # only starts once this has succeeded.
   migrate:
-    # Keep in step with docker-compose.dev.yml.
     image: ghcr.io/amacneil/dbmate:2.37.0
     command: up
     environment:
-      # The password goes in PGPASSWORD so it never needs URL-encoding.
       DATABASE_URL: postgres://postgres@db:5432/db?sslmode=disable
       PGPASSWORD: ${POSTGRES_PASSWORD}
       # Retry until Postgres accepts connections (up to a minute).
