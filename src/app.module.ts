@@ -9,8 +9,10 @@ import { minutes, ThrottlerModule } from '@nestjs/throttler';
 import { MorganMiddleware } from './common/middleware/morgan.middleware';
 import { config } from './config/configuration';
 import { HealthModule } from './health/health.module';
-import { RelationRulesModule } from './relation-rules/relation-rules.module';
-import { SkipTimesModule } from './skip-times/skip-times.module';
+import { RelationRulesModuleV1 } from './relation-rules/v1/relation-rules.module';
+import { RelationRulesModuleV2 } from './relation-rules/v2/relation-rules.module';
+import { SkipTimesModuleV1 } from './skip-times/v1/skip-times.module';
+import { SkipTimesModuleV2 } from './skip-times/v2/skip-times.module';
 
 @Module({
   imports: [
@@ -24,9 +26,11 @@ import { SkipTimesModule } from './skip-times/skip-times.module';
         storage: new ThrottlerStorageRedisService(configService.get('redis')),
       }),
     }),
-    SkipTimesModule,
+    SkipTimesModuleV1,
+    SkipTimesModuleV2,
+    RelationRulesModuleV1,
+    RelationRulesModuleV2,
     HealthModule,
-    RelationRulesModule,
   ],
 })
 export class AppModule implements NestModule {

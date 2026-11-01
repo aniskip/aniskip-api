@@ -1,3 +1,4 @@
+import type { Type } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -6,6 +7,10 @@ import { cleanupOpenApiDoc, ZodValidationPipe } from 'nestjs-zod';
 import packageJson from '../package.json';
 import { AppModule } from './app.module';
 import { setupDocs } from './docs/docs';
+import { RelationRulesModuleV1 } from './relation-rules/v1/relation-rules.module';
+import { RelationRulesModuleV2 } from './relation-rules/v2/relation-rules.module';
+import { SkipTimesModuleV1 } from './skip-times/v1/skip-times.module';
+import { SkipTimesModuleV2 } from './skip-times/v2/skip-times.module';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,8 +34,13 @@ async function bootstrap(): Promise<void> {
     .addServer('/')
     .build();
   // cleanupOpenApiDoc turns the Zod DTOs into proper OpenAPI schemas.
-  const document = cleanupOpenApiDoc(SwaggerModule.createDocument(app, config));
-  setupDocs(app, document);
+  // `include` limits a document to those modules' controllers.
+  const createDocument = (include?: Type[]) =>
+    cleanupOpenApiDoc(SwaggerModule.createDocument(app, config, { include }));
+  setupDocs(app, createDocument(), {
+    v2: createDocument([SkipTimesModuleV2, RelationRulesModuleV2]),
+    v1: createDocument([SkipTimesModuleV1, RelationRulesModuleV1]),
+  });
 
   await app.listen(Number(process.env.PORT ?? 5100));
 }
