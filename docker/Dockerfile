@@ -20,6 +20,7 @@ COPY --from=install /usr/src/app/node_modules ./node_modules
 COPY package.json tsconfig.json ./
 COPY deps/anime-relations/anime-relations.txt ./deps/anime-relations/anime-relations.txt
 COPY src ./src
+COPY public ./public
 
 USER bun
 
