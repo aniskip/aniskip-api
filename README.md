@@ -2,7 +2,7 @@
 
 API for the [Aniskip](https://github.com/aniskip/aniskip-extension) browser extension: opening and ending skip times, votes, and anime relation rules.
 
-API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/api-docs)
+API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs) (OpenAPI document: [`/openapi.json`](https://api.aniskip.com/openapi.json))
 
 ## Development
 

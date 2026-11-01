@@ -32,6 +32,7 @@
     "@nestjs/platform-express": "^11.2.8",
     "@nestjs/swagger": "^11.4.7",
     "@nestjs/throttler": "^6.7.1",
+    "@scalar/nestjs-api-reference": "1.2.30",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "helmet": "^8.3.0",

@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import packageJson from '../package.json';
 import { AppModule } from './app.module';
+import { setupDocs } from './docs';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -19,7 +20,7 @@ async function bootstrap(): Promise<void> {
   app.enableCors({ origin: '*' });
   app.use(helmet());
 
-  // Swagger config.
+  // OpenAPI document, served by setupDocs.
   const config = new DocumentBuilder()
     .setTitle(packageJson.name)
     .setDescription(packageJson.description)
@@ -28,7 +29,7 @@ async function bootstrap(): Promise<void> {
     .addServer('/')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document);
+  setupDocs(app, document);
 
   await app.listen(Number(process.env.PORT ?? 5100));
 }
