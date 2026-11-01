@@ -8,6 +8,14 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: db
+    healthcheck:
+      test:
+        ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres", "-d", "db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+      start_interval: 1s
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
@@ -28,10 +36,18 @@ services:
       # Writable so `db:new` can create migration files.
       - ../db/migrations:/db/migrations
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   redis:
     image: redis:8-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+      start_interval: 1s
     ports:
       - "127.0.0.1:6379:6379"
 

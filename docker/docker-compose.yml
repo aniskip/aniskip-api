@@ -15,7 +15,7 @@ services:
       migrate:
         condition: service_completed_successfully
       redis:
-        condition: service_started
+        condition: service_healthy
 
   db:
     image: postgres:15-alpine
@@ -23,6 +23,14 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: db
+    healthcheck:
+      test:
+        ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres", "-d", "db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+      start_interval: 1s
     networks:
       - network
     volumes:
@@ -43,10 +51,18 @@ services:
     volumes:
       - ../db/migrations:/db/migrations:ro
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   redis:
     image: redis:8-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+      start_interval: 1s
     restart: always
     networks:
       - network

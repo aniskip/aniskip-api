@@ -24,6 +24,10 @@ COPY public ./public
 
 USER bun
 
+# Healthy once the API answers and can reach Postgres and Redis (see /health).
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --start-interval=2s --retries=3 \
+  CMD wget -qO /dev/null "http://127.0.0.1:${PORT:-5100}/health" || exit 1
+
 ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD ["bun", "src/main.ts"]
