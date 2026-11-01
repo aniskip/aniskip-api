@@ -16,6 +16,7 @@
     "db:migrate": "docker compose -f docker/docker-compose.dev.yml run --rm migrate",
     "db:new": "docker compose -f docker/docker-compose.dev.yml run --rm migrate new",
     "db:rollback": "docker compose -f docker/docker-compose.dev.yml run --rm migrate rollback",
+    "db:seed": "bash db/seed.sh",
     "db:status": "docker compose -f docker/docker-compose.dev.yml run --rm migrate status",
     "dev": "NODE_ENV=development bun --watch src/main.ts",
     "services:down": "docker compose -f docker/docker-compose.dev.yml down",
