@@ -7,4 +7,4 @@ services:
     volumes:
       - ../src:/usr/src/app/src
       - ../package.json:/usr/src/app/package.json
-      - ../yarn.lock:/usr/src/app/yarn.lock
+      - ../bun.lock:/usr/src/app/bun.lock

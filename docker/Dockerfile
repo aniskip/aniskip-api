@@ -1,46 +1,28 @@
-# Install dev dependencies stage
-FROM node:20-alpine as install-dev
+# Install production dependencies stage
+FROM oven/bun:1.4.4-alpine AS install
 
 WORKDIR /usr/src/app
 
-COPY .yarn ./.yarn
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json bun.lock ./
 
-RUN yarn install
+RUN bun install --frozen-lockfile --production --ignore-scripts
 
-# Build stage
-FROM node:20-alpine as build
-
-WORKDIR /usr/src/app
-
-COPY package.json tsconfig.json yarn.lock .yarnrc.yml ./
-COPY src ./src
-COPY --from=install-dev /usr/src/app/.yarn ./.yarn
-COPY --from=install-dev /usr/src/app/node_modules ./node_modules
-
-RUN yarn build
-
-# Install prod dependencies stage
-FROM node:20-alpine as install-prod
+# Run stage: Bun runs the TypeScript sources directly, no build step.
+FROM oven/bun:1.4.4-alpine
 
 WORKDIR /usr/src/app
-
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY --from=install-dev /usr/src/app/.yarn ./.yarn
-
-RUN yarn workspaces focus --production
-
-# Run stage
-FROM node:20-alpine
-
-WORKDIR /usr/src/app
-
-COPY package.json ./
-COPY deps/anime-relations/anime-relations.txt ./dist/deps/anime-relations/anime-relations.txt
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=install-prod /usr/src/app/node_modules ./node_modules
 
 RUN apk add --no-cache tini
+
+ENV NODE_ENV=production
+
+COPY --from=install /usr/src/app/node_modules ./node_modules
+COPY package.json tsconfig.json ./
+COPY deps/anime-relations/anime-relations.txt ./deps/anime-relations/anime-relations.txt
+COPY src ./src
+
+USER bun
+
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["node", "dist/src/main.js"]
+CMD ["bun", "src/main.ts"]
