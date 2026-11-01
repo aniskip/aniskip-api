@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
-import {
+import type {
   CreateSkipTimesQueryResponse,
   DatabaseSkipTime,
   GetAverageOfLastTenSkipTimesVotesQueryResponse,
@@ -30,7 +30,7 @@ export class SkipTimesRepository {
       [skipId]
     );
 
-    return rowCount > 0;
+    return (rowCount ?? 0) > 0;
   }
 
   /**
@@ -51,7 +51,7 @@ export class SkipTimesRepository {
       [skipId]
     );
 
-    return rowCount > 0;
+    return (rowCount ?? 0) > 0;
   }
 
   /**

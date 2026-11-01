@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SkipTimesRepository } from '../repositories';
 import { VoteService } from '../vote';
-import {
+import type {
   DatabaseSkipTime,
   SkipTimeV2,
   SkipTypeV2,

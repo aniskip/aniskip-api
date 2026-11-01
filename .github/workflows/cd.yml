@@ -10,6 +10,9 @@ on:
       - sql_scripts/**
       - docker/**
       - package.json
+      - bun.lock
+      - tsconfig.json
+      - deps/**
   # add manual trigger
   workflow_dispatch:
 

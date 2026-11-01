@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
@@ -15,7 +16,7 @@ import {
 } from '../models';
 import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
 import { SkipTimesServiceV2 } from '../skip-times.service.v2';
-import { SkipTimeV2, VoteType } from '../skip-times.types';
+import type { SkipTimeV2, VoteType } from '../skip-times.types';
 
 describe('SkipTimesControllerV2', () => {
   let skipTimesController: SkipTimesControllerV2;

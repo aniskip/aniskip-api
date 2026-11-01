@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Rule } from 'src/relation-rules/relation-rules.types';
+import type { Rule } from '../../../relation-rules.types';
 
 export class GetRelationRulesResponseV2 {
   @ApiProperty()

@@ -1,8 +1,9 @@
+import { beforeAll, beforeEach, describe, expect, it } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Pool } from 'pg';
 import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
 import { v4 as uuidv4 } from 'uuid';
-import { DatabaseSkipTime, SkipTypeV1 } from '../../skip-times';
+import type { DatabaseSkipTime, SkipTypeV1 } from '../../skip-times';
 import { SkipTimesRepository } from '../skip-times.repository';
 
 describe('SkipTimesService', () => {
