@@ -15,8 +15,6 @@ WORKDIR /usr/src/app
 RUN apk add --no-cache tini
 
 ENV NODE_ENV=production
-# The container keeps serving on 5000 so existing compose files keep working.
-ENV PORT=5000
 
 COPY --from=install /usr/src/app/node_modules ./node_modules
 COPY package.json tsconfig.json ./
