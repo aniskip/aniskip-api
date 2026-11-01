@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { RelationsConfig } from '../config';
+import type { RelationsConfig } from '../config/configuration.types';
 import type { Rule, SectionType } from './relation-rules.types';
 
 @Injectable()
