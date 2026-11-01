@@ -1,22 +1,13 @@
 name: CI
 
+# No run on push to main: every commit reaches main through the merge
+# queue, which already ran CI on that exact commit.
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .github/workflows/ci.yml
-      - sql_scripts/**
-      - docker/**
-      - src/**
-      - package.json
-      - bun.lock
-      - tsconfig.json
-      - deps/**
-      - biome.json
   pull_request:
     branches:
       - main
+  # Runs the required checks on the merge queue's temporary branch.
+  merge_group:
 
   # add manual trigger
   workflow_dispatch:

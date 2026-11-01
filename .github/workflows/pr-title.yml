@@ -5,12 +5,17 @@ name: PR title
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
+  # The check is required, so it must report in the merge queue too. There's
+  # no PR title there (it was checked on the PR), so the job is skipped,
+  # which counts as passing.
+  merge_group:
 
 permissions:
   pull-requests: read
 
 jobs:
   conventional-title:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
