@@ -67,7 +67,16 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 
 Schema changes are SQL files in [`db/migrations`](db/migrations), applied in order by [dbmate](https://github.com/amacneil/dbmate), which records them in the `schema_migrations` table. Each file has a `-- migrate:up` and a `-- migrate:down` section. In production, the `migrate` service in [`docker-compose.yml`](docker/docker-compose.yml) applies new migrations before the API starts.
 
-`CREATE INDEX CONCURRENTLY` must be the only statement in its migration, marked `transaction:false`, since Postgres runs a multi-statement migration as one transaction.
+To change the schema:
+
+1. Create a migration file:
+
+   ```sh
+   bun run db:new add_some_column
+   ```
+
+1. Write the change under `-- migrate:up` and how to undo it under `-- migrate:down`.
+1. Apply it with `bun run db:migrate`. To check the down section, run `bun run db:rollback` and then `bun run db:migrate` again.
 
 ## Contributing
 
