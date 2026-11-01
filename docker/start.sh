@@ -15,11 +15,13 @@ main () {
   cd "${BASH_SOURCE%/*}"
 
   case $1 in
+    # --wait fails (and so fails the deploy) unless every service becomes
+    # healthy, e.g. the API can't reach Postgres or a migration fails.
     "prod")
-      docker compose up -d
+      docker compose up -d --wait --wait-timeout 120
       ;;
     "prod-local")
-      docker compose -f ./docker-compose.yml -f ./docker-compose.build.yml up --build -d
+      docker compose -f ./docker-compose.yml -f ./docker-compose.build.yml up --build -d --wait --wait-timeout 120
       ;;
   esac
 }

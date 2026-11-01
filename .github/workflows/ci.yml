@@ -55,10 +55,28 @@ jobs:
         working-directory: ./docker
         run: docker compose -f ./docker-compose.yml -f ./docker-compose.build.yml build
 
-      # Apply every migration to a fresh database, as the migrate service does
-      # in production.
-      - name: Apply database migrations
+      - name: Start the stack
         working-directory: ./docker
         env:
           POSTGRES_PASSWORD: ci
-        run: docker compose run --rm migrate
+        run: docker compose up -d --wait --wait-timeout 120
+
+      - name: Check the API
+        run: |
+          curl -fsS http://127.0.0.1:5100/health
+          curl -fsS http://127.0.0.1:5100/v2/relation-rules/40028 > /dev/null
+          curl -fsS http://127.0.0.1:5100/openapi.json > /dev/null
+
+      - name: Show logs
+        if: failure()
+        working-directory: ./docker
+        env:
+          POSTGRES_PASSWORD: ci
+        run: docker compose logs
+
+      - name: Stop the stack
+        if: always()
+        working-directory: ./docker
+        env:
+          POSTGRES_PASSWORD: ci
+        run: docker compose down -v

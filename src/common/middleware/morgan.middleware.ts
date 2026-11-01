@@ -10,6 +10,9 @@ export class MorganMiddleware implements NestMiddleware {
     morgan(
       ':remote-addr ":method :url HTTP/:http-version" :status :res[content-length]',
       {
+        // Docker checks /health every 30 s; only log it when it fails.
+        skip: (request, response) =>
+          request.url === '/health' && response.statusCode < 400,
         stream: {
           write: (str) => this.logger.log(str.trimEnd()),
         },

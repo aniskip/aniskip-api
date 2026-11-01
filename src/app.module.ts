@@ -8,6 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { minutes, ThrottlerModule } from '@nestjs/throttler';
 import { MorganMiddleware } from './common/middleware/morgan.middleware';
 import { config } from './config/configuration';
+import { HealthModule } from './health/health.module';
 import { RelationRulesModule } from './relation-rules/relation-rules.module';
 import { SkipTimesModule } from './skip-times/skip-times.module';
 
@@ -24,6 +25,7 @@ import { SkipTimesModule } from './skip-times/skip-times.module';
       }),
     }),
     SkipTimesModule,
+    HealthModule,
     RelationRulesModule,
   ],
 })
