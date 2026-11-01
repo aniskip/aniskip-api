@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RelationRulesService } from './relation-rules.service';
-import { RelationRulesControllerV1 } from './v1/relation-rules.controller';
-import { RelationRulesControllerV2 } from './v2/relation-rules.controller';
 
+/** Relation rules shared by every API version. */
 @Module({
   imports: [ConfigModule],
-  controllers: [RelationRulesControllerV1, RelationRulesControllerV2],
   providers: [RelationRulesService],
+  exports: [RelationRulesService],
 })
 export class RelationRulesModule {}

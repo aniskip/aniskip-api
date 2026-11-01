@@ -23,13 +23,19 @@ const nonceOf = (res: ServerResponse): string =>
   (res as Response).locals.cspNonce;
 
 /**
- * Serves the API reference (Scalar) at /docs and the OpenAPI document at
- * /openapi.json. / and the old Swagger UI paths redirect to them.
+ * Serves the API reference (Scalar) at /docs, with a switcher between API
+ * versions, and the OpenAPI document at /openapi.json (all versions) and
+ * /openapi-{version}.json (one version). / and the old Swagger UI paths redirect
+ * to them.
  */
 export function setupDocs(
   app: NestExpressApplication,
   document: OpenAPIObject,
+  versionDocuments: Record<string, OpenAPIObject>,
 ): void {
+  // Newest first: Scalar opens the first one.
+  const versions = Object.entries(versionDocuments);
+
   const server = app.getHttpAdapter().getInstance();
 
   server.get('/favicon.ico', (_req, res) => {
@@ -45,6 +51,13 @@ export function setupDocs(
     raw: ['json'],
     jsonDocumentUrl: '/openapi.json',
   });
+
+  for (const [version, versionDocument] of versions) {
+    server.get(`/openapi-${version}.json`, (_req, res) => {
+      noCache(res);
+      res.json(versionDocument);
+    });
+  }
 
   server.get(
     '/docs',
@@ -70,7 +83,12 @@ export function setupDocs(
     (req: Request, res: Response) => {
       noCache(res);
       const render = apiReference({
-        url: '/openapi.json',
+        // One document per version, with a switcher at the top of the page.
+        sources: versions.map(([version]) => ({
+          title: version,
+          slug: version,
+          url: `/openapi-${version}.json`,
+        })),
         cdn: SCALAR_CDN,
         nonce: res.locals.cspNonce,
         pageTitle: 'Aniskip API',

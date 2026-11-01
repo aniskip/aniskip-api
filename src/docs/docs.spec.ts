@@ -24,7 +24,7 @@ describe('setupDocs', () => {
       app,
       new DocumentBuilder().setTitle('test').build(),
     );
-    setupDocs(app, document);
+    setupDocs(app, document, { v2: document, v1: document });
     await app.init();
   });
 
@@ -50,6 +50,19 @@ describe('setupDocs', () => {
     expect(res.status).toBe(HttpStatus.OK);
     expect(res.headers['cache-control']).toBe('no-cache');
     expect(res.body.info.title).toBe('test');
+  });
+
+  it.each(['1', '2'])('should serve the v%s document uncached', async (v) => {
+    const res = await request(app.getHttpServer()).get(`/openapi-v${v}.json`);
+    expect(res.status).toBe(HttpStatus.OK);
+    expect(res.headers['cache-control']).toBe('no-cache');
+    expect(res.body.info.title).toBe('test');
+  });
+
+  it('should offer each version in the docs page', async () => {
+    const res = await request(app.getHttpServer()).get('/docs');
+    expect(res.text).toContain('/openapi-v2.json');
+    expect(res.text).toContain('/openapi-v1.json');
   });
 
   it('should serve the docs page with a nonce matching its CSP', async () => {
