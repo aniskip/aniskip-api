@@ -51,6 +51,7 @@ export class SkipTimesServiceV1 {
       skipTime.end_time,
       skipTime.episode_length,
       skipTime.submitter_id,
+      skipTime.skip_type,
     );
 
     const skipTimeWithVotes = {
