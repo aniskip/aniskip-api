@@ -1,14 +1,5 @@
 name: CD
 
-env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-  HOST: ${{ secrets.HOST }}
-  USERNAME: ${{ secrets.USERNAME }}
-  KEY: ${{ secrets.KEY }}
-  PORT: ${{ secrets.PORT }}
-  REPO_PATH: ${{ secrets.REPO_PATH }}
-
 on:
   push:
     branches:
@@ -22,27 +13,40 @@ on:
   # add manual trigger
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+# Never run two deploys at once.
+concurrency:
+  group: cd
+  cancel-in-progress: false
+
 jobs:
   continuous-delivery:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
     defaults:
       run:
         working-directory: ./docker
 
     steps:
       - name: Checkout repo and submodules
-        uses: actions/checkout@v3
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           submodules: recursive
 
       - name: Docker login
-        run: docker login --username ${{ env.DOCKER_USERNAME }} --password ${{ env.DOCKER_TOKEN }}
+        env:
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        run: printf '%s' "$DOCKER_TOKEN" | docker login --username "$DOCKER_USERNAME" --password-stdin
 
       - name: Docker pull latest images
-        run: docker-compose pull
+        run: docker compose pull
 
       - name: Docker build
-        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
+        run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
 
       - name: Determine api tag by version
         if: env.API_TAG == ''
@@ -54,28 +58,43 @@ jobs:
 
       - name: Docker tag
         run: |
-          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-database:latest ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
-          docker tag ${{ env.DOCKER_USERNAME }}/aniskip-api:latest ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
+          docker tag "$DOCKER_USERNAME/aniskip-database:latest" "$DOCKER_USERNAME/aniskip-database:$DB_TAG"
+          docker tag "$DOCKER_USERNAME/aniskip-api:latest" "$DOCKER_USERNAME/aniskip-api:$API_TAG"
 
       - name: Docker push with tag
         run: |
-          docker push ${{ env.DOCKER_USERNAME }}/aniskip-database:${{ env.DB_TAG }} 
-          docker push ${{ env.DOCKER_USERNAME }}/aniskip-api:${{ env.API_TAG }}
+          docker push "$DOCKER_USERNAME/aniskip-database:$DB_TAG"
+          docker push "$DOCKER_USERNAME/aniskip-api:$API_TAG"
 
       - name: Docker push with latest tag
-        run: docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
+        run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
 
-      - name: Deploy to production
-        uses: appleboy/ssh-action@master
+      # The server has no public SSH port: connect through the Cloudflare Tunnel,
+      # authenticating to Cloudflare Access with a service token.
+      # Pinned to the v1.0.0 commit, reviewed 2026-11-01. It's a composite action
+      # with no nested actions, so the SHA pins everything it runs.
+      - name: Connect to the server
+        uses: NX1X/cloudflare-tunnel-ssh-action@5b09bfc4ba3dc20b3d77d96271fff5a20fe64107 # v1.0.0
         with:
-          host: ${{ env.HOST }}
-          username: ${{ env.USERNAME }}
-          KEY: ${{ env.KEY }}
-          port: ${{ env.PORT }}
-          script: |
-            cd ${{ env.REPO_PATH }}/docker
-            git checkout main
-            git pull --recurse-submodules
-            docker-compose pull
-            ./stop.sh
-            ./start.sh prod
+          cf-access-client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          cf-access-client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          ssh-private-key: ${{ secrets.KEY }}
+          ssh-host: ssh.aniskip.com
+          ssh-user: ${{ secrets.USERNAME }}
+          cloudflared-version: 2026.10.0
+
+      # Runs on the server, which still has the standalone docker-compose (v1).
+      - name: Deploy to production
+        env:
+          SSH_TARGET: ${{ secrets.USERNAME }}@ssh.aniskip.com
+          REPO_PATH: ${{ secrets.REPO_PATH }}
+        run: |
+          ssh "$SSH_TARGET" bash -s -- "$REPO_PATH" <<'EOF'
+          set -euo pipefail
+          cd "$1/docker"
+          git checkout main
+          git pull --recurse-submodules
+          docker-compose pull
+          ./stop.sh
+          ./start.sh prod
+          EOF
