@@ -4,16 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - .github/workflows/cd.yml
-      - src/**
-      - sql_scripts/**
-      - docker/**
-      - package.json
-      - bun.lock
-      - tsconfig.json
-      - deps/**
-  # add manual trigger
+  # Redeploys the latest version without creating a new one.
   workflow_dispatch:
 
 permissions:
@@ -25,20 +16,71 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # push the version tag
+    outputs:
+      version: ${{ steps.bump.outputs.version }}
+
+    steps:
+      - name: Checkout repo with full history and tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Keep in step with the oven/bun image in docker/Dockerfile.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+
+      - run: bun install --frozen-lockfile
+
+      - name: Tag the next version
+        id: bump
+        run: |
+          latest=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || true)
+          next=$(bunx git-cliff --bumped-version 2>/dev/null)
+
+          if [[ -n $next && $next != "$latest" ]]; then
+            git tag "$next" "$GITHUB_SHA"
+            git push origin "$next"
+            echo "Tagged $next (previous: ${latest:-none})"
+            echo "version=${next#v}" >> "$GITHUB_OUTPUT"
+          elif [[ $GITHUB_EVENT_NAME == workflow_dispatch && -n $latest ]]; then
+            echo "Redeploying $latest"
+            echo "version=${latest#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "No release-worthy commits since $latest, nothing to deploy."
+          fi
+
   continuous-delivery:
+    needs: release
+    if: needs.release.outputs.version != ''
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      VERSION: ${{ needs.release.outputs.version }}
     defaults:
       run:
         working-directory: ./docker
 
     steps:
-      - name: Checkout repo and submodules
+      - name: Checkout the tagged version and submodules
         uses: actions/checkout@v7
         with:
+          ref: v${{ env.VERSION }}
           submodules: recursive
+
+      # package.json keeps 0.0.0-development in git; the image gets the real
+      # version (shown in the API docs).
+      - name: Stamp the version into package.json
+        working-directory: .
+        run: |
+          jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp
+          mv package.json.tmp package.json
 
       - name: Docker login
         env:
@@ -51,23 +93,18 @@ jobs:
       - name: Docker build
         run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml build
 
-      - name: Determine api tag by version
-        if: env.API_TAG == ''
-        run: echo "API_TAG=$(jq -r .version ../package.json)" >> $GITHUB_ENV
-
       - name: Determine db tag by version
-        if: env.DB_TAG == ''
         run: echo "DB_TAG=$(grep -oP '(\d+\.){2}\d+' ../sql_scripts/init.sql)" >> $GITHUB_ENV
 
       - name: Docker tag
         run: |
           docker tag "$DOCKER_USERNAME/aniskip-database:latest" "$DOCKER_USERNAME/aniskip-database:$DB_TAG"
-          docker tag "$DOCKER_USERNAME/aniskip-api:latest" "$DOCKER_USERNAME/aniskip-api:$API_TAG"
+          docker tag "$DOCKER_USERNAME/aniskip-api:latest" "$DOCKER_USERNAME/aniskip-api:$VERSION"
 
       - name: Docker push with tag
         run: |
           docker push "$DOCKER_USERNAME/aniskip-database:$DB_TAG"
-          docker push "$DOCKER_USERNAME/aniskip-api:$API_TAG"
+          docker push "$DOCKER_USERNAME/aniskip-api:$VERSION"
 
       - name: Docker push with latest tag
         run: docker compose -f ./docker-compose.yml -f ./docker-compose.prod.yml push
