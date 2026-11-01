@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { HttpException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import type { SkipTimeV1, VoteType } from '../skip-times.types';
 import {
   PostSkipTimesV1ThrottlerGuard,
   PostVoteSkipTimesV1ThrottlerGuard,
@@ -17,6 +16,7 @@ import {
 } from '../models';
 import { SkipTimesControllerV1 } from '../skip-times.controller.v1';
 import { SkipTimesServiceV1 } from '../skip-times.service.v1';
+import type { SkipTimeV1, VoteType } from '../skip-times.types';
 
 describe('SkipTimesControllerV1', () => {
   let skipTimesController: SkipTimesControllerV1;
@@ -59,7 +59,7 @@ describe('SkipTimesControllerV1', () => {
     }).compile();
 
     skipTimesController = module.get<SkipTimesControllerV1>(
-      SkipTimesControllerV1
+      SkipTimesControllerV1,
     );
     skipTimesService = module.get<SkipTimesServiceV1>(SkipTimesServiceV1);
   });
@@ -85,7 +85,7 @@ describe('SkipTimesControllerV1', () => {
         const response = await skipTimesController.voteSkipTime(params, body);
 
         expect(response.message).toBeDefined();
-      }
+      },
     );
 
     it.each<VoteType>(['upvote', 'downvote'])(
@@ -102,9 +102,9 @@ describe('SkipTimesControllerV1', () => {
         body.vote_type = voteType;
 
         await expect(
-          skipTimesController.voteSkipTime(params, body)
+          skipTimesController.voteSkipTime(params, body),
         ).rejects.toThrow(HttpException);
-      }
+      },
     );
   });
 
@@ -209,7 +209,7 @@ describe('SkipTimesControllerV1', () => {
       body.submitter_id = 'efb943b4-6869-4179-b3a6-81c5d97cf98b';
 
       await expect(
-        skipTimesController.createSkipTime(params, body)
+        skipTimesController.createSkipTime(params, body),
       ).rejects.toThrow(HttpException);
     });
   });

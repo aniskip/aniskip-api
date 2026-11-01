@@ -38,7 +38,7 @@ describe('VoteService', () => {
         130,
         210,
         1440,
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
       expect(votes).toBe(1);
     });
@@ -48,7 +48,7 @@ describe('VoteService', () => {
         0,
         0,
         1440,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -58,7 +58,7 @@ describe('VoteService', () => {
         1,
         1.5,
         1440,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -68,7 +68,7 @@ describe('VoteService', () => {
         0,
         1000,
         1440,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -78,7 +78,7 @@ describe('VoteService', () => {
         0,
         1440,
         1440,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -88,7 +88,7 @@ describe('VoteService', () => {
         130,
         210,
         1440,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(0);
     });
@@ -98,7 +98,7 @@ describe('VoteService', () => {
         0,
         55,
         118,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -108,7 +108,7 @@ describe('VoteService', () => {
         30,
         55,
         119,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(0);
     });
@@ -118,7 +118,7 @@ describe('VoteService', () => {
         0,
         240,
         719,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -128,7 +128,7 @@ describe('VoteService', () => {
         100,
         160,
         719,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(0);
     });
@@ -138,7 +138,7 @@ describe('VoteService', () => {
         0,
         960,
         5400,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(-10);
     });
@@ -148,7 +148,7 @@ describe('VoteService', () => {
         0,
         420,
         5400,
-        '17ca2744-c222-4856-bc75-450498b1699e'
+        '17ca2744-c222-4856-bc75-450498b1699e',
       );
       expect(votes).toBe(0);
     });
@@ -159,7 +159,7 @@ describe('VoteService', () => {
         0,
         1440,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -170,7 +170,7 @@ describe('VoteService', () => {
         1.5,
         1440,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -181,7 +181,7 @@ describe('VoteService', () => {
         1000,
         1440,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -192,7 +192,7 @@ describe('VoteService', () => {
         1440,
         1440,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -203,7 +203,7 @@ describe('VoteService', () => {
         370,
         1440,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(0);
     });
@@ -214,7 +214,7 @@ describe('VoteService', () => {
         55,
         118,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -225,7 +225,7 @@ describe('VoteService', () => {
         55,
         119,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(0);
     });
@@ -236,7 +236,7 @@ describe('VoteService', () => {
         240,
         719,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -247,7 +247,7 @@ describe('VoteService', () => {
         220,
         719,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(0);
     });
@@ -258,7 +258,7 @@ describe('VoteService', () => {
         960,
         5400,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(-10);
     });
@@ -269,7 +269,7 @@ describe('VoteService', () => {
         720,
         5400,
         '17ca2744-c222-4856-bc75-450498b1699e',
-        'recap'
+        'recap',
       );
       expect(votes).toBe(0);
     });

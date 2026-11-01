@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SkipTimesRepository } from '../repositories';
-import type { EpisodeType } from './vote.types';
 import type { SkipTypeV2 } from '../skip-times/skip-times.types';
+import type { EpisodeType } from './vote.types';
 
 @Injectable()
 export class VoteService {
@@ -43,7 +43,7 @@ export class VoteService {
     endTime: number,
     episodeLength: number,
     submitterId: string,
-    skipType?: SkipTypeV2
+    skipType?: SkipTypeV2,
   ): Promise<number> {
     const episodeType = this.getEpisodeType(episodeLength);
     const intervalLength = endTime - startTime;
@@ -124,7 +124,7 @@ export class VoteService {
 
     const averageVotes =
       await this.skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
-        submitterId
+        submitterId,
       );
 
     // User has good reputation.

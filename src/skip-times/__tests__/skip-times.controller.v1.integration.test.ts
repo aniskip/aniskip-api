@@ -4,12 +4,12 @@ import { Test } from '@nestjs/testing';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { Pool } from 'pg';
 import { DataType, IBackup, IMemoryDb, newDb } from 'pg-mem';
-import { v4 as uuidv4 } from 'uuid';
 import request from 'supertest';
-import { SkipTimesControllerV1 } from '../skip-times.controller.v1';
-import { SkipTimesServiceV1 } from '../skip-times.service.v1';
+import { v4 as uuidv4 } from 'uuid';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
+import { SkipTimesControllerV1 } from '../skip-times.controller.v1';
+import { SkipTimesServiceV1 } from '../skip-times.service.v1';
 
 describe('SkipTimesControllerV1', () => {
   let app: INestApplication;

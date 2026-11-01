@@ -1,11 +1,11 @@
-version: '3.9'
+version: "3.9"
 services:
   api:
     build:
       dockerfile: ./docker/Dockerfile
-      context: '..'
+      context: ".."
 
   db:
     build:
       dockerfile: ./sql_scripts/Dockerfile
-      context: '..'
+      context: ".."

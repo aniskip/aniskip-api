@@ -23,7 +23,7 @@ export const config = (): Config => ({
       '..',
       'deps',
       'anime-relations',
-      'anime-relations.txt'
+      'anime-relations.txt',
     ),
   },
 });

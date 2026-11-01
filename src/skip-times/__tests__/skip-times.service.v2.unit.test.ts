@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { SkipTypeV1 } from '../skip-times.types';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../../vote';
 import { SkipTimesServiceV2 } from '../skip-times.service.v2';
+import type { SkipTypeV1 } from '../skip-times.types';
 
 describe('SkipTimesService', () => {
   let skipTimesService: SkipTimesServiceV2;
@@ -52,7 +52,7 @@ describe('SkipTimesService', () => {
 
       const isSuccessful = await skipTimesService.voteSkipTime(
         'upvote',
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -65,7 +65,7 @@ describe('SkipTimesService', () => {
 
       const isSuccessful = await skipTimesService.voteSkipTime(
         'downvote',
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -131,7 +131,7 @@ describe('SkipTimesService', () => {
         40028,
         1,
         ['op'],
-        1435.122
+        1435.122,
       );
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
@@ -168,7 +168,7 @@ describe('SkipTimesService', () => {
         40028,
         1,
         ['ed'],
-        1435.122
+        1435.122,
       );
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
@@ -205,7 +205,7 @@ describe('SkipTimesService', () => {
         40028,
         1,
         ['op', 'ed'],
-        1435.122
+        1435.122,
       );
 
       expect(skipTimes[0]).toEqual(testSkipTimes[0]);
@@ -220,7 +220,7 @@ describe('SkipTimesService', () => {
         40028,
         1,
         ['op', 'ed'],
-        1435.122
+        1435.122,
       );
 
       expect(skipTimes).toEqual([]);

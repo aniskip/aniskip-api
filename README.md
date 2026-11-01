@@ -14,16 +14,19 @@ API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/
 ### Getting started
 
 1. Clone the repo with its submodule (the anime relations data):
+
    ```sh
    git clone --recurse-submodules https://github.com/aniskip/aniskip-api
    cd aniskip-api
    ```
 1. Install dependencies:
+
    ```sh
    bun install
    ```
 1. Copy `docker/.env_example` to `docker/.env` and set `POSTGRES_PASSWORD`.
 1. Start the API with Postgres and Redis. The API runs with `bun --watch` and reloads when `src/` changes:
+
    ```sh
    ./docker/start.sh dev
    ```
@@ -52,6 +55,7 @@ Images are published on [Docker Hub](https://hub.docker.com/u/lexesjan).
 1. Create a `docker-compose.yml`, based on [this one](docker/docker-compose.yml).
 1. Create a `.env` file next to it, based on [`docker/.env_example`](docker/.env_example).
 1. Start the containers:
+
    ```sh
    docker compose up -d
    ```

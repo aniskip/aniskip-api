@@ -82,7 +82,7 @@ export class RelationRulesService {
     const idsPattern = /(\d+|[?~])\|(\d+|[?~])\|(\d+|[?~])/;
     const episodePattern = /(\d+|[?])(?:-(\d+|[?]))?/;
     const rulePattern = new RegExp(
-      `${idsPattern.source}:${episodePattern.source} -> ${idsPattern.source}:${episodePattern.source}(!)?`
+      `${idsPattern.source}:${episodePattern.source} -> ${idsPattern.source}:${episodePattern.source}(!)?`,
     );
 
     const matches = ruleString.match(rulePattern);
@@ -92,7 +92,7 @@ export class RelationRulesService {
 
     const getRange = (
       firstIndex: number,
-      secondIndex: number
+      secondIndex: number,
     ): { start: number; end?: number } => {
       const start = parseInt(matches[firstIndex], 10);
       let end: number | null;

@@ -34,7 +34,7 @@ export class RelationRulesControllerV2 {
     description: 'Rules object',
   })
   getRules(
-    @Param() params: GetRelationRulesRequestParamsV2
+    @Param() params: GetRelationRulesRequestParamsV2,
   ): GetRelationRulesResponseV2 {
     const episodeRules = this.relationRulesService.getRule(params.animeId);
 

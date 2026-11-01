@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { SkipTypeV1 } from '../skip-times.types';
 import { SkipTimesRepository } from '../../repositories';
 import { VoteService } from '../../vote';
 import { SkipTimesServiceV1 } from '../skip-times.service.v1';
+import type { SkipTypeV1 } from '../skip-times.types';
 
 describe('SkipTimesService', () => {
   let skipTimesService: SkipTimesServiceV1;
@@ -52,7 +52,7 @@ describe('SkipTimesService', () => {
 
       const isSuccessful = await skipTimesService.voteSkipTime(
         'upvote',
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -65,7 +65,7 @@ describe('SkipTimesService', () => {
 
       const isSuccessful = await skipTimesService.voteSkipTime(
         'downvote',
-        'e93e3787-3071-4d1f-833f-a78755702f6b'
+        'e93e3787-3071-4d1f-833f-a78755702f6b',
       );
 
       expect(isSuccessful).toBeTruthy();
@@ -131,7 +131,7 @@ describe('SkipTimesService', () => {
           skip_type: testSkipTime.skipType,
           skip_id: testSkipTime.skipId,
           episode_length: testSkipTime.episodeLength,
-        })
+        }),
       );
 
       jest
@@ -175,7 +175,7 @@ describe('SkipTimesService', () => {
           skip_type: testSkipTime.skipType,
           skip_id: testSkipTime.skipId,
           episode_length: testSkipTime.episodeLength,
-        })
+        }),
       );
 
       jest
@@ -219,7 +219,7 @@ describe('SkipTimesService', () => {
           skip_type: testSkipTime.skipType,
           skip_id: testSkipTime.skipId,
           episode_length: testSkipTime.episodeLength,
-        })
+        }),
       );
 
       jest
