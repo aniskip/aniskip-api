@@ -1,8 +1,8 @@
 {
-  "name": "typescript-aniskip-api",
+  "name": "aniskip-api",
   "version": "0.0.0-development",
   "description": "Provides the opening and ending skip times for the Aniskip extension",
-  "repository": "https://github.com/lexesjan/typescript-aniskip-api",
+  "repository": "https://github.com/aniskip/aniskip-api",
   "contributors": [
     "Lexes Jan Mantiquilla <mantiquillal@gmail.com>",
     "Dabreadman <tany3@tcd.ie>"
