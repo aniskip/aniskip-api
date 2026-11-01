@@ -4,7 +4,7 @@ name: aniskip-dev
 
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: db
@@ -19,7 +19,8 @@ services:
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
-      - database_data:/var/lib/postgresql/data
+      # Postgres 18 images keep their data under /var/lib/postgresql/18.
+      - postgres_data:/var/lib/postgresql
 
   migrate:
     image: ghcr.io/amacneil/dbmate:2.37.0
@@ -52,4 +53,4 @@ services:
       - "127.0.0.1:6379:6379"
 
 volumes:
-  database_data:
+  postgres_data:

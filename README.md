@@ -91,3 +91,15 @@ Images are published on [Docker Hub](https://hub.docker.com/u/lexesjan).
    docker compose up -d
    ```
 1. Add TLS with a reverse proxy such as `traefik` or `NGINX` ([NGINX config generator](https://www.digitalocean.com/community/tools/nginx)).
+
+### Upgrading from Postgres 15
+
+The stack now runs Postgres 18 on a new volume (`postgres_data`). If you ran an earlier version, copy your data across once, with the containers stopped:
+
+```sh
+docker compose down
+./upgrade-postgres.sh
+docker compose up -d
+```
+
+The script dumps the old `database_data` volume into the new one and checks the row counts. It leaves the old volume as a backup, and does nothing if there's nothing to upgrade. For the local dev services, run `bun run services:down`, then `COMPOSE_FILE=docker-compose.dev.yml ./docker/upgrade-postgres.sh`, or start fresh with `bun run db:seed`.
