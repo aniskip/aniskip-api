@@ -121,13 +121,18 @@ jobs:
           SSH_TARGET: ${{ secrets.USERNAME }}@ssh.aniskip.com
           REPO_PATH: ${{ secrets.REPO_PATH }}
         run: |
+          # bash -s reads this script from stdin as it runs, so a command that
+          # reads stdin could swallow the rest of it. Wrapping it in a function
+          # makes bash read all of it first.
           ssh "$SSH_TARGET" bash -s -- "$REPO_PATH" <<'EOF'
-          set -euo pipefail
-          cd "$1/docker"
-          git checkout main
-          git pull --recurse-submodules
-          docker compose pull
-          ./stop.sh
-          ./upgrade-postgres.sh
-          ./start.sh prod
+          deploy() {
+            set -euo pipefail
+            cd "$1/docker"
+            git checkout main
+            git pull --recurse-submodules
+            docker compose pull
+            ./stop.sh
+            ./start.sh prod
+          }
+          deploy "$@"
           EOF
