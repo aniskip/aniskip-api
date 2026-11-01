@@ -36,6 +36,12 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
    bun run services:up
    ```
 
+1. Optionally, load real data: about 77,000 anonymised skip times from the [public dataset](https://github.com/aniskip/sanitize_db_dump), refreshed weekly from production:
+
+   ```sh
+   bun run db:seed
+   ```
+
 1. Run the API on your machine. It reloads when `src/` changes:
 
    ```sh
@@ -58,6 +64,7 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 | `bun run db:migrate`    | Apply pending migrations                      |
 | `bun run db:rollback`   | Roll back the latest migration                |
 | `bun run db:status`     | List applied and pending migrations           |
+| `bun run db:seed`       | Load the public dataset (`--force` replaces)  |
 | `bun run db:new <name>` | Create a migration in `db/migrations`         |
 
 ### Database migrations
