@@ -33,13 +33,13 @@ API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/
 
 ### Commands
 
-| Command              | What it does                                     |
-| -------------------- | ------------------------------------------------ |
-| `bun run check`      | Lint and check formatting with Biome             |
-| `bun run check:fix`  | Fix lint and formatting issues where possible    |
-| `bun run typecheck`  | Type-check with TypeScript                       |
-| `bun run test`       | Run the tests (`bun test`) with coverage         |
-| `bun run dev`        | Run the API on the host with `bun --watch`       |
+| Command             | What it does                                  |
+| ------------------- | --------------------------------------------- |
+| `bun run check`     | Lint and check formatting with Biome          |
+| `bun run check:fix` | Fix lint and formatting issues where possible |
+| `bun run typecheck` | Type-check with TypeScript                    |
+| `bun run test`      | Run the tests (`bun test`) with coverage      |
+| `bun run dev`       | Run the API on the host with `bun --watch`    |
 
 ## Contributing
 
