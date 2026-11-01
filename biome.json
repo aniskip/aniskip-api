@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!bun.lock", "!deps", "!sql_scripts"]
+    "includes": ["**", "!bun.lock", "!deps", "!db"]
   },
   "formatter": {
     "enabled": true,

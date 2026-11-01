@@ -12,18 +12,38 @@ services:
       POSTGRES_HOST: db
       REDIS_HOST: redis
     depends_on:
-      - db
-      - redis
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
 
   db:
-    image: lexesjan/aniskip-database
+    image: postgres:15-alpine
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: db
     networks:
       - network
     volumes:
       - database_data:/var/lib/postgresql/data
+
+  migrate:
+    image: ghcr.io/amacneil/dbmate:2.37.0
+    command: up
+    environment:
+      DATABASE_URL: postgres://postgres@db:5432/db?sslmode=disable
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      # Retry until Postgres accepts connections (up to a minute).
+      DBMATE_WAIT: "true"
+      # Don't write db/schema.sql; the migrations folder is read-only.
+      DBMATE_NO_DUMP_SCHEMA: "true"
+    networks:
+      - network
+    volumes:
+      - ../db/migrations:/db/migrations:ro
+    depends_on:
+      - db
 
   redis:
     image: redis:7-alpine

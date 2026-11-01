@@ -19,7 +19,7 @@ main () {
       docker-compose up -d
       ;;
     "prod-local")
-      docker-compose -f ./docker-compose.yml -f ./docker-compose.prod.yml up --build -d
+      docker-compose -f ./docker-compose.yml -f ./docker-compose.build.yml up --build -d
       ;;
   esac
 }

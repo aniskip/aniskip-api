@@ -1,8 +1,7 @@
--- v1.1.1
-CREATE DATABASE db;
-
-\c db;
-CREATE TABLE skip_times (
+-- migrate:up
+-- Written to be re-runnable: databases created before dbmate already have
+-- this table, and dbmate applies this migration to them once.
+CREATE TABLE IF NOT EXISTS skip_times (
   skip_id uuid UNIQUE NOT NULL DEFAULT gen_random_uuid (),
   anime_id integer NOT NULL,
   episode_number real NOT NULL,
@@ -23,3 +22,5 @@ CREATE TABLE skip_times (
   CONSTRAINT check_end_time CHECK (end_time >= 0 AND end_time > start_time AND end_time <= episode_length)
 );
 
+-- migrate:down
+DROP TABLE skip_times;

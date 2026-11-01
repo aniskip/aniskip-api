@@ -4,15 +4,31 @@ name: aniskip-dev
 
 services:
   db:
-    build:
-      dockerfile: ./sql_scripts/Dockerfile
-      context: ".."
+    image: postgres:15-alpine
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: db
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
       - database_data:/var/lib/postgresql/data
+
+  migrate:
+    image: ghcr.io/amacneil/dbmate:2.37.0
+    profiles:
+      - tools
+    command: up
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/db?sslmode=disable
+      # Retry until Postgres accepts connections (up to a minute).
+      DBMATE_WAIT: "true"
+      # Don't write db/schema.sql.
+      DBMATE_NO_DUMP_SCHEMA: "true"
+    volumes:
+      # Writable so `db:new` can create migration files.
+      - ../db/migrations:/db/migrations
+    depends_on:
+      - db
 
   redis:
     image: redis:7-alpine

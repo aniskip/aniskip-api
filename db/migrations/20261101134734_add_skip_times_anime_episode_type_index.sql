@@ -1,7 +1,7 @@
-\c db;
--- Indexes for the hot read paths. CONCURRENTLY avoids locking writes while
--- building on a live database; it must run outside a transaction (psql -f is
--- fine).
+-- migrate:up transaction:false
+-- CONCURRENTLY avoids locking writes while building on a live database. It
+-- can't run in a transaction, and Postgres wraps a multi-statement query in
+-- one, so each index gets its own migration with a single statement.
 
 -- findSkipTimes: equality lookup on (anime_id, episode_number, skip_type).
 -- votes is deliberately left out so vote UPDATEs stay HOT (no index churn);
@@ -9,6 +9,5 @@
 CREATE INDEX CONCURRENTLY IF NOT EXISTS skip_times_anime_episode_type_idx
   ON skip_times (anime_id, episode_number, skip_type);
 
--- getAverageOfLastTenSkipTimesVotes: latest submissions per submitter.
-CREATE INDEX CONCURRENTLY IF NOT EXISTS skip_times_submitter_date_idx
-  ON skip_times (submitter_id, submit_date DESC);
+-- migrate:down transaction:false
+DROP INDEX CONCURRENTLY IF EXISTS skip_times_anime_episode_type_idx;

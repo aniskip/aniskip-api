@@ -30,7 +30,7 @@ API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/
    cp .env.example .env
    ```
 
-1. Start Postgres and Redis in Docker (bound to localhost):
+1. Start Postgres and Redis in Docker (bound to localhost) and apply the database migrations:
 
    ```sh
    bun run services:up
@@ -51,8 +51,18 @@ API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/
 | `bun run typecheck`     | Type-check with TypeScript                    |
 | `bun run test`          | Run the tests (`bun test`) with coverage      |
 | `bun run dev`           | Run the API with `bun --watch`                |
-| `bun run services:up`   | Start Postgres and Redis in Docker            |
+| `bun run services:up`   | Start Postgres and Redis, then migrate        |
 | `bun run services:down` | Stop Postgres and Redis                       |
+| `bun run db:migrate`    | Apply pending migrations                      |
+| `bun run db:rollback`   | Roll back the latest migration                |
+| `bun run db:status`     | List applied and pending migrations           |
+| `bun run db:new <name>` | Create a migration in `db/migrations`         |
+
+### Database migrations
+
+Schema changes are SQL files in [`db/migrations`](db/migrations), applied in order by [dbmate](https://github.com/amacneil/dbmate), which records them in the `schema_migrations` table. Each file has a `-- migrate:up` and a `-- migrate:down` section. In production, the `migrate` service in [`docker-compose.yml`](docker/docker-compose.yml) applies new migrations before the API starts.
+
+`CREATE INDEX CONCURRENTLY` must be the only statement in its migration, marked `transaction:false`, since Postgres runs a multi-statement migration as one transaction.
 
 ## Contributing
 
@@ -64,9 +74,9 @@ CI runs Biome (`bun run check:ci`), type checks, tests and a Docker build on eve
 
 Images are published on [Docker Hub](https://hub.docker.com/u/lexesjan).
 
-1. Create a `docker-compose.yml`, based on [this one](docker/docker-compose.yml).
-1. Create a `.env` file next to it, based on [`docker/.env_example`](docker/.env_example).
-1. Start the containers:
+1. Clone this repository. The compose file mounts the migrations from [`db/migrations`](db/migrations).
+1. Create `docker/.env`, based on [`docker/.env_example`](docker/.env_example).
+1. Start the containers from the `docker` folder. Pending migrations are applied before the API starts:
 
    ```sh
    docker compose up -d
