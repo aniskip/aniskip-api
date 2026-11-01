@@ -1,5 +1,6 @@
 import { randomBytes } from 'node:crypto';
 import type { ServerResponse } from 'node:http';
+import path from 'node:path';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { type OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
@@ -9,6 +10,8 @@ import helmet from 'helmet';
 // Pinned, so the docs don't change under us when Scalar publishes.
 const SCALAR_CDN = 'https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.75.0';
 const SCALAR_SERVICES = 'https://*.scalar.com';
+
+const FAVICON = path.join(__dirname, '..', 'public', 'favicon.ico');
 
 // Revalidate on every request, so the docs never go stale behind Cloudflare
 // after a deploy.
@@ -28,6 +31,10 @@ export function setupDocs(
   document: OpenAPIObject,
 ): void {
   const server = app.getHttpAdapter().getInstance();
+
+  server.get('/favicon.ico', (_req, res) => {
+    res.sendFile(FAVICON, { maxAge: '1d' });
+  });
 
   server.get('/openapi.json', (_req, res, next) => {
     noCache(res);
@@ -67,6 +74,7 @@ export function setupDocs(
         cdn: SCALAR_CDN,
         nonce: res.locals.cspNonce,
         pageTitle: 'Aniskip API',
+        favicon: '/favicon.ico',
       }) as (req: Request, res: Response) => void;
       render(req, res);
     },
