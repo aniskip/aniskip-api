@@ -13,9 +13,7 @@ on:
       - bun.lock
       - tsconfig.json
       - deps/**
-      - .prettierrc.js
-      - .prettierignore
-      - .eslintrc.js
+      - biome.json
   pull_request:
     branches:
       - main
@@ -43,8 +41,7 @@ jobs:
           bun-version: 1.4.4
 
       - run: bun install --frozen-lockfile
-      - run: bun run format:check
-      - run: bun run lint
+      - run: bun run check:ci
       - run: bun run typecheck
       - run: bun run test
 
