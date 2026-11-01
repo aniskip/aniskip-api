@@ -1,5 +1,5 @@
 import path from 'path';
-import { Config } from './config.types';
+import type { Config } from './config.types';
 
 export const config = (): Config => ({
   postgres: {

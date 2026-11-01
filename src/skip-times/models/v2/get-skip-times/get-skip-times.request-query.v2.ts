@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsIn, IsNumber, Min } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { SkipTypeV2, SKIP_TYPES_V2 } from '../../../skip-times.types';
+import { type SkipTypeV2, SKIP_TYPES_V2 } from '../../../skip-times.types';
 import { IsUnique } from '../../../../utils';
 
 export class GetSkipTimesRequestQueryV2 {

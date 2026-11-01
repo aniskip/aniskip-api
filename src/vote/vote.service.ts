@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SkipTimesRepository } from '../repositories';
-import { EpisodeType } from './vote.types';
-import { SkipTypeV2 } from '../skip-times/skip-times.types';
+import type { EpisodeType } from './vote.types';
+import type { SkipTypeV2 } from '../skip-times/skip-times.types';
 
 @Injectable()
 export class VoteService {

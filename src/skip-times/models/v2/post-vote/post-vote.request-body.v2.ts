@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsIn } from 'class-validator';
-import { VoteType } from '../../../skip-times.types';
+import type { VoteType } from '../../../skip-times.types';
 
 export class PostVoteRequestBodyV2 {
   @IsIn(['upvote', 'downvote'])
