@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { RepositoriesModule } from '../repositories/repositories.module';
-import { VoteModule } from '../vote/vote.module';
-import { SkipTimesControllerV1 } from './skip-times.controller.v1';
-import { SkipTimesControllerV2 } from './skip-times.controller.v2';
-import { SkipTimesServiceV1 } from './skip-times.service.v1';
-import { SkipTimesServiceV2 } from './skip-times.service.v2';
+import { DatabaseModule } from '../database/database.module';
+import { SkipTimesRepository } from './skip-times.repository';
+import { SkipTimesService } from './skip-times.service';
+import { SkipTimesControllerV1 } from './v1/skip-times.controller';
+import { SkipTimesControllerV2 } from './v2/skip-times.controller';
+import { VoteService } from './voting/vote.service';
 
 @Module({
-  imports: [RepositoriesModule, VoteModule],
-  providers: [SkipTimesServiceV1, SkipTimesServiceV2],
+  imports: [DatabaseModule],
+  providers: [SkipTimesRepository, SkipTimesService, VoteService],
   controllers: [SkipTimesControllerV1, SkipTimesControllerV2],
 })
 export class SkipTimesModule {}
