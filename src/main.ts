@@ -17,16 +17,12 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
 
   // Swagger config.
-  const server =
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:5000'
-      : 'https://api.aniskip.com';
-
   const config = new DocumentBuilder()
     .setTitle(packageJson.name)
     .setDescription(packageJson.description)
     .setVersion(packageJson.version)
-    .addServer(server)
+    // Relative, so "Try it out" calls whichever host serves the docs.
+    .addServer('/')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
