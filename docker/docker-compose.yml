@@ -2,8 +2,11 @@ services:
   api:
     image: lexesjan/aniskip-api
     restart: always
+    # Only reachable from this machine (Cloudflare Tunnel / reverse proxy).
+    # 5000 is kept while the tunnel moves to 5100; remove it afterwards.
     ports:
-      - "5000:5000"
+      - "127.0.0.1:5000:5000"
+      - "127.0.0.1:5100:5000"
     networks:
       - network
     environment:
