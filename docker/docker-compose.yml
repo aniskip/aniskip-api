@@ -4,7 +4,7 @@ services:
     restart: always
     # Only reachable from this machine (Cloudflare Tunnel / reverse proxy).
     ports:
-      - "127.0.0.1:5100:5000"
+      - "127.0.0.1:5100:5100"
     networks:
       - network
     environment:
