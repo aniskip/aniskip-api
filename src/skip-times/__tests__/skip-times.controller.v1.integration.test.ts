@@ -5,7 +5,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { minutes, ThrottlerModule } from '@nestjs/throttler';
 import { Pool } from 'pg';
 import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import request from 'supertest';
@@ -69,7 +69,7 @@ describe('SkipTimesControllerV1', () => {
     };
 
     const module = await Test.createTestingModule({
-      imports: [ThrottlerModule.forRoot()],
+      imports: [ThrottlerModule.forRoot([{ ttl: minutes(1), limit: 120 }])],
       controllers: [SkipTimesControllerV1],
       providers: [
         mockPoolProvider,

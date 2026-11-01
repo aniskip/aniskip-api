@@ -1,6 +1,6 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { minutes, Throttle, ThrottlerGuard } from '@nestjs/throttler';
 import {
   GetRelationRulesRequestParamsV1,
   GetRelationRulesResponseV1,
@@ -17,7 +17,7 @@ export class RelationRulesControllerV1 {
 
   @UseGuards(ThrottlerGuard)
   // Maximum 120 times in 1 minute.
-  @Throttle(120, 60)
+  @Throttle({ default: { limit: 120, ttl: minutes(1) } })
   @Get('/:anime_id')
   @ApiOperation({
     description: 'Retrieves anime episode number redirection rules',

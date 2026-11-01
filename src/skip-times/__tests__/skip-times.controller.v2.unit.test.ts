@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from 'bun:test';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { minutes, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import {
   PostSkipTimesV2ThrottlerGuard,
   PostVoteSkipTimesV2ThrottlerGuard,
@@ -48,7 +48,7 @@ describe('SkipTimesControllerV2', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ThrottlerModule.forRoot()],
+      imports: [ThrottlerModule.forRoot([{ ttl: minutes(1), limit: 120 }])],
       controllers: [SkipTimesControllerV2],
       providers: [
         mockSkipTimesServiceProvider,

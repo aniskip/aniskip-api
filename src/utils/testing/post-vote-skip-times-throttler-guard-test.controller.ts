@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards, Version } from '@nestjs/common';
-import { Throttle } from '@nestjs/throttler';
+import { minutes, Throttle } from '@nestjs/throttler';
 import {
   PostVoteSkipTimesV1ThrottlerGuard,
   PostVoteSkipTimesV2ThrottlerGuard,
@@ -9,7 +9,7 @@ import {
 export class PostVoteSkipTimesThrottlerGuardTestController {
   @Version('1')
   @UseGuards(PostVoteSkipTimesV1ThrottlerGuard)
-  @Throttle(1, 120)
+  @Throttle({ default: { limit: 1, ttl: minutes(2) } })
   @Post('test/:skip_id')
   getTestV1(): string {
     return 'hello world';
@@ -17,7 +17,7 @@ export class PostVoteSkipTimesThrottlerGuardTestController {
 
   @Version('2')
   @UseGuards(PostVoteSkipTimesV2ThrottlerGuard)
-  @Throttle(1, 120)
+  @Throttle({ default: { limit: 1, ttl: minutes(2) } })
   @Post('test/:skipId')
   getTestV2(): string {
     return 'hello world';
