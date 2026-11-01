@@ -128,5 +128,6 @@ jobs:
           git pull --recurse-submodules
           docker compose pull
           ./stop.sh
+          ./upgrade-postgres.sh
           ./start.sh prod
           EOF
