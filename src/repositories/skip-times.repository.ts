@@ -154,6 +154,8 @@ export class SkipTimesRepository {
             skip_times
           WHERE
             submitter_id = $1::uuid
+          ORDER BY
+            submit_date DESC
           LIMIT 10) AS t
         `,
         [submitterId]
