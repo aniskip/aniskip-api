@@ -1,24 +1,16 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsUUID } from 'class-validator';
-import type { VoteType } from '../../skip-times.types';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
+import { id } from '../../../common/validation/schemas';
+import { VOTE_TYPES } from '../../skip-times.types';
 
-export class PostVoteRequestParamsV1 {
-  @IsUUID()
-  @ApiProperty({
-    type: String,
-    format: 'uuid',
-    description: 'Skip time UUID',
-  })
-  skip_id!: string;
-}
+export class PostVoteRequestParamsV1 extends createZodDto(
+  z.object({ skip_id: id.describe('Skip time UUID') }),
+) {}
 
-export class PostVoteRequestBodyV1 {
-  @IsIn(['upvote', 'downvote'])
-  @ApiProperty({ enum: ['upvote', 'downvote'] })
-  vote_type!: VoteType;
-}
+export class PostVoteRequestBodyV1 extends createZodDto(
+  z.object({ vote_type: z.enum(VOTE_TYPES) }),
+) {}
 
-export class PostVoteResponseV1 {
-  @ApiProperty()
-  message!: string;
-}
+export class PostVoteResponseV1 extends createZodDto(
+  z.object({ message: z.string() }),
+) {}

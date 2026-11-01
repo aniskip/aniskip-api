@@ -1,11 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import {
-  HttpStatus,
-  type INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
+import { HttpStatus, type INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { minutes, ThrottlerModule } from '@nestjs/throttler';
+import { ZodValidationPipe } from 'nestjs-zod';
 import { Pool } from 'pg';
 import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import request from 'supertest';
@@ -13,6 +10,12 @@ import { SkipTimesRepository } from '../skip-times.repository';
 import { SkipTimesService } from '../skip-times.service';
 import { VoteService } from '../voting/vote.service';
 import { SkipTimesControllerV1 } from './skip-times.controller';
+
+/** The validation errors of a 400 response, as `path: message`. */
+const validationErrors = (body: {
+  errors: { path: (string | number)[]; message: string }[];
+}): string[] =>
+  body.errors.map((issue) => `${issue.path.join('.')}: ${issue.message}`);
 
 describe('SkipTimesControllerV1', () => {
   let app: INestApplication;
@@ -80,7 +83,7 @@ describe('SkipTimesControllerV1', () => {
     }).compile();
 
     app = module.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    app.useGlobalPipes(new ZodValidationPipe());
     await app.init();
   });
 
@@ -122,10 +125,11 @@ describe('SkipTimesControllerV1', () => {
       request(app.getHttpServer())
         .get('/skip-times/1/0')
         .query({ types: 'op' })
-        .expect({
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: ['episode_number must not be less than 0.5'],
-          error: 'Bad Request',
+        .expect(({ body }) => {
+          expect(body.message).toBe('Validation failed');
+          expect(validationErrors(body)).toEqual([
+            'episode_number: Too small: expected number to be >=0.5',
+          ]);
         })
         .expect(HttpStatus.BAD_REQUEST, done);
     });

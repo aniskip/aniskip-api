@@ -1,13 +1,10 @@
 import { afterAll, beforeAll, describe, it } from 'bun:test';
 import path from 'node:path';
-import {
-  HttpStatus,
-  type INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
+import { HttpStatus, type INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { minutes, ThrottlerModule } from '@nestjs/throttler';
+import { ZodValidationPipe } from 'nestjs-zod';
 import request from 'supertest';
 import type { Config } from '../../config/configuration.types';
 import { RelationRulesService } from '../relation-rules.service';
@@ -34,7 +31,7 @@ describe('RelationRulesControllerV2', () => {
     }).compile();
 
     app = module.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    app.useGlobalPipes(new ZodValidationPipe());
     await app.init();
   });
 
