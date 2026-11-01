@@ -13,8 +13,7 @@ export const config = (): Config => ({
     connectionTimeoutMillis: 2000,
   },
   redis: {
-    // Defaults to the Compose service name used in production.
-    host: process.env.REDIS_HOST ?? 'redis',
+    host: process.env.REDIS_HOST,
     port: 6379,
   },
   relations: {

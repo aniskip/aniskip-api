@@ -12,8 +12,10 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_HOST: db
+      REDIS_HOST: redis
     depends_on:
       - db
+      - redis
 
   db:
     image: lexesjan/aniskip-database
