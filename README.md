@@ -24,22 +24,35 @@ API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/
    ```sh
    bun install
    ```
-1. Copy `docker/.env_example` to `docker/.env` and set `POSTGRES_PASSWORD`.
-1. Start the API with Postgres and Redis. The API runs with `bun --watch` and reloads when `src/` changes:
+1. Copy `.env.example` to `.env`. Bun loads it automatically, and the defaults match the local services.
 
    ```sh
-   ./docker/start.sh dev
+   cp .env.example .env
+   ```
+
+1. Start Postgres and Redis in Docker (bound to localhost):
+
+   ```sh
+   bun run services:up
+   ```
+
+1. Run the API on your machine. It reloads when `src/` changes:
+
+   ```sh
+   bun run dev
    ```
 
 ### Commands
 
-| Command             | What it does                                  |
-| ------------------- | --------------------------------------------- |
-| `bun run check`     | Lint and check formatting with Biome          |
-| `bun run check:fix` | Fix lint and formatting issues where possible |
-| `bun run typecheck` | Type-check with TypeScript                    |
-| `bun run test`      | Run the tests (`bun test`) with coverage      |
-| `bun run dev`       | Run the API on the host with `bun --watch`    |
+| Command                 | What it does                                  |
+| ----------------------- | --------------------------------------------- |
+| `bun run check`         | Lint and check formatting with Biome          |
+| `bun run check:fix`     | Fix lint and formatting issues where possible |
+| `bun run typecheck`     | Type-check with TypeScript                    |
+| `bun run test`          | Run the tests (`bun test`) with coverage      |
+| `bun run dev`           | Run the API with `bun --watch`                |
+| `bun run services:up`   | Start Postgres and Redis in Docker            |
+| `bun run services:down` | Stop Postgres and Redis                       |
 
 ## Contributing
 

@@ -14,6 +14,8 @@
     "check:ci": "biome ci",
     "check:fix": "biome check --write",
     "dev": "NODE_ENV=development bun --watch src/main.ts",
+    "services:down": "docker compose -f docker/docker-compose.dev.yml down",
+    "services:up": "docker compose -f docker/docker-compose.dev.yml up -d --build",
     "start": "NODE_ENV=production bun src/main.ts",
     "test": "bun test --coverage",
     "typecheck": "tsc --noEmit"
