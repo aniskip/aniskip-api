@@ -24,7 +24,7 @@ const nonceOf = (res: ServerResponse): string =>
 
 /**
  * Serves the API reference (Scalar) at /docs and the OpenAPI document at
- * /openapi.json. The old Swagger UI paths redirect to them.
+ * /openapi.json. / and the old Swagger UI paths redirect to them.
  */
 export function setupDocs(
   app: NestExpressApplication,
@@ -80,6 +80,11 @@ export function setupDocs(
     },
   );
 
+  // The API has no page of its own at /, so send visitors to the docs.
+  // Temporary, so browsers don't cache it if / ever serves something else.
+  server.get('/', (_req, res) => {
+    res.redirect(302, '/docs');
+  });
   server.get(['/api-docs', '/api-docs/{*path}'], (_req, res) => {
     res.redirect(301, '/docs');
   });
