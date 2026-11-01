@@ -9,7 +9,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { Pool } from 'pg';
 import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
 import request from 'supertest';
-import { v4 as uuidv4 } from 'uuid';
 import { SkipTimesRepository } from '../../repositories/skip-times.repository';
 import { VoteService } from '../../vote';
 import { SkipTimesControllerV2 } from '../skip-times.controller.v2';
@@ -26,7 +25,7 @@ describe('SkipTimesControllerV2', () => {
     database.public.registerFunction({
       name: 'gen_random_uuid',
       returns: DataType.uuid,
-      implementation: uuidv4,
+      implementation: () => crypto.randomUUID(),
       impure: true,
     });
 
