@@ -1,45 +1,58 @@
-# typescript-aniskip-api
+# aniskip-api
 
-API for Aniskip web browser extension
+API for the [Aniskip](https://github.com/aniskip/aniskip-extension) browser extension: opening and ending skip times, votes, and anime relation rules.
 
-## Getting started
+API documentation: [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/api-docs)
 
-### API Documentation
+## Development
 
-The documentation for the API can be found at [`https://api.aniskip.com/api-docs`](https://api.aniskip.com/api-docs)
+### Prerequisites
 
-### Running the API
+- [Bun](https://bun.sh) 1.4.4
+- [Docker](https://docs.docker.com/get-docker/) (for Postgres and Redis)
 
-#### Prerequisites
+### Getting started
 
-You will need to have installed:
-
-1. Docker
-
-#### Deploying the API for production
-
-The built images for this project can be found on [Docker Hub](https://hub.docker.com/u/lexesjan)
-
-1. Create a `docker-compose.yml` file. An example one can be found [here](https://github.com/lexesjan/typescript-aniskip-api/blob/main/docker/docker-compose.yml)
-1. Create a `.env` file in the same directory. An example one can be found [here](https://github.com/lexesjan/typescript-aniskip-api/blob/main/docker/.env_example)
-1. Start the docker containers
+1. Clone the repo with its submodule (the anime relations data):
+   ```sh
+   git clone --recurse-submodules https://github.com/aniskip/aniskip-api
+   cd aniskip-api
    ```
-   docker-compose up -d
+1. Install dependencies:
+   ```sh
+   bun install
    ```
-1. Add TLS/SSL using a reverse proxy. You can use reverse proxy software like `traefik` or `NGINX`. You can easily create an `NGINX` config [here](https://www.digitalocean.com/community/tools/nginx)
-
-#### Running the API for development
-
-1. Clone the repo
-   ```
-   git clone https://github.com/lexesjan/typescript-aniskip-api
-   ```
-1. Navigate into the cloned GitHub repository
-   ```
-   cd typescript-aniskip-api
-   ```
-1. Copy `.env_example` in the docker folder to `./docker/.env` and change `POSTGRES_PASSWORD`
-1. Run the start script
-   ```
+1. Copy `docker/.env_example` to `docker/.env` and set `POSTGRES_PASSWORD`.
+1. Start the API with Postgres and Redis. The API runs with `bun --watch` and reloads when `src/` changes:
+   ```sh
    ./docker/start.sh dev
    ```
+
+### Commands
+
+| Command                | What it does                               |
+| ---------------------- | ------------------------------------------ |
+| `bun run test`         | Run the tests (`bun test`) with coverage   |
+| `bun run lint`         | Lint `src/` with ESLint                    |
+| `bun run typecheck`    | Type-check with `tsc`                      |
+| `bun run format`       | Format the repo with Prettier              |
+| `bun run format:check` | Check formatting (CI runs this)            |
+| `bun run dev`          | Run the API on the host with `bun --watch` |
+
+## Contributing
+
+PRs are squash-merged, and the **PR title** becomes the commit on `main`. Titles must be [Conventional Commits](https://www.conventionalcommits.org), e.g. `fix: handle empty episode length` or `feat(votes): …`; a CI check enforces this.
+
+CI runs formatting, lint, type checks, tests and a Docker build on every PR.
+
+## Self-hosting
+
+Images are published on [Docker Hub](https://hub.docker.com/u/lexesjan).
+
+1. Create a `docker-compose.yml`, based on [this one](docker/docker-compose.yml).
+1. Create a `.env` file next to it, based on [`docker/.env_example`](docker/.env_example).
+1. Start the containers:
+   ```sh
+   docker compose up -d
+   ```
+1. Add TLS with a reverse proxy such as `traefik` or `NGINX` ([NGINX config generator](https://www.digitalocean.com/community/tools/nginx)).
