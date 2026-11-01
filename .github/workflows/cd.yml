@@ -116,7 +116,6 @@ jobs:
           ssh-user: ${{ secrets.USERNAME }}
           cloudflared-version: 2026.10.0
 
-      # Runs on the server, which still has the standalone docker-compose (v1).
       - name: Deploy to production
         env:
           SSH_TARGET: ${{ secrets.USERNAME }}@ssh.aniskip.com
@@ -127,7 +126,7 @@ jobs:
           cd "$1/docker"
           git checkout main
           git pull --recurse-submodules
-          docker-compose pull
+          docker compose pull
           ./stop.sh
           ./start.sh prod
           EOF
