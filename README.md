@@ -8,7 +8,7 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) 1.4.4
+- [Vite+](https://viteplus.dev/guide/)
 - [Docker](https://docs.docker.com/get-docker/) (for Postgres and Redis)
 
 ### Getting started
@@ -23,7 +23,7 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 1. Install dependencies:
 
    ```sh
-   bun install
+   vp install
    ```
 
 1. Copy `.env.example` to `.env`. Bun loads it automatically, and the defaults match the local services.
@@ -35,32 +35,32 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 1. Optionally, load real data: anonymised skip times from the [public dataset](https://github.com/aniskip/sanitize-db-dump), refreshed weekly from production. This starts Postgres and Redis if they aren't running:
 
    ```sh
-   bun run db:seed
+   vp run db:seed
    ```
 
 1. Run the API on your machine. This starts Postgres and Redis in Docker (bound to localhost), applies the database migrations, then reloads the API when `src/` changes:
 
    ```sh
-   bun run dev
+   vp run dev
    ```
 
    The docs are at http://localhost:5100/docs.
 
 ### Commands
 
-| Command                 | What it does                                            |
-| ----------------------- | ------------------------------------------------------- |
-| `bun run check`         | Check formatting, lint and type-check with Vite+        |
-| `bun run check:fix`     | Fix formatting and lint issues where possible           |
-| `bun run test`          | Run the tests (`bun test`) with coverage                |
-| `bun run dev`           | Start the services, then run the API with `bun --watch` |
-| `bun run services:up`   | Start Postgres and Redis, then migrate                  |
-| `bun run services:down` | Stop Postgres and Redis                                 |
-| `bun run db:migrate`    | Apply pending migrations                                |
-| `bun run db:rollback`   | Roll back the latest migration                          |
-| `bun run db:status`     | List applied and pending migrations                     |
-| `bun run db:seed`       | Load the public dataset (`--force` replaces)            |
-| `bun run db:new <name>` | Create a migration in `db/migrations`                   |
+| Command                | What it does                                                            |
+| ---------------------- | ----------------------------------------------------------------------- |
+| `vp check`             | Check formatting, lint and types                                        |
+| `vp check --fix`       | Fix formatting and lint issues where possible                           |
+| `vp run test`          | Run the tests (`bun test`) with coverage. `vp test` runs Vitest instead |
+| `vp run dev`           | Start the services, then run the API with `bun --watch`                 |
+| `vp run services:up`   | Start Postgres and Redis, then migrate                                  |
+| `vp run services:down` | Stop Postgres and Redis                                                 |
+| `vp run db:migrate`    | Apply pending migrations                                                |
+| `vp run db:rollback`   | Roll back the latest migration                                          |
+| `vp run db:status`     | List applied and pending migrations                                     |
+| `vp run db:seed`       | Load the public dataset (`--force` replaces)                            |
+| `vp run db:new <name>` | Create a migration in `db/migrations`                                   |
 
 ### Database migrations
 
@@ -71,17 +71,17 @@ To change the schema:
 1. Create a migration file:
 
    ```sh
-   bun run db:new add_some_column
+   vp run db:new add_some_column
    ```
 
 1. Write the change under `-- migrate:up` and how to undo it under `-- migrate:down`.
-1. Apply it with `bun run db:migrate`. To check the down section, run `bun run db:rollback` and then `bun run db:migrate` again.
+1. Apply it with `vp run db:migrate`. To check the down section, run `vp run db:rollback` and then `vp run db:migrate` again.
 
 ## Contributing
 
 PRs are squash-merged, and the **PR title** becomes the commit on `main`. Titles must be [Conventional Commits](https://www.conventionalcommits.org), e.g. `fix: handle empty episode length` or `feat(votes): …`; a CI check enforces this.
 
-CI runs Vite+ (`bun run check`: formatting, lint and type checks), tests and a Docker build on every PR. Run `bun run check:fix` before pushing if your editor doesn't format with Oxfmt.
+CI runs `vp check` (formatting, lint and type checks), the tests and a Docker build on every PR. Run `vp check --fix` before pushing if your editor doesn't format with Oxfmt.
 
 ## Self-hosting
 
