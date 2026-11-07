@@ -50,9 +50,8 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 
 | Command                 | What it does                                            |
 | ----------------------- | ------------------------------------------------------- |
-| `bun run check`         | Lint and check formatting with Biome                    |
-| `bun run check:fix`     | Fix lint and formatting issues where possible           |
-| `bun run typecheck`     | Type-check with TypeScript                              |
+| `bun run check`         | Check formatting, lint and type-check with Vite+        |
+| `bun run check:fix`     | Fix formatting and lint issues where possible           |
 | `bun run test`          | Run the tests (`bun test`) with coverage                |
 | `bun run dev`           | Start the services, then run the API with `bun --watch` |
 | `bun run services:up`   | Start Postgres and Redis, then migrate                  |
@@ -82,7 +81,7 @@ To change the schema:
 
 PRs are squash-merged, and the **PR title** becomes the commit on `main`. Titles must be [Conventional Commits](https://www.conventionalcommits.org), e.g. `fix: handle empty episode length` or `feat(votes): …`; a CI check enforces this.
 
-CI runs Biome (`bun run check:ci`), type checks, tests and a Docker build on every PR. Run `bun run check:fix` before pushing if your editor doesn't format with Biome.
+CI runs Vite+ (`bun run check`: formatting, lint and type checks), tests and a Docker build on every PR. Run `bun run check:fix` before pushing if your editor doesn't format with Oxfmt.
 
 ## Self-hosting
 
