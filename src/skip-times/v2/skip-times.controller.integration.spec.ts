@@ -1,23 +1,22 @@
-import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { HttpStatus, type INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { minutes, ThrottlerModule } from '@nestjs/throttler';
-import { ZodValidationPipe } from 'nestjs-zod';
-import { Pool } from 'pg';
-import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
-import request from 'supertest';
-import { SkipTimesRepository } from '../skip-times.repository';
-import { SkipTimesService } from '../skip-times.service';
-import { VoteService } from '../voting/vote.service';
-import { SkipTimesControllerV2 } from './skip-times.controller';
+import { afterAll, beforeAll, describe, expect, it } from "bun:test";
+import { HttpStatus, type INestApplication } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
+import { minutes, ThrottlerModule } from "@nestjs/throttler";
+import { ZodValidationPipe } from "nestjs-zod";
+import { Pool } from "pg";
+import { DataType, type IBackup, type IMemoryDb, newDb } from "pg-mem";
+import request from "supertest";
+import { SkipTimesRepository } from "../skip-times.repository";
+import { SkipTimesService } from "../skip-times.service";
+import { VoteService } from "../voting/vote.service";
+import { SkipTimesControllerV2 } from "./skip-times.controller";
 
 /** The validation errors of a 400 response, as `path: message`. */
 const validationErrors = (body: {
   errors: { path: (string | number)[]; message: string }[];
-}): string[] =>
-  body.errors.map((issue) => `${issue.path.join('.')}: ${issue.message}`);
+}): string[] => body.errors.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
 
-describe('SkipTimesControllerV2', () => {
+describe("SkipTimesControllerV2", () => {
   let app: INestApplication;
   let database: IMemoryDb;
   let databaseBackup: IBackup;
@@ -26,14 +25,14 @@ describe('SkipTimesControllerV2', () => {
     database = newDb();
 
     database.public.registerFunction({
-      name: 'gen_random_uuid',
+      name: "gen_random_uuid",
       returns: DataType.uuid,
       implementation: () => crypto.randomUUID(),
       impure: true,
     });
 
     database.public.registerFunction({
-      name: 'abs',
+      name: "abs",
       args: [DataType.float],
       returns: DataType.float,
       implementation: Math.abs,
@@ -74,12 +73,7 @@ describe('SkipTimesControllerV2', () => {
     const module = await Test.createTestingModule({
       imports: [ThrottlerModule.forRoot([{ ttl: minutes(1), limit: 120 }])],
       controllers: [SkipTimesControllerV2],
-      providers: [
-        mockPoolProvider,
-        SkipTimesRepository,
-        VoteService,
-        SkipTimesService,
-      ],
+      providers: [mockPoolProvider, SkipTimesRepository, VoteService, SkipTimesService],
     }).compile();
 
     app = module.createNestApplication();
@@ -87,7 +81,7 @@ describe('SkipTimesControllerV2', () => {
     await app.init();
   });
 
-  describe('POST /skip-times/vote/{skipId}', () => {
+  describe("POST /skip-times/vote/{skipId}", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -97,19 +91,19 @@ describe('SkipTimesControllerV2', () => {
       `);
     });
 
-    it('should upvote a skip time', (done) => {
+    it("should upvote a skip time", (done) => {
       request(app.getHttpServer())
-        .post('/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
-        .send({ voteType: 'upvote' })
+        .post("/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910")
+        .send({ voteType: "upvote" })
         .expect({
           statusCode: HttpStatus.CREATED,
-          message: 'Successfully upvote the skip time',
+          message: "Successfully upvote the skip time",
         })
         .expect(HttpStatus.CREATED, done);
     });
   });
 
-  describe('GET /skip-times/{animeId}/{episodeNumber}', () => {
+  describe("GET /skip-times/{animeId}/{episodeNumber}", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -144,24 +138,24 @@ describe('SkipTimesControllerV2', () => {
       `);
     });
 
-    it('should respond with an episode number bad request', (done) => {
+    it("should respond with an episode number bad request", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/-1')
-        .query({ types: 'op', episodeLength: 0 })
+        .get("/skip-times/1/-1")
+        .query({ types: "op", episodeLength: 0 })
         .expect(({ body }) => {
-          expect(body.message).toBe('Validation failed');
+          expect(body.message).toBe("Validation failed");
           expect(validationErrors(body)).toEqual([
-            'episodeNumber: Too small: expected number to be >=0',
+            "episodeNumber: Too small: expected number to be >=0",
           ]);
         })
         .expect(HttpStatus.BAD_REQUEST, done);
     });
 
-    it('should respond with an opening, ending, mixed opening, mixed ending and recap', (done) => {
+    it("should respond with an opening, ending, mixed opening, mixed ending and recap", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/1')
+        .get("/skip-times/1/1")
         .query({
-          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          types: ["op", "ed", "mixed-op", "mixed-ed", "recap"],
           episodeLength: 1445.17,
         })
         .expect({
@@ -172,8 +166,8 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 21.5,
                 endTime: 112.25,
               },
-              skipType: 'op',
-              skipId: '6d1c118e-0484-4b92-82df-896efdcba26e',
+              skipType: "op",
+              skipId: "6d1c118e-0484-4b92-82df-896efdcba26e",
               episodeLength: 1445.17,
             },
             {
@@ -181,8 +175,8 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 1349.5,
                 endTime: 1440.485,
               },
-              skipType: 'ed',
-              skipId: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+              skipType: "ed",
+              skipId: "23ee993a-fdf5-44eb-b4f9-cb79c7935033",
               episodeLength: 1445.1238,
             },
             {
@@ -190,8 +184,8 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 133.481,
                 endTime: 221.531,
               },
-              skipType: 'mixed-op',
-              skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+              skipType: "mixed-op",
+              skipId: "6b7753de-3636-4cc6-8254-a370c87637e9",
               episodeLength: 1445.1238,
             },
             {
@@ -199,8 +193,8 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 1327.88,
                 endTime: 1419.13,
               },
-              skipType: 'mixed-ed',
-              skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+              skipType: "mixed-ed",
+              skipId: "ae1399ee-998a-4aeb-9789-4f5d62868aff",
               episodeLength: 1445.1238,
             },
             {
@@ -208,22 +202,22 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 130.857,
                 endTime: 251.607,
               },
-              skipType: 'recap',
-              skipId: '14abd949-ad03-4e2a-9a98-4a7dee59f8ab',
+              skipType: "recap",
+              skipId: "14abd949-ad03-4e2a-9a98-4a7dee59f8ab",
               episodeLength: 1445.1238,
             },
           ],
-          message: 'Successfully found skip times',
+          message: "Successfully found skip times",
           statusCode: HttpStatus.OK,
         })
         .expect(HttpStatus.OK, done);
     });
 
-    it('should respond with an opening filtered by episode length', (done) => {
+    it("should respond with an opening filtered by episode length", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/1')
+        .get("/skip-times/1/1")
         .query({
-          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          types: ["op", "ed", "mixed-op", "mixed-ed", "recap"],
           episodeLength: 1004,
         })
         .expect({
@@ -234,38 +228,38 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 130.857,
                 endTime: 251.607,
               },
-              skipType: 'op',
-              skipId: '14abd949-ad03-4e2a-9a98-3a7dee59f8ab',
+              skipType: "op",
+              skipId: "14abd949-ad03-4e2a-9a98-3a7dee59f8ab",
               episodeLength: 1000,
             },
           ],
-          message: 'Successfully found skip times',
+          message: "Successfully found skip times",
           statusCode: HttpStatus.OK,
         })
         .expect(HttpStatus.OK, done);
     });
 
-    it('should respond with no skip times due to the episode length filter', (done) => {
+    it("should respond with no skip times due to the episode length filter", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/1')
+        .get("/skip-times/1/1")
         .query({
-          types: ['op', 'ed', 'mixed-op', 'mixed-ed', 'recap'],
+          types: ["op", "ed", "mixed-op", "mixed-ed", "recap"],
           episodeLength: 100,
         })
         .expect({
           found: false,
           results: [],
-          message: 'No skip times found',
+          message: "No skip times found",
           statusCode: HttpStatus.NOT_FOUND,
         })
         .expect(HttpStatus.NOT_FOUND, done);
     });
 
-    it('should respond with mixed-op and mixed-ed with no episode length filter', (done) => {
+    it("should respond with mixed-op and mixed-ed with no episode length filter", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/1')
+        .get("/skip-times/1/1")
         .query({
-          types: ['mixed-op', 'mixed-ed'],
+          types: ["mixed-op", "mixed-ed"],
           episodeLength: 0,
         })
         .expect({
@@ -276,8 +270,8 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 133.481,
                 endTime: 221.531,
               },
-              skipType: 'mixed-op',
-              skipId: '6b7753de-3636-4cc6-8254-a370c87637e9',
+              skipType: "mixed-op",
+              skipId: "6b7753de-3636-4cc6-8254-a370c87637e9",
               episodeLength: 1445.1238,
             },
             {
@@ -285,71 +279,71 @@ describe('SkipTimesControllerV2', () => {
                 startTime: 1327.88,
                 endTime: 1419.13,
               },
-              skipType: 'mixed-ed',
-              skipId: 'ae1399ee-998a-4aeb-9789-4f5d62868aff',
+              skipType: "mixed-ed",
+              skipId: "ae1399ee-998a-4aeb-9789-4f5d62868aff",
               episodeLength: 1445.1238,
             },
           ],
-          message: 'Successfully found skip times',
+          message: "Successfully found skip times",
           statusCode: HttpStatus.OK,
         })
         .expect(HttpStatus.OK, done);
     });
   });
 
-  describe('POST /v1/skip-times/{animeId}/{episodeNumber}', () => {
+  describe("POST /v1/skip-times/{animeId}/{episodeNumber}", () => {
     beforeAll(() => {
       databaseBackup.restore();
     });
 
     it.each([
       {
-        skipType: 'op',
-        providerName: 'ProviderName',
+        skipType: "op",
+        providerName: "ProviderName",
         startTime: 37.75,
         endTime: 128.1,
         episodeLength: 1440.05,
-        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
       },
       {
-        skipType: 'ed',
-        providerName: 'ProviderName',
+        skipType: "ed",
+        providerName: "ProviderName",
         startTime: 37.75,
         endTime: 128.1,
         episodeLength: 1440.05,
-        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
       },
       {
-        skipType: 'mixed-op',
-        providerName: 'ProviderName',
+        skipType: "mixed-op",
+        providerName: "ProviderName",
         startTime: 37.75,
         endTime: 128.1,
         episodeLength: 1440.05,
-        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
       },
       {
-        skipType: 'mixed-ed',
-        providerName: 'ProviderName',
+        skipType: "mixed-ed",
+        providerName: "ProviderName",
         startTime: 37.75,
         endTime: 128.1,
         episodeLength: 1440.05,
-        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
       },
       {
-        skipType: 'recap',
-        providerName: 'ProviderName',
+        skipType: "recap",
+        providerName: "ProviderName",
         startTime: 37.75,
         endTime: 128.1,
         episodeLength: 1440.05,
-        submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+        submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
       },
-    ])('should create a skip time', (data, done) => {
+    ])("should create a skip time", (data, done) => {
       request(app.getHttpServer())
-        .post('/skip-times/3/2')
+        .post("/skip-times/3/2")
         .send(data)
         .expect((res) => {
           const { body } = res;
-          expect(body.message).toBe('Successfully created a skip time');
+          expect(body.message).toBe("Successfully created a skip time");
           expect(body.skipId).toBeDefined();
           expect(body.statusCode).toBe(HttpStatus.CREATED);
         })
@@ -359,12 +353,12 @@ describe('SkipTimesControllerV2', () => {
     it.each([
       {
         data: {
-          skipType: 'wrong',
-          providerName: 'ProviderName',
+          skipType: "wrong",
+          providerName: "ProviderName",
           startTime: 37.75,
           endTime: 128.1,
           episodeLength: 1440.05,
-          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+          submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
         },
         errorMessage: [
           'skipType: Invalid option: expected one of "op"|"ed"|"mixed-op"|"mixed-ed"|"recap"',
@@ -372,61 +366,59 @@ describe('SkipTimesControllerV2', () => {
       },
       {
         data: {
-          skipType: 'op',
-          providerName: 'ProviderName',
+          skipType: "op",
+          providerName: "ProviderName",
           startTime: 37.75,
           endTime: 128.1,
           episodeLength: -1,
-          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+          submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
         },
         errorMessage: [
-          'episodeLength: Too small: expected number to be >=0',
-          'endTime: must not be after episodeLength',
+          "episodeLength: Too small: expected number to be >=0",
+          "endTime: must not be after episodeLength",
         ],
       },
       {
         data: {
-          skipType: 'op',
-          providerName: 'P'.repeat(65),
+          skipType: "op",
+          providerName: "P".repeat(65),
           startTime: 37.75,
           endTime: 128.1,
           episodeLength: 1440.05,
-          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+          submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
         },
-        errorMessage: [
-          'providerName: Too big: expected string to have <=64 characters',
-        ],
+        errorMessage: ["providerName: Too big: expected string to have <=64 characters"],
       },
       {
         data: {
-          skipType: 'op',
-          providerName: 'ProviderName',
+          skipType: "op",
+          providerName: "ProviderName",
           startTime: 128.1,
           endTime: 37.75,
           episodeLength: 1440.05,
-          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+          submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
         },
-        errorMessage: ['endTime: must be after startTime'],
+        errorMessage: ["endTime: must be after startTime"],
       },
       {
         data: {
-          skipType: 'op',
-          providerName: 'ProviderName',
+          skipType: "op",
+          providerName: "ProviderName",
           startTime: 37.75,
           endTime: 1500,
           episodeLength: 1440.05,
-          submitterId: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+          submitterId: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
         },
-        errorMessage: ['endTime: must not be after episodeLength'],
+        errorMessage: ["endTime: must not be after episodeLength"],
       },
-    ])('should not create a skip time', ({ data, errorMessage }, done) => {
+    ])("should not create a skip time", ({ data, errorMessage }, done) => {
       request(app.getHttpServer())
-        .post('/skip-times/3/2')
+        .post("/skip-times/3/2")
         .send(data)
         .expect((res) => {
           const { body } = res;
           expect(body.statusCode).toBe(HttpStatus.BAD_REQUEST);
-          expect(body.message).toBe('Validation failed');
+          expect(body.message).toBe("Validation failed");
           expect(validationErrors(body)).toEqual([...errorMessage]);
           expect(body.skipId).toBeUndefined();
         })

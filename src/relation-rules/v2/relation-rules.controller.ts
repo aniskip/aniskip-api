@@ -1,41 +1,32 @@
-import {
-  Controller,
-  Get,
-  HttpException,
-  HttpStatus,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { minutes, Throttle, ThrottlerGuard } from '@nestjs/throttler';
-import { RelationRulesService } from '../relation-rules.service';
+import { Controller, Get, HttpException, HttpStatus, Param, UseGuards } from "@nestjs/common";
+import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { minutes, Throttle, ThrottlerGuard } from "@nestjs/throttler";
+import { RelationRulesService } from "../relation-rules.service";
 import {
   GetRelationRulesRequestParamsV2,
   GetRelationRulesResponseV2,
-} from './dto/get-relation-rules.dto';
+} from "./dto/get-relation-rules.dto";
 
 @Controller({
-  path: 'relation-rules',
-  version: '2',
+  path: "relation-rules",
+  version: "2",
 })
-@ApiTags('relation-rules')
+@ApiTags("relation-rules")
 export class RelationRulesControllerV2 {
   constructor(private relationRulesService: RelationRulesService) {}
 
   @UseGuards(ThrottlerGuard)
   // Maximum 120 times in 1 minute.
   @Throttle({ default: { limit: 120, ttl: minutes(1) } })
-  @Get('/:animeId')
+  @Get("/:animeId")
   @ApiOperation({
-    description: 'Retrieves anime episode number redirection rules',
+    description: "Retrieves anime episode number redirection rules",
   })
   @ApiOkResponse({
     type: GetRelationRulesResponseV2,
-    description: 'Rules object',
+    description: "Rules object",
   })
-  getRules(
-    @Param() params: GetRelationRulesRequestParamsV2,
-  ): GetRelationRulesResponseV2 {
+  getRules(@Param() params: GetRelationRulesRequestParamsV2): GetRelationRulesResponseV2 {
     const episodeRules = this.relationRulesService.getRule(params.animeId);
 
     const response = new GetRelationRulesResponseV2();

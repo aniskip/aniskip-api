@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { SkipTimesModule } from '../skip-times.module';
-import { SkipTimesControllerV1 } from './skip-times.controller';
+import { Module } from "@nestjs/common";
+import { SkipTimesModule } from "../skip-times.module";
+import { SkipTimesControllerV1 } from "./skip-times.controller";
 
 @Module({
   imports: [SkipTimesModule],

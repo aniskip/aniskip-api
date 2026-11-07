@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const episode = z.int().min(1);
 
@@ -15,4 +15,4 @@ export const Rule = z.object({
 
 export type Rule = z.infer<typeof Rule>;
 
-export type SectionType = 'meta' | 'rules' | 'unknown';
+export type SectionType = "meta" | "rules" | "unknown";

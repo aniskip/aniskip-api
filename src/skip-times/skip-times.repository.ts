@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { Pool } from 'pg';
+import { Injectable } from "@nestjs/common";
+import { Pool } from "pg";
 import type {
   CreateSkipTimesQueryResponse,
   DatabaseSkipTime,
   GetAverageOfLastTenSkipTimesVotesQueryResponse,
   SkipTimeV2,
   SkipTypeV2,
-} from './skip-times.types';
+} from "./skip-times.types";
 
 @Injectable()
 export class SkipTimesRepository {
@@ -60,7 +60,7 @@ export class SkipTimesRepository {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'>,
+    skipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date">,
   ): Promise<string> {
     const { rows } = await this.database.query<CreateSkipTimesQueryResponse>(
       `
@@ -84,7 +84,7 @@ export class SkipTimesRepository {
 
     const [row] = rows;
     if (!row) {
-      throw new Error('Inserting the skip time returned no row');
+      throw new Error("Inserting the skip time returned no row");
     }
 
     return row.skip_id;
@@ -144,12 +144,9 @@ export class SkipTimesRepository {
    *
    * @param submitterId ID of the submitter to check.
    */
-  async getAverageOfLastTenSkipTimesVotes(
-    submitterId: string,
-  ): Promise<number> {
-    const { rows } =
-      await this.database.query<GetAverageOfLastTenSkipTimesVotesQueryResponse>(
-        `
+  async getAverageOfLastTenSkipTimesVotes(submitterId: string): Promise<number> {
+    const { rows } = await this.database.query<GetAverageOfLastTenSkipTimesVotesQueryResponse>(
+      `
         SELECT
           avg(t.votes)
         FROM (
@@ -163,8 +160,8 @@ export class SkipTimesRepository {
             submit_date DESC
           LIMIT 10) AS t
         `,
-        [submitterId],
-      );
+      [submitterId],
+    );
 
     return rows[0]?.avg ?? 0;
   }

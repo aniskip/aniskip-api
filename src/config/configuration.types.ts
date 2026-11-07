@@ -1,5 +1,5 @@
-import type { RedisOptions } from 'ioredis';
-import type { PoolConfig } from 'pg';
+import type { RedisOptions } from "ioredis";
+import type { PoolConfig } from "pg";
 
 export type RelationsConfig = {
   filePath: string;

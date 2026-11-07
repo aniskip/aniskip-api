@@ -1,12 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { SkipTimesRepository } from './skip-times.repository';
-import type {
-  DatabaseSkipTime,
-  SkipTimeV2,
-  SkipTypeV2,
-  VoteType,
-} from './skip-times.types';
-import { VoteService } from './voting/vote.service';
+import { Injectable } from "@nestjs/common";
+import { SkipTimesRepository } from "./skip-times.repository";
+import type { DatabaseSkipTime, SkipTimeV2, SkipTypeV2, VoteType } from "./skip-times.types";
+import { VoteService } from "./voting/vote.service";
 
 @Injectable()
 export class SkipTimesService {
@@ -25,12 +20,11 @@ export class SkipTimesService {
     let voteSuccessful = false;
 
     switch (voteType) {
-      case 'upvote':
+      case "upvote":
         voteSuccessful = await this.skipTimesRepository.upvoteSkipTime(skipId);
         break;
-      case 'downvote':
-        voteSuccessful =
-          await this.skipTimesRepository.downvoteSkipTime(skipId);
+      case "downvote":
+        voteSuccessful = await this.skipTimesRepository.downvoteSkipTime(skipId);
         break;
       // no default
     }
@@ -44,7 +38,7 @@ export class SkipTimesService {
    * @param skipTime Skip time to create.
    */
   async createSkipTime(
-    skipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date' | 'votes'>,
+    skipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date" | "votes">,
   ): Promise<string> {
     const votes = await this.voteService.autoVote(
       skipTime.start_time,

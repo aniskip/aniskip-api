@@ -1,22 +1,20 @@
-import { beforeEach, describe, expect, it, jest } from 'bun:test';
-import path from 'node:path';
-import { ConfigService } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
-import type { RelationsConfig } from '../config/configuration.types';
-import { RelationRulesService } from './relation-rules.service';
+import { beforeEach, describe, expect, it, jest } from "bun:test";
+import path from "node:path";
+import { ConfigService } from "@nestjs/config";
+import { Test, TestingModule } from "@nestjs/testing";
+import type { RelationsConfig } from "../config/configuration.types";
+import { RelationRulesService } from "./relation-rules.service";
 
-describe('RelationRulesService', () => {
+describe("RelationRulesService", () => {
   let relationRulesService: RelationRulesService;
 
   beforeEach(async () => {
     const mockConfigService = {
       provide: ConfigService,
       useValue: {
-        get: jest.fn(
-          (): RelationsConfig => ({
-            filePath: path.join(__dirname, 'anime-relations.fixture.txt'),
-          }),
-        ),
+        get: jest.fn((): RelationsConfig => ({
+          filePath: path.join(__dirname, "anime-relations.fixture.txt"),
+        })),
       },
     };
 
@@ -24,15 +22,14 @@ describe('RelationRulesService', () => {
       providers: [mockConfigService, RelationRulesService],
     }).compile();
 
-    relationRulesService =
-      module.get<RelationRulesService>(RelationRulesService);
+    relationRulesService = module.get<RelationRulesService>(RelationRulesService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(relationRulesService).toBeDefined();
   });
 
-  it('should read no rules if file path is not defined', async () => {
+  it("should read no rules if file path is not defined", async () => {
     const mockConfigService = {
       provide: ConfigService,
       useValue: {
@@ -44,20 +41,19 @@ describe('RelationRulesService', () => {
       providers: [mockConfigService, RelationRulesService],
     }).compile();
 
-    relationRulesService =
-      module.get<RelationRulesService>(RelationRulesService);
+    relationRulesService = module.get<RelationRulesService>(RelationRulesService);
 
-    expect(relationRulesService.version).toBe('');
+    expect(relationRulesService.version).toBe("");
   });
 
-  describe('getRule', () => {
-    it('should return no rules', () => {
+  describe("getRule", () => {
+    it("should return no rules", () => {
       const rules = relationRulesService.getRule(1);
 
       expect(rules).toEqual([]);
     });
 
-    it('should return a single episode rule', () => {
+    it("should return a single episode rule", () => {
       const rules = relationRulesService.getRule(6682);
 
       expect(rules).toEqual([
@@ -75,7 +71,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('should return a single episode rule with episode 0', () => {
+    it("should return a single episode rule with episode 0", () => {
       const rules = relationRulesService.getRule(18153);
 
       expect(rules).toEqual([
@@ -86,7 +82,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('should return a range rule', () => {
+    it("should return a range rule", () => {
       const rules = relationRulesService.getRule(31646);
 
       expect(rules).toEqual([
@@ -104,7 +100,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('should return a self redirecting rule', () => {
+    it("should return a self redirecting rule", () => {
       const rules = relationRulesService.getRule(31580);
 
       expect(rules).toEqual([
@@ -122,7 +118,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('should return a rule with an unknown ending range', () => {
+    it("should return a rule with an unknown ending range", () => {
       const rules = relationRulesService.getRule(37178);
 
       expect(rules).toEqual([
@@ -149,7 +145,7 @@ describe('RelationRulesService', () => {
       ]);
     });
 
-    it('should return a rule with from mal id is equal to to mal id', () => {
+    it("should return a rule with from mal id is equal to to mal id", () => {
       const rules = relationRulesService.getRule(33820);
 
       expect(rules).toEqual([

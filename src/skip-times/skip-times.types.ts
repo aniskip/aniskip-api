@@ -1,20 +1,15 @@
-import { z } from 'zod';
-import { id } from '../common/validation/schemas';
+import { z } from "zod";
+import { id } from "../common/validation/schemas";
 
-export const SKIP_TYPES_V1 = ['op', 'ed'] as const;
+export const SKIP_TYPES_V1 = ["op", "ed"] as const;
 
 export type SkipTypeV1 = (typeof SKIP_TYPES_V1)[number];
 
-export const SKIP_TYPES_V2 = [
-  ...SKIP_TYPES_V1,
-  'mixed-op',
-  'mixed-ed',
-  'recap',
-] as const;
+export const SKIP_TYPES_V2 = [...SKIP_TYPES_V1, "mixed-op", "mixed-ed", "recap"] as const;
 
 export type SkipTypeV2 = (typeof SKIP_TYPES_V2)[number];
 
-export const VOTE_TYPES = ['upvote', 'downvote'] as const;
+export const VOTE_TYPES = ["upvote", "downvote"] as const;
 
 export type VoteType = (typeof VOTE_TYPES)[number];
 

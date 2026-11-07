@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { SkipTimesRepository } from '../skip-times.repository';
-import type { SkipTypeV2 } from '../skip-times.types';
-import type { EpisodeType } from './vote.types';
+import { Injectable } from "@nestjs/common";
+import { SkipTimesRepository } from "../skip-times.repository";
+import type { SkipTypeV2 } from "../skip-times.types";
+import type { EpisodeType } from "./vote.types";
 
 /** Starting votes of a rejected skip time. Skip times at -2 or below are hidden. */
 const REJECTED_VOTES = -10;
@@ -55,20 +55,20 @@ export class VoteService {
   getEpisodeType(episodeLength: number): EpisodeType {
     // 2 minutes.
     if (episodeLength < 60 * 2) {
-      return 'short';
+      return "short";
     }
 
     // 12 minutes.
     if (episodeLength < 60 * 12) {
-      return 'half';
+      return "half";
     }
 
     // 35 minutes.
     if (episodeLength < 60 * 35) {
-      return 'full';
+      return "full";
     }
 
-    return 'movie';
+    return "movie";
   }
 
   /**
@@ -78,10 +78,10 @@ export class VoteService {
    */
   private getLimits(skipType?: SkipTypeV2): Record<EpisodeType, number> {
     switch (skipType) {
-      case 'recap':
+      case "recap":
         return MAX_RECAP_SECONDS;
-      case 'ed':
-      case 'mixed-ed':
+      case "ed":
+      case "mixed-ed":
         return MAX_ENDING_SECONDS;
       default:
         return MAX_OPENING_SECONDS;
@@ -111,15 +111,12 @@ export class VoteService {
     }
 
     const averageVotes =
-      await this.skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
-        submitterId,
-      );
+      await this.skipTimesRepository.getAverageOfLastTenSkipTimesVotes(submitterId);
     const isTrusted = averageVotes > TRUSTED_AVERAGE_VOTES;
 
     const limits = this.getLimits(skipType);
     const maxIntervalLength =
-      limits[this.getEpisodeType(episodeLength)] +
-      (isTrusted ? TRUSTED_EXTRA_SECONDS : 0);
+      limits[this.getEpisodeType(episodeLength)] + (isTrusted ? TRUSTED_EXTRA_SECONDS : 0);
 
     if (intervalLength > maxIntervalLength) {
       return REJECTED_VOTES;

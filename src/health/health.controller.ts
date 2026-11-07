@@ -1,13 +1,9 @@
-import { Controller, Get, Inject, Logger } from '@nestjs/common';
-import { ApiExcludeController } from '@nestjs/swagger';
-import {
-  HealthCheck,
-  HealthCheckService,
-  HealthIndicatorService,
-} from '@nestjs/terminus';
-import type Redis from 'ioredis';
-import { Pool } from 'pg';
-import { REDIS } from './health.constants';
+import { Controller, Get, Inject, Logger } from "@nestjs/common";
+import { ApiExcludeController } from "@nestjs/swagger";
+import { HealthCheck, HealthCheckService, HealthIndicatorService } from "@nestjs/terminus";
+import type Redis from "ioredis";
+import { Pool } from "pg";
+import { REDIS } from "./health.constants";
 
 /** How long each dependency may take before it counts as down. */
 const CHECK_TIMEOUT_MS = 2000;
@@ -17,7 +13,7 @@ const CHECK_TIMEOUT_MS = 2000;
  * 503 otherwise. Used by Docker's HEALTHCHECK and CI.
  */
 @ApiExcludeController()
-@Controller('health')
+@Controller("health")
 export class HealthController {
   private logger = new Logger(HealthController.name);
 
@@ -32,8 +28,8 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.ping('database', () => this.pool.query('SELECT 1')),
-      () => this.ping('redis', () => this.redis.ping()),
+      () => this.ping("database", () => this.pool.query("SELECT 1")),
+      () => this.ping("redis", () => this.redis.ping()),
     ]);
   }
 
@@ -51,7 +47,7 @@ export class HealthController {
           this.logger.warn(
             `${key} health check failed: ${error instanceof Error ? error.message : String(error)}`,
           );
-          throw new Error('unreachable');
+          throw new Error("unreachable");
         }
       })
       .withTimeout(CHECK_TIMEOUT_MS);
