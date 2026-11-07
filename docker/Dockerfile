@@ -1,4 +1,5 @@
 # Install production dependencies stage
+# Keep the Bun version in step with packageManager in package.json.
 FROM oven/bun:1.4.4-alpine AS install
 
 WORKDIR /usr/src/app

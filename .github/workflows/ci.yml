@@ -26,14 +26,16 @@ jobs:
         with:
           submodules: recursive
 
-      # Keep in step with the oven/bun image in docker/Dockerfile.
-      - uses: oven-sh/setup-bun@v2
+      # Installs the vite-plus version from package.json, and Bun from its
+      # packageManager field, then runs `vp install`.
+      - uses: voidzero-dev/setup-vp@v1.22.0
         with:
-          bun-version: 1.4.4
+          cache: true
+          run-install: |
+            - args: ['--frozen-lockfile']
 
-      - run: bun install --frozen-lockfile
-      - run: bun run check
-      - run: bun run test
+      - run: vp check
+      - run: vp run test
 
   continuous-integration-docker:
     runs-on: ubuntu-latest
