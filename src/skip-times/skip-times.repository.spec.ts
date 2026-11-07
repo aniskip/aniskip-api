@@ -1,11 +1,11 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'bun:test';
-import { Test, TestingModule } from '@nestjs/testing';
-import { Pool } from 'pg';
-import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
-import { SkipTimesRepository } from './skip-times.repository';
-import type { DatabaseSkipTime, SkipTypeV1 } from './skip-times.types';
+import { beforeAll, beforeEach, describe, expect, it } from "bun:test";
+import { Test, TestingModule } from "@nestjs/testing";
+import { Pool } from "pg";
+import { DataType, type IBackup, type IMemoryDb, newDb } from "pg-mem";
+import { SkipTimesRepository } from "./skip-times.repository";
+import type { DatabaseSkipTime, SkipTypeV1 } from "./skip-times.types";
 
-describe('SkipTimesService', () => {
+describe("SkipTimesService", () => {
   let database: IMemoryDb;
   let databaseBackup: IBackup;
   let skipTimesRepository: SkipTimesRepository;
@@ -14,14 +14,14 @@ describe('SkipTimesService', () => {
     database = newDb();
 
     database.public.registerFunction({
-      name: 'gen_random_uuid',
+      name: "gen_random_uuid",
       returns: DataType.uuid,
       implementation: () => crypto.randomUUID(),
       impure: true,
     });
 
     database.public.registerFunction({
-      name: 'abs',
+      name: "abs",
       args: [DataType.float],
       returns: DataType.float,
       implementation: Math.abs,
@@ -68,11 +68,11 @@ describe('SkipTimesService', () => {
     skipTimesRepository = module.get<SkipTimesRepository>(SkipTimesRepository);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(skipTimesRepository).toBeDefined();
   });
 
-  describe('upvoteSkipTime', () => {
+  describe("upvoteSkipTime", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -82,24 +82,24 @@ describe('SkipTimesService', () => {
       `);
     });
 
-    it('should upvote a skip time', async () => {
+    it("should upvote a skip time", async () => {
       const isSuccessful = await skipTimesRepository.upvoteSkipTime(
-        'c9dfd857-0351-4a90-b37e-582a44253910',
+        "c9dfd857-0351-4a90-b37e-582a44253910",
       );
 
       expect(isSuccessful).toBeTruthy();
     });
 
-    it('should not upvote successfully', async () => {
+    it("should not upvote successfully", async () => {
       const isSuccessful = await skipTimesRepository.upvoteSkipTime(
-        'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+        "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
       );
 
       expect(isSuccessful).toBeFalsy();
     });
   });
 
-  describe('downvoteSkipTime', () => {
+  describe("downvoteSkipTime", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -109,33 +109,33 @@ describe('SkipTimesService', () => {
       `);
     });
 
-    it('should downvote a skip time', async () => {
+    it("should downvote a skip time", async () => {
       const isSuccessful = await skipTimesRepository.downvoteSkipTime(
-        'c9dfd857-0351-4a90-b37e-582a44253910',
+        "c9dfd857-0351-4a90-b37e-582a44253910",
       );
 
       expect(isSuccessful).toBeTruthy();
     });
 
-    it('should not downvote successfully', async () => {
+    it("should not downvote successfully", async () => {
       const isSuccessful = await skipTimesRepository.downvoteSkipTime(
-        'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+        "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
       );
 
       expect(isSuccessful).toBeFalsy();
     });
   });
 
-  describe('createSkipTime', () => {
-    const testSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> = {
+  describe("createSkipTime", () => {
+    const testSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
       anime_id: 3,
       end_time: 128.1,
       episode_length: 1440.05,
       episode_number: 2,
-      provider_name: 'ProviderName',
-      skip_type: 'op' as SkipTypeV1,
+      provider_name: "ProviderName",
+      skip_type: "op" as SkipTypeV1,
       start_time: 37.75,
-      submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+      submitter_id: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
       votes: 0,
     };
 
@@ -143,7 +143,7 @@ describe('SkipTimesService', () => {
       databaseBackup.restore();
     });
 
-    it('should create a skip time', async () => {
+    it("should create a skip time", async () => {
       const skipId = await skipTimesRepository.createSkipTime(testSkipTime);
       const skipTime = database.public.one(`
         SELECT
@@ -168,80 +168,62 @@ describe('SkipTimesService', () => {
       expect(skipTime.submit_date).toBeDefined();
     });
 
-    it.skip('should throw episode number constraint violation', async () => {
-      const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
-        {
-          ...testSkipTime,
-          episode_number: -1,
-        };
+    it.skip("should throw episode number constraint violation", async () => {
+      const invalidSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
+        ...testSkipTime,
+        episode_number: -1,
+      };
 
-      await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime),
-      ).rejects.toThrow();
+      await expect(skipTimesRepository.createSkipTime(invalidSkipTime)).rejects.toThrow();
     });
 
-    it.skip('should throw skip type constraint violation', async () => {
-      const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
-        {
-          ...testSkipTime,
-          skip_type: 'wrong' as SkipTypeV1,
-        };
+    it.skip("should throw skip type constraint violation", async () => {
+      const invalidSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
+        ...testSkipTime,
+        skip_type: "wrong" as SkipTypeV1,
+      };
 
-      await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime),
-      ).rejects.toThrow();
+      await expect(skipTimesRepository.createSkipTime(invalidSkipTime)).rejects.toThrow();
     });
 
-    it.skip('should throw start time constraint violation', async () => {
-      const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
-        {
-          ...testSkipTime,
-          start_time: -1,
-        };
+    it.skip("should throw start time constraint violation", async () => {
+      const invalidSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
+        ...testSkipTime,
+        start_time: -1,
+      };
 
-      await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime),
-      ).rejects.toThrow();
+      await expect(skipTimesRepository.createSkipTime(invalidSkipTime)).rejects.toThrow();
     });
 
-    it.skip('should throw end time constraint violation', async () => {
-      const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
-        {
-          ...testSkipTime,
-          episode_length: 0,
-        };
+    it.skip("should throw end time constraint violation", async () => {
+      const invalidSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
+        ...testSkipTime,
+        episode_length: 0,
+      };
 
-      await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime),
-      ).rejects.toThrow();
+      await expect(skipTimesRepository.createSkipTime(invalidSkipTime)).rejects.toThrow();
     });
 
-    it.skip('should throw episode length constraint violation', async () => {
-      const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
-        {
-          ...testSkipTime,
-          episode_length: -1,
-        };
+    it.skip("should throw episode length constraint violation", async () => {
+      const invalidSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
+        ...testSkipTime,
+        episode_length: -1,
+      };
 
-      await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime),
-      ).rejects.toThrow();
+      await expect(skipTimesRepository.createSkipTime(invalidSkipTime)).rejects.toThrow();
     });
 
-    it('should throw submitter id constraint violation', async () => {
-      const invalidSkipTime: Omit<DatabaseSkipTime, 'skip_id' | 'submit_date'> =
-        {
-          ...testSkipTime,
-          submitter_id: '1',
-        };
+    it("should throw submitter id constraint violation", async () => {
+      const invalidSkipTime: Omit<DatabaseSkipTime, "skip_id" | "submit_date"> = {
+        ...testSkipTime,
+        submitter_id: "1",
+      };
 
-      await expect(
-        skipTimesRepository.createSkipTime(invalidSkipTime),
-      ).rejects.toThrow();
+      await expect(skipTimesRepository.createSkipTime(invalidSkipTime)).rejects.toThrow();
     });
   });
 
-  describe('findSkipTimes', () => {
+  describe("findSkipTimes", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -256,8 +238,8 @@ describe('SkipTimesService', () => {
       `);
     });
 
-    it('should return an opening skip time', async () => {
-      const skipTime = await skipTimesRepository.findSkipTimes(1, 1, 'op');
+    it("should return an opening skip time", async () => {
+      const skipTime = await skipTimesRepository.findSkipTimes(1, 1, "op");
 
       expect(skipTime).toEqual([
         {
@@ -265,15 +247,15 @@ describe('SkipTimesService', () => {
             startTime: 21.5,
             endTime: 112.25,
           },
-          skipType: 'op',
-          skipId: '6d1c118e-0484-4b92-82df-896efdcba26e',
+          skipType: "op",
+          skipId: "6d1c118e-0484-4b92-82df-896efdcba26e",
           episodeLength: 1445.17,
         },
       ]);
     });
 
-    it('should return an ending skip time', async () => {
-      const skipTime = await skipTimesRepository.findSkipTimes(1, 1, 'ed');
+    it("should return an ending skip time", async () => {
+      const skipTime = await skipTimesRepository.findSkipTimes(1, 1, "ed");
 
       expect(skipTime).toEqual([
         {
@@ -281,26 +263,26 @@ describe('SkipTimesService', () => {
             startTime: 1349.5,
             endTime: 1440.485,
           },
-          skipType: 'ed',
-          skipId: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+          skipType: "ed",
+          skipId: "23ee993a-fdf5-44eb-b4f9-cb79c7935033",
           episodeLength: 1445.1238,
         },
       ]);
     });
 
-    it('should return no skip time', async () => {
-      const skipTime = await skipTimesRepository.findSkipTimes(2, 1, 'ed');
+    it("should return no skip time", async () => {
+      const skipTime = await skipTimesRepository.findSkipTimes(2, 1, "ed");
 
       expect(skipTime).toEqual([]);
     });
   });
 
-  describe('getAverageOfLastTenSkipTimesVotes', () => {
+  describe("getAverageOfLastTenSkipTimesVotes", () => {
     beforeEach(() => {
       databaseBackup.restore();
     });
 
-    it('should return the average of two skip times', async () => {
+    it("should return the average of two skip times", async () => {
       database.public.none(`
         INSERT INTO skip_times
           VALUES ('c9dfd857-0351-4a90-b37e-582a44253912', 1, 1, 'ProviderName', 'op', 3, 208, 298.556, 1435.122, '2021-02-19 02:14:22.872759', 'e93e3787-3071-4d1f-833f-a78755702f6b');
@@ -311,19 +293,17 @@ describe('SkipTimesService', () => {
           VALUES ('c9dfd857-0351-4a90-b37e-582a44253911', 1, 1, 'ProviderName', 'op', 4, 208, 298.556, 1435.122, '2021-02-19 02:14:22.872759', 'e93e3787-3071-4d1f-833f-a78755702f6b');
       `);
 
-      const average =
-        await skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
-          'e93e3787-3071-4d1f-833f-a78755702f6b',
-        );
+      const average = await skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
+        "e93e3787-3071-4d1f-833f-a78755702f6b",
+      );
 
       expect(average).toBe(3.5);
     });
 
-    it('should return zero from a user with zero submitted skip times', async () => {
-      const average =
-        await skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
-          'e93e3787-3071-4d1f-833f-a78755702f6b',
-        );
+    it("should return zero from a user with zero submitted skip times", async () => {
+      const average = await skipTimesRepository.getAverageOfLastTenSkipTimesVotes(
+        "e93e3787-3071-4d1f-833f-a78755702f6b",
+      );
 
       expect(average).toBe(0);
     });

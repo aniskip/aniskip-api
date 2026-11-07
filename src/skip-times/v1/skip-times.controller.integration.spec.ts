@@ -1,23 +1,22 @@
-import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { HttpStatus, type INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import { minutes, ThrottlerModule } from '@nestjs/throttler';
-import { ZodValidationPipe } from 'nestjs-zod';
-import { Pool } from 'pg';
-import { DataType, type IBackup, type IMemoryDb, newDb } from 'pg-mem';
-import request from 'supertest';
-import { SkipTimesRepository } from '../skip-times.repository';
-import { SkipTimesService } from '../skip-times.service';
-import { VoteService } from '../voting/vote.service';
-import { SkipTimesControllerV1 } from './skip-times.controller';
+import { afterAll, beforeAll, describe, expect, it } from "bun:test";
+import { HttpStatus, type INestApplication } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
+import { minutes, ThrottlerModule } from "@nestjs/throttler";
+import { ZodValidationPipe } from "nestjs-zod";
+import { Pool } from "pg";
+import { DataType, type IBackup, type IMemoryDb, newDb } from "pg-mem";
+import request from "supertest";
+import { SkipTimesRepository } from "../skip-times.repository";
+import { SkipTimesService } from "../skip-times.service";
+import { VoteService } from "../voting/vote.service";
+import { SkipTimesControllerV1 } from "./skip-times.controller";
 
 /** The validation errors of a 400 response, as `path: message`. */
 const validationErrors = (body: {
   errors: { path: (string | number)[]; message: string }[];
-}): string[] =>
-  body.errors.map((issue) => `${issue.path.join('.')}: ${issue.message}`);
+}): string[] => body.errors.map((issue) => `${issue.path.join(".")}: ${issue.message}`);
 
-describe('SkipTimesControllerV1', () => {
+describe("SkipTimesControllerV1", () => {
   let app: INestApplication;
   let database: IMemoryDb;
   let databaseBackup: IBackup;
@@ -26,14 +25,14 @@ describe('SkipTimesControllerV1', () => {
     database = newDb();
 
     database.public.registerFunction({
-      name: 'gen_random_uuid',
+      name: "gen_random_uuid",
       returns: DataType.uuid,
       implementation: () => crypto.randomUUID(),
       impure: true,
     });
 
     database.public.registerFunction({
-      name: 'abs',
+      name: "abs",
       args: [DataType.float],
       returns: DataType.float,
       implementation: Math.abs,
@@ -74,12 +73,7 @@ describe('SkipTimesControllerV1', () => {
     const module = await Test.createTestingModule({
       imports: [ThrottlerModule.forRoot([{ ttl: minutes(1), limit: 120 }])],
       controllers: [SkipTimesControllerV1],
-      providers: [
-        mockPoolProvider,
-        SkipTimesRepository,
-        VoteService,
-        SkipTimesService,
-      ],
+      providers: [mockPoolProvider, SkipTimesRepository, VoteService, SkipTimesService],
     }).compile();
 
     app = module.createNestApplication();
@@ -87,7 +81,7 @@ describe('SkipTimesControllerV1', () => {
     await app.init();
   });
 
-  describe('POST /skip-times/vote/{skipId}', () => {
+  describe("POST /skip-times/vote/{skipId}", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -97,16 +91,16 @@ describe('SkipTimesControllerV1', () => {
       `);
     });
 
-    it('should upvote a skip time', (done) => {
+    it("should upvote a skip time", (done) => {
       request(app.getHttpServer())
-        .post('/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910')
-        .send({ vote_type: 'upvote' })
-        .expect({ message: 'success' })
+        .post("/skip-times/vote/c9dfd857-0351-4a90-b37e-582a44253910")
+        .send({ vote_type: "upvote" })
+        .expect({ message: "success" })
         .expect(HttpStatus.CREATED, done);
     });
   });
 
-  describe('GET /skip-times/{animeId}/{episodeNumber}', () => {
+  describe("GET /skip-times/{animeId}/{episodeNumber}", () => {
     beforeAll(() => {
       databaseBackup.restore();
 
@@ -121,23 +115,23 @@ describe('SkipTimesControllerV1', () => {
       `);
     });
 
-    it('should respond with an episode number bad request', (done) => {
+    it("should respond with an episode number bad request", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/0')
-        .query({ types: 'op' })
+        .get("/skip-times/1/0")
+        .query({ types: "op" })
         .expect(({ body }) => {
-          expect(body.message).toBe('Validation failed');
+          expect(body.message).toBe("Validation failed");
           expect(validationErrors(body)).toEqual([
-            'episode_number: Too small: expected number to be >=0.5',
+            "episode_number: Too small: expected number to be >=0.5",
           ]);
         })
         .expect(HttpStatus.BAD_REQUEST, done);
     });
 
-    it('should respond with an opening and ending', (done) => {
+    it("should respond with an opening and ending", (done) => {
       request(app.getHttpServer())
-        .get('/skip-times/1/1')
-        .query({ types: ['op', 'ed'] })
+        .get("/skip-times/1/1")
+        .query({ types: ["op", "ed"] })
         .expect({
           found: true,
           results: [
@@ -146,8 +140,8 @@ describe('SkipTimesControllerV1', () => {
                 start_time: 21.5,
                 end_time: 112.25,
               },
-              skip_type: 'op',
-              skip_id: '6d1c118e-0484-4b92-82df-896efdcba26e',
+              skip_type: "op",
+              skip_id: "6d1c118e-0484-4b92-82df-896efdcba26e",
               episode_length: 1445.17,
             },
             {
@@ -155,8 +149,8 @@ describe('SkipTimesControllerV1', () => {
                 start_time: 1349.5,
                 end_time: 1440.485,
               },
-              skip_type: 'ed',
-              skip_id: '23ee993a-fdf5-44eb-b4f9-cb79c7935033',
+              skip_type: "ed",
+              skip_id: "23ee993a-fdf5-44eb-b4f9-cb79c7935033",
               episode_length: 1445.1238,
             },
           ],
@@ -165,25 +159,25 @@ describe('SkipTimesControllerV1', () => {
     });
   });
 
-  describe('POST /v1/skip-times/{animeId}/{episodeNumber}', () => {
+  describe("POST /v1/skip-times/{animeId}/{episodeNumber}", () => {
     beforeAll(() => {
       databaseBackup.restore();
     });
 
-    it('should create a skip time', (done) => {
+    it("should create a skip time", (done) => {
       request(app.getHttpServer())
-        .post('/skip-times/3/2')
+        .post("/skip-times/3/2")
         .send({
-          skip_type: 'op',
-          provider_name: 'ProviderName',
+          skip_type: "op",
+          provider_name: "ProviderName",
           start_time: 37.75,
           end_time: 128.1,
           episode_length: 1440.05,
-          submitter_id: 'efb943b4-6869-4179-b3a6-81c5d97cf98b',
+          submitter_id: "efb943b4-6869-4179-b3a6-81c5d97cf98b",
         })
         .expect((res) => {
           const { body } = res;
-          expect(body.message).toBe('success');
+          expect(body.message).toBe("success");
           expect(body.skip_id).toBeDefined();
         })
         .expect(HttpStatus.CREATED, done);

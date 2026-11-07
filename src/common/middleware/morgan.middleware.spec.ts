@@ -1,10 +1,10 @@
-import { afterAll, beforeAll, describe, it } from 'bun:test';
-import { HttpStatus, type INestApplication } from '@nestjs/common';
-import { Test } from '@nestjs/testing';
-import request from 'supertest';
-import { MorganTestModule } from './testing/morgan-test.module';
+import { afterAll, beforeAll, describe, it } from "bun:test";
+import { HttpStatus, type INestApplication } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
+import request from "supertest";
+import { MorganTestModule } from "./testing/morgan-test.module";
 
-describe('MorganMiddleware', () => {
+describe("MorganMiddleware", () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -16,12 +16,9 @@ describe('MorganMiddleware', () => {
     await app.init();
   });
 
-  describe('GET /test', () => {
-    it('should respond with hello world', (done) => {
-      request(app.getHttpServer())
-        .get('/test')
-        .expect('hello world')
-        .expect(HttpStatus.OK, done);
+  describe("GET /test", () => {
+    it("should respond with hello world", (done) => {
+      request(app.getHttpServer()).get("/test").expect("hello world").expect(HttpStatus.OK, done);
     });
   });
 

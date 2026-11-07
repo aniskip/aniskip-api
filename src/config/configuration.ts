@@ -1,11 +1,11 @@
-import path from 'node:path';
-import type { Config } from './configuration.types';
+import path from "node:path";
+import type { Config } from "./configuration.types";
 
 export const config = (): Config => ({
   postgres: {
-    user: 'postgres',
+    user: "postgres",
     host: process.env.POSTGRES_HOST,
-    database: 'db',
+    database: "db",
     password: process.env.POSTGRES_PASSWORD,
     port: 5432,
     max: 20,
@@ -17,13 +17,6 @@ export const config = (): Config => ({
     port: 6379,
   },
   relations: {
-    filePath: path.join(
-      __dirname,
-      '..',
-      '..',
-      'deps',
-      'anime-relations',
-      'anime-relations.txt',
-    ),
+    filePath: path.join(__dirname, "..", "..", "deps", "anime-relations", "anime-relations.txt"),
   },
 });

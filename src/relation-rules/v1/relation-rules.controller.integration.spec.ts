@@ -1,23 +1,23 @@
-import { afterAll, beforeAll, describe, it } from 'bun:test';
-import path from 'node:path';
-import { HttpStatus, type INestApplication } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { Test } from '@nestjs/testing';
-import { minutes, ThrottlerModule } from '@nestjs/throttler';
-import { ZodValidationPipe } from 'nestjs-zod';
-import request from 'supertest';
-import type { Config } from '../../config/configuration.types';
-import { RelationRulesService } from '../relation-rules.service';
-import { RelationRulesControllerV1 } from './relation-rules.controller';
+import { afterAll, beforeAll, describe, it } from "bun:test";
+import path from "node:path";
+import { HttpStatus, type INestApplication } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { Test } from "@nestjs/testing";
+import { minutes, ThrottlerModule } from "@nestjs/throttler";
+import { ZodValidationPipe } from "nestjs-zod";
+import request from "supertest";
+import type { Config } from "../../config/configuration.types";
+import { RelationRulesService } from "../relation-rules.service";
+import { RelationRulesControllerV1 } from "./relation-rules.controller";
 
-describe('RelationRulesControllerV1', () => {
+describe("RelationRulesControllerV1", () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     // A fixed fixture, so upstream anime-relations updates don't break it.
     const partialConfig = (): Partial<Config> => ({
       relations: {
-        filePath: path.join(__dirname, '..', 'anime-relations.fixture.txt'),
+        filePath: path.join(__dirname, "..", "anime-relations.fixture.txt"),
       },
     });
 
@@ -35,10 +35,10 @@ describe('RelationRulesControllerV1', () => {
     await app.init();
   });
 
-  describe('GET /rules/{anime_id}', () => {
-    it('should respond with a rule', (done) => {
+  describe("GET /rules/{anime_id}", () => {
+    it("should respond with a rule", (done) => {
       request(app.getHttpServer())
-        .get('/rules/37178')
+        .get("/rules/37178")
         .expect({
           found: true,
           rules: [

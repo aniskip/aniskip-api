@@ -1,18 +1,14 @@
-import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis';
-import {
-  type MiddlewareConsumer,
-  Module,
-  type NestModule,
-} from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { minutes, ThrottlerModule } from '@nestjs/throttler';
-import { MorganMiddleware } from './common/middleware/morgan.middleware';
-import { config } from './config/configuration';
-import { HealthModule } from './health/health.module';
-import { RelationRulesModuleV1 } from './relation-rules/v1/relation-rules.module';
-import { RelationRulesModuleV2 } from './relation-rules/v2/relation-rules.module';
-import { SkipTimesModuleV1 } from './skip-times/v1/skip-times.module';
-import { SkipTimesModuleV2 } from './skip-times/v2/skip-times.module';
+import { ThrottlerStorageRedisService } from "@nest-lab/throttler-storage-redis";
+import { type MiddlewareConsumer, Module, type NestModule } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { minutes, ThrottlerModule } from "@nestjs/throttler";
+import { MorganMiddleware } from "./common/middleware/morgan.middleware";
+import { config } from "./config/configuration";
+import { HealthModule } from "./health/health.module";
+import { RelationRulesModuleV1 } from "./relation-rules/v1/relation-rules.module";
+import { RelationRulesModuleV2 } from "./relation-rules/v2/relation-rules.module";
+import { SkipTimesModuleV1 } from "./skip-times/v1/skip-times.module";
+import { SkipTimesModuleV2 } from "./skip-times/v2/skip-times.module";
 
 @Module({
   imports: [
@@ -23,7 +19,7 @@ import { SkipTimesModuleV2 } from './skip-times/v2/skip-times.module';
       useFactory: (configService: ConfigService) => ({
         // Default for ThrottlerGuard routes; each route sets its own with @Throttle.
         throttlers: [{ ttl: minutes(1), limit: 120 }],
-        storage: new ThrottlerStorageRedisService(configService.get('redis')),
+        storage: new ThrottlerStorageRedisService(configService.get("redis")),
       }),
     }),
     SkipTimesModuleV1,
@@ -35,6 +31,6 @@ import { SkipTimesModuleV2 } from './skip-times/v2/skip-times.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(MorganMiddleware).forRoutes('{*path}');
+    consumer.apply(MorganMiddleware).forRoutes("{*path}");
   }
 }

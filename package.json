@@ -2,17 +2,11 @@
   "name": "aniskip-api",
   "version": "0.0.0-development",
   "description": "Provides the opening and ending skip times for the Aniskip extension",
-  "repository": "https://github.com/aniskip/aniskip-api",
-  "contributors": [
-    "Lexes Jan Mantiquilla <mantiquillal@gmail.com>",
-    "Dabreadman <tany3@tcd.ie>"
-  ],
   "license": "MIT",
-  "private": true,
+  "repository": "https://github.com/aniskip/aniskip-api",
   "scripts": {
-    "check": "biome check",
-    "check:ci": "biome ci",
-    "check:fix": "biome check --write",
+    "check": "vp check",
+    "check:fix": "vp check --fix",
     "db:migrate": "docker compose -f docker/docker-compose.dev.yml run --rm migrate",
     "db:new": "docker compose -f docker/docker-compose.dev.yml run --rm migrate new",
     "db:rollback": "docker compose -f docker/docker-compose.dev.yml run --rm migrate rollback",
@@ -22,8 +16,7 @@
     "services:down": "docker compose -f docker/docker-compose.dev.yml down",
     "services:up": "docker compose -f docker/docker-compose.dev.yml up -d --wait && bun run db:migrate",
     "start": "NODE_ENV=production bun src/main.ts",
-    "test": "bun test --coverage",
-    "typecheck": "tsc --noEmit"
+    "test": "bun test --coverage"
   },
   "dependencies": {
     "@nest-lab/throttler-storage-redis": "^1.2.0",
@@ -45,7 +38,6 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.6.4",
     "@nestjs/testing": "^11.2.8",
     "@types/bun": "^1.4.4",
     "@types/express": "^5.0.6",
@@ -55,6 +47,12 @@
     "git-cliff": "2.14.2",
     "pg-mem": "^3.0.14",
     "supertest": "^7.3.1",
-    "typescript": "^7.0.2"
-  }
+    "typescript": "^7.0.2",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.5.0",
+    "vite-plus": "1.5.0"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.5.0"
+  },
+  "packageManager": "bun@1.4.4"
 }

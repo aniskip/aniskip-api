@@ -1,11 +1,11 @@
-import { createZodDto } from 'nestjs-zod';
-import { z } from 'zod';
-import { malId } from '../../../common/validation/schemas';
-import { Rule } from '../../relation-rules.types';
+import { createZodDto } from "nestjs-zod";
+import { z } from "zod";
+import { malId } from "../../../common/validation/schemas";
+import { Rule } from "../../relation-rules.types";
 
 export class GetRelationRulesRequestParamsV1 extends createZodDto(
   z.object({
-    anime_id: malId.describe('MAL id of the anime to get rules for'),
+    anime_id: malId.describe("MAL id of the anime to get rules for"),
   }),
 ) {}
 

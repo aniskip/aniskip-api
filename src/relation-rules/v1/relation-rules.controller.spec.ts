@@ -1,11 +1,11 @@
-import { beforeEach, describe, expect, it, jest } from 'bun:test';
-import { Test, TestingModule } from '@nestjs/testing';
-import { minutes, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { RelationRulesService } from '../relation-rules.service';
-import { GetRelationRulesRequestParamsV1 } from './dto/get-relation-rules.dto';
-import { RelationRulesControllerV1 } from './relation-rules.controller';
+import { beforeEach, describe, expect, it, jest } from "bun:test";
+import { Test, TestingModule } from "@nestjs/testing";
+import { minutes, ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { RelationRulesService } from "../relation-rules.service";
+import { GetRelationRulesRequestParamsV1 } from "./dto/get-relation-rules.dto";
+import { RelationRulesControllerV1 } from "./relation-rules.controller";
 
-describe('RelationRulesControllerV1', () => {
+describe("RelationRulesControllerV1", () => {
   let relationRulesController: RelationRulesControllerV1;
   let relationRulesService: RelationRulesService;
 
@@ -26,19 +26,16 @@ describe('RelationRulesControllerV1', () => {
       providers: [mockThrottlerGuardProvider, mockRelationRulesServiceProvider],
     }).compile();
 
-    relationRulesController = module.get<RelationRulesControllerV1>(
-      RelationRulesControllerV1,
-    );
-    relationRulesService =
-      module.get<RelationRulesService>(RelationRulesService);
+    relationRulesController = module.get<RelationRulesControllerV1>(RelationRulesControllerV1);
+    relationRulesService = module.get<RelationRulesService>(RelationRulesService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(relationRulesController).toBeDefined();
   });
 
-  describe('getRules', () => {
-    it('should return rules', () => {
+  describe("getRules", () => {
+    it("should return rules", () => {
       const testRules = [
         {
           from: {
@@ -53,9 +50,7 @@ describe('RelationRulesControllerV1', () => {
         },
       ];
 
-      jest
-        .spyOn(relationRulesService, 'getRule')
-        .mockImplementation(() => testRules);
+      jest.spyOn(relationRulesService, "getRule").mockImplementation(() => testRules);
 
       const params = new GetRelationRulesRequestParamsV1();
       params.anime_id = 1;
@@ -66,8 +61,8 @@ describe('RelationRulesControllerV1', () => {
       expect(response.rules).toEqual(testRules);
     });
 
-    it('should return no rules', () => {
-      jest.spyOn(relationRulesService, 'getRule').mockImplementation(() => []);
+    it("should return no rules", () => {
+      jest.spyOn(relationRulesService, "getRule").mockImplementation(() => []);
 
       const params = new GetRelationRulesRequestParamsV1();
       params.anime_id = 1;

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // Path and query values arrive as strings, and older clients send numbers in
 // bodies as strings too, so numbers are coerced.
@@ -20,6 +20,6 @@ export const uniqueArray = <T extends z.ZodType>(item: T) =>
   z.preprocess(
     (value) => (Array.isArray(value) ? value : [value]),
     z.array(item).refine((items) => new Set(items).size === items.length, {
-      message: 'each value in the array must be unique',
+      message: "each value in the array must be unique",
     }),
   );
