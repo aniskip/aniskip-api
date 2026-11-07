@@ -1,13 +1,8 @@
 {
   "name": "aniskip-api",
   "version": "0.0.0-development",
-  "private": true,
   "description": "Provides the opening and ending skip times for the Aniskip extension",
   "license": "MIT",
-  "contributors": [
-    "Lexes Jan Mantiquilla <mantiquillal@gmail.com>",
-    "Dabreadman <tany3@tcd.ie>"
-  ],
   "repository": "https://github.com/aniskip/aniskip-api",
   "scripts": {
     "check": "vp check",
