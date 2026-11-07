@@ -8,7 +8,7 @@ API documentation: [`https://api.aniskip.com/docs`](https://api.aniskip.com/docs
 
 ### Prerequisites
 
-- [Vite+](https://viteplus.dev/guide/) (installs the Bun version pinned in `package.json`)
+- [Vite+](https://viteplus.dev/guide/)
 - [Docker](https://docs.docker.com/get-docker/) (for Postgres and Redis)
 
 ### Getting started
